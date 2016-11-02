@@ -20,6 +20,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.UploadedFile;
 
@@ -73,6 +75,12 @@ public class produtoBean {
 
     public void salvar() {
 
+        if (produto.getFornecedor().getRazaoSocialNome() == null) {
+          FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Contact admin."));
+            
+        }
+        
+        
         try {
 
             ProdutoDao dao = new ProdutoDao();
@@ -89,7 +97,7 @@ public class produtoBean {
             // Quando salvar um novo objeto ele vai atualizar a minha tabela
             // automaticamente
         } catch (RuntimeException e) {
-            JSFUtil.adicionaMensagemSucesso("Alterado com sucesso!");
+            JSFUtil.adicionaMensagemErro("Salvo com sucesso!");
             setItens(dao.listar());
         } catch (IOException ex) {
             Logger.getLogger(produtoBean.class.getName()).log(Level.SEVERE, null, ex);

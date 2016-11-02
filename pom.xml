@@ -46,6 +46,11 @@
             <version>1.0.10</version>
         </dependency>
         <dependency>
+            <groupId>org.jbundle.util.osgi.wrapped</groupId>
+            <artifactId>org.jbundle.util.osgi.wrapped.org.apache.catalina.servlets</artifactId>
+            <version>7.0.23</version>
+        </dependency>
+        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>7.0</version>

@@ -69,10 +69,12 @@ public class DocumentoFiscalBean {
     }
 
     public void salvar() {
+        if (documentoFiscal.getFornecedor().getRazaoSocialNome() == null) {
+            JSFUtil.adicionaMensagemErro("Selecione um fornecedor!");
+            return;
+        }
 
         try {
-
-           
 
             DocumentoFiscalDao dao = new DocumentoFiscalDao();
 

@@ -166,8 +166,8 @@
 
                     <p:commandButton value="Gravar"
                                      actionListener="#{MBDocumentoFiscal.salvar}"
-                                     oncomplete="verificar(xhr, status, args, 'dlgNovo', 'tabelaDocumentoFiscal');"
-                                     update=":formTabela:tabela :msgGlobal" />
+                                     oncomplete="verificar(xhr, status, args, 'dlgNovo', 'tabelaDocumentoFiscal');" 
+                                     update=":formTabela:tabela :msgGlobal"/>
                     <p:commandButton value="Cancelar" onclick="PF('dlgNovo').hide();"
                                      process="@this">
                         <p:resetInput target="painelDlgNovo" />
