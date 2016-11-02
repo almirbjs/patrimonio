@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/modeloSistema.xhtml">
+
+    <ui:define name="menu">
+        <ui:include src="/includes/menuPrincipal.xhtml" />
+    </ui:define>
+
+    <ui:define name="Conteudo">
+
+        <h:form>
+
+        </h:form>
+
+        <h:form id="formAssistenciaTecnica">
+            <h:body>
+                <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+
+                <p:dialog header="CADASTRO DE ASSISTENCIA TECNICA" widgetVar="dlg"
+                          resizable="false" visible="true">
+
+                    <h:panelGrid id="painelCadAssistenciaTecnica" columns="2">
+
+                        <p:outputLabel for="txtNomeFantasia" value="Nome Fantasia:" />
+
+                        <p:inputText id="txtNomeFantasia" size="68" maxlength="36"
+                                     required="true" requiredMessage="Informe o nome fantasia!" />
+
+                        <p:outputLabel for="txtRazaoSocial" value="Razão Social:" />
+
+                        <p:inputText id="txtRazaoSocial" size="68" maxlength="36"
+                                     required="true" requiredMessage="Informe a raz�o social!" />
+
+                        <p:outputLabel value="CNPJ:" />
+                        <h:panelGrid columns="4">
+                            <p:inputMask size="20" maxlength="13" mask="99.999.999/9999-99"
+                                         id="txtCNPJ" required="true" requiredMessage="Informe o CNPJ!"
+                                         onfocus="this.style.border = '1px solid orange'"
+                                         onblur="this.syle.border = '1'" />
+                            <p:spacer width="35" height="10"></p:spacer>
+                            <p:outputLabel value="Inscri��o Estadual:" />
+
+                            <p:inputMask size="12" maxlength="13" mask="999.999.999"
+                                         id="txtInscricaoEstadual"
+                                         onfocus="this.style.border = '1px solid orange'"
+                                         onblur="this.syle.border = '1'" />
+                        </h:panelGrid>
+                        <p:outputLabel for="txtContato" value="Contato:" />
+
+                        <p:inputText id="txtContato" size="68" maxlength="36" />
+
+
+                        <p:outputLabel value="Linhas de produtos atendidos:" />
+
+                        <p:panelGrid>
+                            <p:selectBooleanCheckbox />
+                            <p:spacer width="5" height="10" />
+                            <p:outputLabel value="Todos" />
+                            <p:spacer width="28" height="10" />
+
+                            <p:selectBooleanCheckbox />
+                            <p:spacer width="5" height="10" />
+                            <p:outputLabel value="Eletronicos" />
+                            <p:spacer width="13" height="10" />
+
+                            <p:selectBooleanCheckbox />
+                            <p:spacer width="5" height="10" />
+                            <p:outputLabel value="Eletrodom�sticos" />
+
+                            <p:spacer width="5" height="10" />
+                            <p:selectBooleanCheckbox />
+                            <p:spacer width="5" height="10" />
+                            <p:outputLabel value="Eletroport�teis" />
+                        </p:panelGrid>
+                        <p:spacer />
+                        <p:panelGrid>
+
+                            <p:selectBooleanCheckbox />
+                            <p:spacer width="5" height="10" />
+                            <p:outputLabel value="Inform�tica" />
+                            <p:spacer width="3" height="10" />
+
+                            <p:selectBooleanCheckbox />
+                            <p:spacer width="5" height="10" />
+                            <p:outputLabel value="Automotivos" />
+                            <p:spacer width="5" height="10" />
+
+                            <p:selectBooleanCheckbox />
+                            <p:spacer width="5" height="10" />
+                            <p:outputLabel value="Mov�is" />
+
+                            <p:spacer width="60" height="10" />
+                            <p:selectBooleanCheckbox />
+                            <p:spacer width="5" height="10" />
+                            <p:outputLabel value="Outros" />
+                            <p:spacer width="5" height="10" />
+
+
+                        </p:panelGrid>
+
+
+                        <p:outputLabel value="Telefone:" />
+                        <h:panelGrid columns="4">
+                            <p:inputMask size="20" maxlength="13" mask="(99)9999-9999"
+                                         onfocus="this.style.border = '1px solid orange'"
+                                         onblur="this.syle.border = '1'" />
+                            <p:spacer width="51" height="10"></p:spacer>
+                            <h:outputText value="Celular    :" />
+
+                            <p:inputMask size="20" maxlength="13" mask="(99)9999-9999"
+                                         onfocus="this.style.border = '1px solid orange'"
+                                         onblur="this.syle.border = '1'" />
+
+                        </h:panelGrid>
+                        <p:outputLabel value="Cep:" />
+
+                        <h:panelGrid columns="2">
+                            <p:inputMask size="10" maxlength="10" mask="99999-999"
+                                         onfocus="this.style.border = '1px solid orange'"
+                                         onblur="this.syle.border = '1'">
+
+                            </p:inputMask>
+
+                            <p:commandButton value="pesquisar" icon="ui-icon-search"
+                                             onclick="PF('dlgBuscarCep').show();">
+                            </p:commandButton>
+
+                        </h:panelGrid>
+
+
+                        <p:outputLabel value="Endereço:" style="text-align:right;" />
+
+                        <h:panelGrid columns="3">
+                            <p:inputText size="44" maxlength="46"
+                                         onfocus="this.style.border = '1px solid orange'"
+                                         onblur="this.syle.border = '1'" />
+
+                            <h:outputLabel value="Numero:" />
+
+                            <p:inputText size="6"
+                                         converterMessage="Informe um valor valido para o campo Numero"
+                                         validatorMessage="Informe um valor positivo!">
+                                <f:validateLongRange minimum="0" />
+
+                            </p:inputText>
+
+                        </h:panelGrid>
+
+                        <p:outputLabel value="Complemento:" />
+                        <h:panelGrid columns="3">
+                            <p:inputText size="67" maxlength="67"
+                                         onfocus="this.style.border = '1px solid orange'"
+                                         onblur="this.syle.border = '1'">
+                            </p:inputText>
+
+                        </h:panelGrid>
+
+                        <h:outputLabel value="Bairro:" />
+
+                        <p:inputText size="68" maxlength="68"
+                                     onfocus="this.style.border = '1px solid orange'"
+                                     onblur="this.syle.border = '1'">
+                        </p:inputText>
+
+                        <p:outputLabel value="Cidade:" />
+                        <h:panelGrid columns="5">
+                            <p:inputText size="52" maxlength="52"
+                                         onfocus="this.style.border = '1px solid orange'"
+                                         onblur="this.syle.border = '1'">
+                            </p:inputText>
+                            <p:outputLabel value="UF:" />
+
+                            <p:inputText size="3" maxlength="3"
+                                         onfocus="this.style.border = '1px solid orange'"
+                                         onblur="this.syle.border = '1'">
+                            </p:inputText>
+
+
+                        </h:panelGrid>
+                        <p:outputLabel value="Pa�s:" />
+
+                        <p:inputText size="68" maxlength="68"
+                                     onfocus="this.style.border = '1px solid orange'"
+                                     onblur="this.syle.border = '1'">
+                        </p:inputText>
+
+
+
+
+                        <p:outputLabel value="Email:" />
+
+                        <p:inputText id="email" required="true" label="Email"
+                                     validatorMessage="E-mail incorreto" size="68" maxlength="68"
+                                     onfocus="this.style.border = '1px solid orange'"
+                                     onblur="this.syle.border = '1'" />
+
+                        <p:outputLabel value="Site:" />
+
+                        <p:inputText id="site" required="true" label="site"
+                                     validatorMessage="Site incorreto" size="68" maxlength="68"
+                                     onfocus="this.style.border = '1px solid orange'"
+                                     onblur="this.syle.border = '1'" />
+
+                        <f:facet name="footer">
+                            <h:panelGrid columns="2">
+                                <p:commandButton value="Salvar" />
+                                <p:commandButton value="Cancelar" />
+                            </h:panelGrid>
+                        </f:facet>
+                    </h:panelGrid>
+
+                </p:dialog>
+
+                <p:dialog widgetVar="dlgBuscarCep" modal="true" appendTo="@(body)"
+                          resizable="false" width="780">
+                    <p:dataTable id="dataTable" var="cli" widgetVar="tabelaCliente"
+                                 rows="10"
+                                 emptyMessage="N�o foi encontrado nenhuma cidade cadastrada."
+                                 selectionMode="single">
+
+                        <f:facet name="header">
+                            <p:inputText></p:inputText>
+
+                            <p:commandButton oncomplete="" value="Pesquisar"
+                                             icon="ui-icon-search">
+                            </p:commandButton>
+
+
+                        </f:facet>
+                        <p:column headerText="Cidade" width="240">
+                            <h:outputText value="#{cli.idCliente}" />
+                        </p:column>
+
+                        <p:column headerText="Cep" width="100">
+                            <h:outputText value="#{cli.nomeCliente}" />
+                        </p:column>
+                        <p:column headerText="Estado" width="50">
+                            <h:outputText value="#{cli.nomeCliente}" />
+                        </p:column>
+                        <p:column headerText="Pa�s" width="240">
+                            <h:outputText value="#{cli.nomeCliente}" />
+                        </p:column>
+
+                    </p:dataTable>
+
+
+                </p:dialog>
+
+
+
+
+            </h:body>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

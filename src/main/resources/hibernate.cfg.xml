@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <!-- ConfiguraÃ§Ãµes da conexÃ£o com o banco de dados(BD) -->
+    <!-- Driver do BD que estÃ¡ utilizado -->
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <!-- Caminho do BD -->
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/sistema</property>
+    <!-- Usuario do DB -->
+    <property name="hibernate.connection.username">root</property>
+    <!-- Senha do BD -->
+    <property name="hibernate.connection.password">almir123</property>
+    <!-- SQL dialeto do banco de dados, desta area Ã© informado qual Ã© banco 
+        que estou utilizado -->
+    <!-- MySQL5InnoDBDialect : Ele cria primeiro as pk e apos as fk. -->
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect
+        </property>
+    <!-- Pool de sessÃ£o -->
+    <property name="connection.pool_size">1</property>
+    <!-- Gerenciamento de sessÃ£o -->
+    <property name="current_session_context_class">thread</property>
+    <!-- Desabilita o cache -->
+    <property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider
+        </property>
+    <!-- Mostra os comandos do hibernate na tela, isso Ã© bom para indentificar 
+        possiveis erros -->
+    <property name="hibernate.show_sql">true</property>
+    <!-- Cria as tabelas,quando eu efetuar uma alteraÃ§Ã£o no codigo java vai 
+        atualizar automaticamente no BD -->
+    <property name="hibernate.hbm2ddl.auto">update</property>
+    <property name="hibernate.format_sql">true</property>
+    <!-- Adicionar as classes por ordem de pk e primary pk. Exemplo: 1Âº o privilegio 
+        e depois o usuario ,pq o usuario depende do privilegio para existir senÃ£o 
+        nÃ£o funciona.Obs o caminho deve estar correto -->
+    <mapping class="br.com.patrimonio.domain.Privilegio"/>
+    <mapping class="br.com.patrimonio.domain.Usuario"/>
+    <mapping class="br.com.patrimonio.domain.Categoria"/>
+    <mapping class="br.com.patrimonio.domain.Setor"/>
+    <mapping class="br.com.patrimonio.domain.Pais"/>
+    <mapping class="br.com.patrimonio.domain.Estado"/>
+    <mapping class="br.com.patrimonio.domain.Cidade"/>
+    <mapping class="br.com.patrimonio.domain.Endereco"/>
+    <mapping class="br.com.patrimonio.domain.Fornecedor"/>
+    <mapping class="br.com.patrimonio.domain.Produto"/>
+    <mapping class="br.com.patrimonio.domain.DocumentoFiscal"/>
+    <mapping class="br.com.patrimonio.domain.Patrimonio"/>
+    <mapping class="br.com.patrimonio.domain.Chave"/>
+  </session-factory>
+</hibernate-configuration>

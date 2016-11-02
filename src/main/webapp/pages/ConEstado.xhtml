@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/resources/Templates/modeloSistema.xhtml">
+
+    <ui:define name="Menu">
+        <ui:include src="/includes/menuPrincipal.xhtml" />
+    </ui:define>
+
+    <ui:define name="Conteudo">
+        <h:form>
+            <p:outputLabel value="#{MBAutenticacao.usuarioLogado.privilegio}" />
+        </h:form>
+
+        <h:form id="formConsultarEstado">
+            <h:body>
+                <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+
+                <p:dialog header="CONSULTAR ESTADO" widgetVar="dlg"
+                          resizable="false" visible="true" width="610">
+
+                    <h:panelGrid columns="1" cellpadding="5">
+                        <h:panelGrid columns="3">
+                            <h:outputLabel value="Estado:" />
+                            <p:inputText size="36" maxlength="36" />
+
+                            <p:commandButton value="pesquisar" icon="ui-icon-search"
+                                             onclick="PF('dlgExcluir').show();" />
+
+
+                        </h:panelGrid>
+
+                        <h:panelGroup>
+                            <p:dataTable id="tabelaCategoria" widgetVar="tabelaCategorias"
+                                         emptyMessage="Nenhum Registro Encontrado."
+                                         value="#{MBCategoria.itens}" var="item" rowStyleClass="2"
+                                         rows="6">
+
+                                <p:column headerText="ID" width="36">
+                                    <h:outputText value="" />
+                                </p:column>
+
+                                <p:column headerText="ESTADO" width="258">
+                                    <h:outputText value="" />
+                                </p:column>
+
+                                <p:column headerText="PAÍS" width="36">
+                                    <h:outputText value="" />
+                                </p:column>
+
+
+                                <p:column headerText="Ações" exportable="false" width="90">
+
+                                    <p:commandButton icon="ui-icon-pencil"
+                                                     oncomplete="PF('dlgAlterar').show();"
+                                                     update=":formEstadoEditar:pnlEstadoEditar" />
+
+                                    <p:commandButton icon="ui-icon-trash"
+                                                     oncomplete="PF('dlgEstadoExcluir').show();"
+                                                     update=":formEstadoExcluir:painelEstadoExcluir " />
+
+                                    <h:commandLink>
+                                        <p:graphicImage library="imagens" name="pdf.png" width="24"
+                                                        height="24" style="margin-bottom:-10px" />
+                                        <p:dataExporter type="pdf" target="tabelaEstado"
+                                                        fileName="Estado" encoding="ISO-8859-1" />
+
+                                    </h:commandLink>
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGroup>
+
+                        <f:facet name="footer">
+                            <h:panelGrid columns="4">
+                                <p:commandButton value="Fechar" onclick="PF('dlg').hide();"
+                                                 icon="ui-icon-close" process="@this" />
+                            </h:panelGrid>
+
+                        </f:facet>
+
+                    </h:panelGrid>
+                </p:dialog>
+
+                <p:dialog header="EDITAR ESTADO" widgetVar="dlgAlterar" modal="true"
+                          appendTo="@(body)" resizable="false">
+
+                    <h:panelGrid columns="2" cellpadding="5">
+
+                        <p:outputLabel for="txtEstado" value="Estado:" />
+
+                        <p:inputText id="txtEstado" size="36" maxlength="36"
+                                     required="true"
+                                     requiredMessage="Informe um nome para a nova cidade!" />
+
+                        <p:outputLabel value="País" />
+
+                        <p:selectOneMenu required="true"
+                                         requiredMessage="Selecione o país!">
+                            <f:selectItem itemLabel="Selecione" itemDisabled="true"
+                                          noSelectionOption="true" />
+                            <f:selectItems />
+
+                        </p:selectOneMenu>
+
+                        <f:facet name="footer">
+                            <h:panelGrid columns="2">
+                                <p:commandButton value="Salvar" icon="ui-icon-check" />
+                                <p:commandButton value="Cancelar"
+                                                 onclick="PF('dlgAlterar').hide();" icon="ui-icon-close"
+                                                 process="@this" />
+                            </h:panelGrid>
+                        </f:facet>
+
+                    </h:panelGrid>
+                </p:dialog>
+
+                <p:dialog header=" EXCLUIR ESTADO" widgetVar="dlgExcluir"
+                          modal="true" width="400" appendTo="@(body)" resizable="false"
+                          >
+
+                    <h:panelGrid>
+                        DESEJA REALMENTE EXCLUIR  ?
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" cellpadding="5">
+
+                        <h:outputLabel value="ID:" />
+                        <h:outputLabel value="" />
+
+                        <h:outputLabel value="Estado:" />
+                        <h:outputLabel value="" />
+
+                        <p:outputLabel value=" País" />
+                        <h:outputLabel value="" />
+
+
+
+                        <f:facet name="footer">
+                            <h:panelGrid columns="2">
+                                <p:commandButton value="SIM" icon="ui-icon-check" />
+                                <p:commandButton value="Cancelar"
+                                                 onclick="PF('dlgExcluir').hide();" icon="ui-icon-close"
+                                                 process="@this" />
+                            </h:panelGrid>
+                        </f:facet>
+
+                    </h:panelGrid>
+                </p:dialog>
+
+
+
+            </h:body>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/resources/Templates/modeloSistema.xhtml">
+
+    <ui:define name="Menu">
+        <ui:include src="/includes/menuPrincipal.xhtml" />
+    </ui:define>
+
+    <ui:define name="Conteudo">
+
+        <h:form>
+
+        </h:form>
+
+        <h:form id="formCadSetorTatico">
+            <h:body>
+                <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+
+                <p:dialog header="CADASTRO DE SETOR TATICO" widgetVar="dlg"
+                          resizable="false" visible="true">
+
+                    <h:panelGrid id="painelCadSetorTatico" columns="2">
+
+                        <p:outputLabel for="txtSetorTatico" value="Setor Tatico:" />
+
+                        <p:inputText id="txtSetorTatico" size="25" maxlength="35"
+                                     required="true"
+                                     requiredMessage="Informe um nome para o Setor Tatico." />
+
+                        <p:outputLabel value="Observação:"  />
+
+                        <p:inputTextarea maxlength="30" cols="30"/>
+
+                        <f:facet name="footer">
+                            <h:panelGrid columns="2">
+                                <p:commandButton value="Salvar" />
+                                <p:commandButton value="Cancelar" />
+                            </h:panelGrid>
+                        </f:facet>
+
+                    </h:panelGrid>
+                </p:dialog>
+
+
+
+
+
+
+            </h:body>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

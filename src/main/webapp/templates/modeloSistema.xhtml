@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- foi importado e apelidado as bibliotecas html, core, primeFaces, facelets -->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <!-- Titulo da Aplicação -->
+        <title>Rastro Soft</title>
+
+        <!-- Aqui eu acho o arquivo estilos aonde eu posso mudar a fonte e o estilo -->
+        <h:outputStylesheet library="css" name="estilos.css" />
+        <h:outputScript library="js" name="scripts.js"></h:outputScript>
+    </h:head>
+
+    <h:body>
+        <!-- Mensagens  -->
+        <p:growl id="msgGlobal" life="3000">
+
+        </p:growl>
+
+        <!-- Criando o Layout da pagina -->
+        <!-- fullPages:Ajusta o layout a qualquer maquina (Layout responsivo) -->
+        <p:layout fullPage="true">
+            <!-- p:layoutUnit position="north" :Posição do layout no north (Aonde vai os menus) -->
+            <p:layoutUnit position="north">
+                <!-- futuramente vai ser colocado o menu (não vai ser preciso ficar digitado) -->
+                <ui:insert name="menu" />
+            </p:layoutUnit>
+
+            <!-- p:layoutUnit position="center" :Posição do layout no centro (Aonde vai o conteudo) -->
+            <p:layoutUnit position="center">
+                <!-- futuramente vai ser colocado o conteudo aqui(não vai ser preciso ficar digitado) -->
+                <ui:insert name="conteudo" />
+            </p:layoutUnit>
+
+        </p:layout>
+
+    </h:body>
+</html>

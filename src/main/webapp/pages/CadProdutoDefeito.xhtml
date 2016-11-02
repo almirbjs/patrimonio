@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/resources/Templates/modeloSistema.xhtml">
+
+    <ui:define name="Menu">
+        <ui:include src="/includes/menuPrincipal.xhtml" />
+    </ui:define>
+
+    <ui:define name="Conteudo">
+
+        <h:form>
+
+        </h:form>
+
+        <h:form id="formCadSetorTatico">
+            <h:body>
+                <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+
+                <p:dialog header="CADASTRO DE PRODUTOS COM DEFEITO" widgetVar="dlg"
+                          resizable="false" visible="true">
+
+                    <h:panelGrid id="painelCadProdutoComDefeito" columns="2">
+                        <p:outputLabel value="Codigo patrimonio:" />
+                        <h:panelGrid columns="2">
+
+                            <p:inputText value="" />
+
+                            <p:commandButton value="pesquisar" icon="ui-icon-search"
+                                             onclick="PF('dlgBuscarCep').show();">
+
+
+                            </p:commandButton>
+                        </h:panelGrid>
+
+
+                        <p:outputLabel value="Descri��o:" />
+                        <p:inputText id="txtDescricao" size="36" maxlength="36"
+                                     required="true"
+                                     requiredMessage="Informe a descrição do patrimonio!" />
+
+                        <p:outputLabel value="Modelo:" />
+                        <p:inputText id="txtModelo" size="36" maxlength="36"
+                                     required="true" requiredMessage="Informe o modelo!" />
+
+                        <p:outputLabel value="N� de Serie:" />
+                        <p:inputText id="txtSerie" size="36" maxlength="36" />
+
+                        <p:outputLabel value="Tamanho:" />
+                        <p:inputText id="txtTamanho" size="36" maxlength="36" />
+
+                        <p:outputLabel value="Cor:" />
+                        <p:inputText id="txtCor" size="36" maxlength="36" />
+
+                        <p:outputLabel value="Fornecedor:" />
+                        <p:inputText id="txtFornecedor" size="36" maxlength="36" />
+
+                        <p:outputLabel value="N� da Nota Fiscal:" />
+                        <p:inputText id="txtNumeroNotaFiscal" size="36" maxlength="36" />
+
+                        <p:outputLabel value="Data de emiss�o:" />
+                        <p:calendar />
+
+                        <p:outputLabel value="Valor unitario:" />
+                        <p:inputText id="txtValorUnitario" size="36" maxlength="36" />
+
+                        <p:outputLabel value="Setor tatico:" />
+                        <p:outputLabel value="Restaurante" />
+
+                        <f:facet name="footer">
+                            <h:panelGrid columns="2">
+                                <p:commandButton value="Salvar" />
+                                <p:commandButton value="Cancelar" />
+                            </h:panelGrid>
+                        </f:facet>
+
+                    </h:panelGrid>
+                </p:dialog>
+
+                <p:dialog widgetVar="dlgBuscarCep" modal="true" appendTo="@(body)"
+                          resizable="false" >
+                    <p:dataTable id="dataTable" var="cli" widgetVar="tabelaCliente"
+                                 rows="10"
+                                 emptyMessage="N�o foi encontrado nenhuma cidade cadastrada."
+                                 selectionMode="single">
+
+                        <f:facet name="header">
+                            <p:inputText></p:inputText>
+
+                            <p:commandButton oncomplete="" value="Pesquisar"
+                                             icon="ui-icon-search">
+                            </p:commandButton>
+
+
+                        </f:facet>
+                        <p:column headerText="Codigo" width="35">
+                            <h:outputText value="#{cli.idCliente}" />
+                        </p:column>
+
+                        <p:column headerText="Patrimonio" width="120">
+                            <h:outputText value="#{cli.nomeCliente}" />
+                        </p:column>
+                        <p:column headerText="Modelo" width="100">
+                            <h:outputText value="#{cli.nomeCliente}" />
+
+                        </p:column>
+                        <p:column headerText="Cor" width="100">
+                            <h:outputText value="#{cli.nomeCliente}" />
+                        </p:column>
+
+                        <p:column headerText="N� Serie" width="100">
+                            <h:outputText value="#{cli.nomeCliente}" />
+                        </p:column>
+
+                        <p:column headerText="Fabricante" width="100">
+                            <h:outputText value="#{cli.nomeCliente}" />
+                        </p:column>
+                        <p:column headerText="Local" width="100">
+                            <h:outputText value="#{cli.nomeCliente}" />
+                        </p:column>
+                        <p:column headerText="Setor Tatico" width="100">
+                            <h:outputText value="#{cli.nomeCliente}" />
+                        </p:column>
+                    </p:dataTable>
+
+                    <p:commandButton value="Cancelar"/>
+                </p:dialog>
+
+
+
+
+
+            </h:body>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

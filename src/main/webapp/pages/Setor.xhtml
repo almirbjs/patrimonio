@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/templates/modeloSistema.xhtml">
+
+    <ui:define name="menu">
+        <ui:include src="/includes/menuPrincipal.xhtml"></ui:include>
+    </ui:define>
+    <!-- conteudo da aplicacação aqui vai as tabelas, dialog e entre outros -->
+
+    <ui:define name="conteudo">
+        <h:form id="formTabela">
+            <!-- criando uma tabela -->
+
+            <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
+                         widgetVar="tabelaSetor" value="#{MBSetor.itens}" var="item"
+                         paginator="true" rows="10" filteredValue="#{MBSetor.itensFiltrados}">
+                <!-- rows="10"  me diz que o meu paginador deve ter 10 linhas-->
+
+                <f:facet name="header">
+                    Setores
+                </f:facet>
+
+                <p:column headerText="Codigo" sortBy="#{item.codigo}"
+                          filterBy="#{item.codigo}">
+                    <h:outputText value="#{item.codigo}" />
+                </p:column>
+                <p:column headerText="Setor" sortBy="#{item.setor}"
+                          filterBy="#{item.setor}">
+                    <h:outputText value="#{item.setor}" />
+                </p:column>
+
+                                <!-- <f:setPropertyActionListener value="#{item}"
+                                                        target="#{MBSetor.setor}"></f:setPropertyActionListener> funciona como um prepara pesquisa para atualizar -->
+                <p:column headerText="Opções">
+                    <p:commandButton icon="ui-icon-pencil"
+                                     oncomplete="PF('dlgEditar').show();"
+                                     actionListener="#{MBSetor.prepararEditar}"
+                                     update=":formEditar:painelEditar :msgGlobal" title="Editar">
+                        <f:setPropertyActionListener value="#{item}"
+                                                     target="#{MBSetor.setor}" />
+
+                    </p:commandButton>
+
+                    <p:commandButton icon="ui-icon-trash"
+                                     oncomplete="PF('dlgExcluir').show();"
+                                     update=":formExcluir:painelExcluir :msgGlobal" title="Excluir">
+                        <f:setPropertyActionListener value="#{item}"
+                                                     target="#{MBSetor.setor}" />
+                    </p:commandButton>
+
+                </p:column>
+
+                <!-- linha de baixo da tabela -->
+                <f:facet name="footer">
+                    <p:commandButton value="Novo" oncomplete="PF('dlgNovo').show()"
+                                     actionListener="#{MBSetor.prepararSalvar}"
+                                     update=":formDlgNovo:painelDlgNovo" />
+                </f:facet>
+
+            </p:dataTable>
+        </h:form>
+
+        <!-- Criando o Salvar  -->
+
+
+        <!-- widgetVar=""> : utilizamos para buscar o nome da tabela 
+        draggable="false"> : A janela não pode ser movimentada 
+        resizable="false"> : não pode redimensionar-->
+        <p:dialog widgetVar="dlgNovo" closable="false" draggable="false"
+                  resizable="false" appendTo="@(body)" header="CADASTRO DE SETOR"
+                  modal="true">
+            <!-- header="" nomea o dialogo
+            
+            modal="true" appendTo="@(body)" : desabilita todo campo atras do dialogo-->
+            <h:form id="formDlgNovo">
+                <h:panelGrid columns="2" id="painelDlgNovo">
+
+                    <p:outputLabel value="Setor" />
+                    <p:inputText id="txtSetor" size="45" maxlength="45"
+                                 value="#{MBSetor.setor.setor}" required="true"
+                                 requiredMessage="Informe o nome do Setor!">
+                    </p:inputText>
+
+
+
+                </h:panelGrid>
+                <!-- actionListener="" : serve para invocar metodos manageBean -->
+                <!-- update=":formTabela:tabela" :formulario e atualiza tabela  -->
+
+                <!-- PF('tabelaSetor').clearFilters() :limpa os filtros da tabela  -->
+                <h:panelGrid columns="2">
+
+                    <p:commandButton value="Gravar" actionListener="#{MBSetor.salvar}"
+                                     oncomplete="verificar(xhr, status, args, 'dlgNovo', 'tabelaSetor');"
+                                     update=":formTabela:tabela :msgGlobal" />
+                    <p:commandButton value="Cancelar" onclick="PF('dlgNovo').hide();"
+                                     process="@this">
+                        <p:resetInput target="painelDlgNovo" />
+                    </p:commandButton>
+                    <!-- process=@this : submete um formulario -->
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog widgetVar="dlgExcluir" closable="false" draggable="false"
+                  resizable="false" modal="true" appendTo="@(body)"
+                  header="Excluir Setor">
+
+            <h:form id="formExcluir">
+                <h:panelGrid columns="2" id="painelExcluir">
+                    <h:outputText value="Codigo: " />
+                    <h:outputText value="#{MBSetor.setor.codigo}" />
+                    <h:outputText value="Setor: " />
+                    <h:outputText value="#{MBSetor.setor.setor}" />
+                </h:panelGrid>
+
+                <h:panelGrid columns="3">
+                    <p:commandButton value="Excluir"
+                                     actionListener="#{MBSetor.excluir}"
+                                     oncomplete="verificar(xhr, status, args, 'dlgExcluir', 'tabelaSetor');"
+                                     update=":formTabela:tabela :msgGlobal" />
+                    <!-- Atualiza tabela -->
+                    <p:commandButton value="Cancelar"
+                                     onclick="PF('dlgExcluir').hide();" />
+                </h:panelGrid>
+
+            </h:form>
+
+        </p:dialog>
+
+        <p:dialog widgetVar="dlgEditar" closable="false" draggable="false"
+                  resizable="false" appendTo="@(body)" header="Editar Setor"
+                  modal="true">
+            <!-- header="" nomea o dialogo
+            
+            modal="true" appendTo="@(body)" : desabilita todo campo atras do dialogo-->
+            <h:form id="formEditar">
+                <h:panelGrid columns="2" id="painelEditar">
+                    <p:outputLabel value="Setor" />
+                    <p:inputText id="txtSetor" size="45" maxlength="45"
+                                 value="#{MBSetor.setor.setor}" required="true"
+                                 requiredMessage="Informe o nome do Setor!">
+                    </p:inputText>
+
+                </h:panelGrid>
+
+                <h:panelGrid columns="2">
+
+                    <p:commandButton value="Editar" actionListener="#{MBSetor.editar}"
+                                     oncomplete="verificar(xhr, status, args, 'dlgEditar', 'tabelaSetor');"
+                                     update=":formTabela:tabela :msgGlobal" />
+                    <p:commandButton value="Cancelar" onclick="PF('dlgEditar').hide();"
+                                     process="@this">
+                        <p:resetInput target="painelEditar" />
+                    </p:commandButton>
+                    <!-- process=@this : submete um formulario -->
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+    </ui:define>
+
+</ui:composition>

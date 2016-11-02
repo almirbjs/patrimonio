@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/resources/Templates/modeloSistema.xhtml">
+
+    <ui:define name="menu">
+        <ui:include src="/includes/menuPrincipal.xhtml" />
+    </ui:define>
+
+    <ui:define name="Conteudo">
+        <h:form>
+            <p:outputLabel value="#{MBAutenticacao.usuarioLogado.privilegio}" />
+        </h:form>
+
+        <h:form id="formCadPais">
+            <h:body>
+                <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+
+                <p:dialog header="CADASTRO DE PAÍS" widgetVar="dlg"
+                          resizable="false" visible="true">
+
+                    <h:panelGrid columns="2" cellpadding="5">
+
+                        <h:outputLabel value="País:*" />
+                        <p:inputText size="36" maxlength="36" required="Informe um nome para o novo pais"  value="#{MBPais.pais.pais}"/>
+
+                        <p:outputLabel for="txtSigla" value="Sigla:" />
+
+                        <h:panelGroup>
+
+                            <p:inputText id="txtSigla" size="36" maxlength="5" value="#{MBPais.pais.sigla}"
+                                         required="true"
+                                         requiredMessage="Informe a sigla para o novo país! " />
+
+                        </h:panelGroup>
+
+                        <f:facet name="footer">
+                            <h:panelGrid columns="2">
+                                <p:commandButton value="Salvar" actionListener="#{MBPais.pais}"
+                                                 oncomplete="verificar(xhr, status, args, 'dlg');"
+                                                 update=":formCadPais :msgGlobal "/>
+                                <p:commandButton value="Cancelar" onclick="PF('dlg').hide()"/>
+                            </h:panelGrid>
+                        </f:facet>
+
+                    </h:panelGrid>
+                </p:dialog>
+
+
+
+
+
+
+            </h:body>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,237 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/modeloSistema.xhtml">
+
+    <ui:define name="menu">
+        <ui:include src="/includes/menuPrincipal.xhtml"></ui:include>
+    </ui:define>
+    <!-- conteudo da aplicacação aqui vai as tabelas, dialog e entre outros -->
+
+    <ui:define name="conteudo">
+        <h:form id="formTabela">
+            <!-- criando uma tabela -->
+
+            <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
+                         widgetVar="tabelaChave" value="#{MBChave.itens}" var="item"
+                         paginator="true" rows="10"
+                         filteredValue="#{MBChave.itensFiltrados}">
+                <!-- rows="10"  me diz que o meu paginador deve ter 10 linhas-->
+
+                <f:facet name="header">
+                    Chaves
+                </f:facet>
+
+                <p:column headerText="Codigo" sortBy="#{item.codigo}"
+                          filterBy="#{item.codigo}">
+                    <h:outputText value="#{item.codigo}" />
+                </p:column>
+                <p:column headerText="Quantidade" sortBy="#{item.quantidade}"
+                          >
+                    <h:outputText value="#{item.quantidade}" />
+                </p:column>
+
+                <p:column headerText="Chave" sortBy="#{item.chave}"
+                          filterBy="#{item.chave}">
+                    <h:outputText value="#{item.chave}" />
+                </p:column>
+
+                <p:column headerText="Setor" sortBy="#{item.setor}"
+                          >
+                    <h:outputText value="#{item.setor.setor}" />
+                </p:column>
+
+
+
+                                <!-- <f:setPropertyActionListener value="#{item}"
+                                                        target="#{MBUsuario.usuario}"></f:setPropertyActionListener> funciona como um prepara pesquisa para atualizar -->
+                <p:column headerText="Opções">
+                    <p:commandButton icon="ui-icon-pencil"
+                                     oncomplete="PF('dlgEditar').show();"
+                                     actionListener="#{MBChave.prepararEditar}"
+                                     update=":formEditar:painelEditar :msgGlobal" title="Editar">
+                        <f:setPropertyActionListener value="#{item}"
+                                                     target="#{MBChave.chave}" />
+
+                    </p:commandButton>
+
+                    <p:commandButton icon="ui-icon-trash"
+                                     oncomplete="PF('dlgExcluir').show();"
+                                     update=":formExcluir:painelExcluir :msgGlobal" title="Excluir">
+                        <f:setPropertyActionListener value="#{item}"
+                                                     target="#{MBChave.chave}" />
+                    </p:commandButton>
+
+                </p:column>
+
+                <!-- linha de baixo da tabela -->
+                <f:facet name="footer">
+                    <p:commandButton value="Novo" oncomplete="PF('dlgNovo').show()"
+                                     actionListener="#{MBChave.prepararSalvar}"
+                                     update=":formDlgNovo:painelDlgNovo" />
+                </f:facet>
+
+            </p:dataTable>
+        </h:form>
+
+        <!-- Criando o Salvar  -->
+
+
+        <!-- widgetVar=""> : utilizamos para buscar o nome da tabela 
+        draggable="false"> : A janela não pode ser movimentada 
+        resizable="false"> : não pode redimensionar-->
+        <p:dialog widgetVar="dlgNovo" closable="false" draggable="false"
+                  resizable="false" appendTo="@(body)" header="CADASTRO DE CHAVE"
+                  modal="true">
+            <!-- header="" nomea o dialogo
+            
+            modal="true" appendTo="@(body)" : desabilita todo campo atras do dialogo-->
+            <h:form id="formDlgNovo">
+                <h:panelGrid columns="2" id="painelDlgNovo">
+
+                    <p:outputLabel value="ID" />
+                    <p:inputText id="txtId" size="10" maxlength="10"
+                                 value="#{MBChave.chave.codigo}" required="true"
+                                 requiredMessage="Informe o codigo da chave!"
+                                 >
+
+                    </p:inputText>
+
+                    <p:outputLabel value="Chave" />
+                    <p:inputText id="txtChave" size="45" maxlength="45"
+                                 value="#{MBChave.chave.chave}" required="true"
+                                 requiredMessage="Informe a descrição da chave!">
+                    </p:inputText>
+
+                    <p:outputLabel value="Quantidade" />
+                    <p:inputText id="txtQuantidade" size="10" maxlength="10"
+                                 value="#{MBChave.chave.quantidade}" required="true"
+                                 requiredMessage="Informe a quantidade de chaves!">
+                    </p:inputText>
+
+                    <p:outputLabel value="Setor" />
+                    <p:selectOneMenu id="oneMenuPrivilegio" filter="true"
+                                     validatorMessage="Selecione o setor!"
+                                     value="#{MBChave.chave.setor.codigo}" required="true"
+                                     requiredMessage="Selecione o setor">
+                        <f:selectItem itemValue="" itemLabel="Selecione"
+                                      noSelectionOption="true" />
+                        <f:selectItems value="#{MBChave.comboSetor}" var="item"
+                                       itemValue="#{item.codigo}" itemLabel="#{item.setor}" />
+                    </p:selectOneMenu>
+
+                </h:panelGrid>
+                <!-- actionListener="" : serve para invocar metodos manageBean -->
+                <!-- update=":formTabela:tabela" :formulario e atualiza tabela  -->
+
+                <!-- PF('tabelaUsuario').clearFilters() :limpa os filtros da tabela  -->
+                <h:panelGrid columns="2">
+
+                    <p:commandButton value="Gravar"
+                                     actionListener="#{MBChave.salvar}"
+                                     oncomplete="verificar(xhr, status, args, 'dlgNovo', 'tabelaChave');"
+                                     update=":formTabela:tabela :msgGlobal" />
+                    <p:commandButton value="Cancelar" onclick="PF('dlgNovo').hide();"
+                                     process="@this">
+                        <p:resetInput target="painelDlgNovo" />
+                    </p:commandButton>
+                    <!-- process=@this : submete um formulario -->
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog widgetVar="dlgExcluir" closable="false" draggable="false"
+                  resizable="false" modal="true" appendTo="@(body)"
+                  header="Excluir Chave">
+
+            <h:form id="formExcluir">
+                <h:panelGrid columns="2" id="painelExcluir">
+                    <h:outputText value="Codigo: " />
+                    <h:outputText value="#{MBChave.chave.codigo}" />
+                    <h:outputText value="Chave: " />
+                    <h:outputText value="#{MBChave.chave.chave}" />
+                    <h:outputText value="Quantidade:" />
+                    <h:outputText value="#{MBChave.chave.quantidade}" />
+                    <h:outputText value="Setor:" />
+                    <h:outputText value="#{MBChave.chave.setor.setor}" />
+
+                </h:panelGrid>
+                <h:panelGrid columns="3">
+                    <p:commandButton value="Excluir"
+                                     actionListener="#{MBChave.excluir}"
+                                     oncomplete="verificar(xhr, status, args, 'dlgExcluir', 'tabelaChave');"
+                                     update=":formTabela:tabela :msgGlobal" />
+                    <!-- Atualiza tabela -->
+                    <p:commandButton value="Cancelar"
+                                     onclick="PF('dlgExcluir').hide();" />
+                </h:panelGrid>
+
+            </h:form>
+
+        </p:dialog>
+
+        <p:dialog widgetVar="dlgEditar" closable="false" draggable="false"
+                  resizable="false" appendTo="@(body)" header="Editar Chave"
+                  modal="true">
+            <!-- header="" nomea o dialogo
+            
+            modal="true" appendTo="@(body)" : desabilita todo campo atras do dialogo-->
+            <h:form id="formEditar">
+                <h:panelGrid columns="2" id="painelEditar">
+
+
+                    <p:outputLabel value="ID" />
+                    <p:inputText id="txtId" size="10" maxlength="10"
+                                 value="#{MBChave.chave.codigo}" required="true"
+                                 requiredMessage="Informe o codigo da chave!"
+                                 >
+
+                    </p:inputText>
+
+                    <p:outputLabel value="Chave" />
+                    <p:inputText id="txtChave" size="45" maxlength="45"
+                                 value="#{MBChave.chave.chave}" required="true"
+                                 requiredMessage="Informe a descrição da chave!"
+                                 >
+
+                    </p:inputText>
+
+                    <p:outputLabel value="Quantidade" />
+                    <p:inputText id="txtQuantidade" size="10" maxlength="10"
+                                 value="#{MBChave.chave.quantidade}" required="true"
+                                 requiredMessage="Informe a quantidade de chaves!">
+                    </p:inputText>
+
+                    <p:outputLabel value="Setor" />
+                    <p:selectOneMenu id="oneMenuPrivilegio" filter="true"
+                                     validatorMessage="Selecione o setor!"
+                                     value="#{MBChave.chave.setor.codigo}" required="true"
+                                     requiredMessage="Selecione o setor">
+                        <f:selectItem itemValue="" itemLabel="Selecione"
+                                      noSelectionOption="true" />
+                        <f:selectItems value="#{MBChave.comboSetor}" var="item"
+                                       itemValue="#{item.codigo}" itemLabel="#{item.setor}" />
+                    </p:selectOneMenu>
+
+                </h:panelGrid>
+
+                <h:panelGrid columns="2">
+
+                    <p:commandButton value="Editar"
+                                     actionListener="#{MBChave.editar}"
+                                     oncomplete="verificar(xhr, status, args, 'dlgEditar', 'tabelaChave');"
+                                     update=":formTabela:tabela :msgGlobal" />
+                    <p:commandButton value="Cancelar" onclick="PF('dlgEditar').hide();"
+                                     process="@this">
+                        <p:resetInput target="painelEditar" />
+                    </p:commandButton>
+                    <!-- process=@this : submete um formulario -->
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+    </ui:define>
+
+</ui:composition>

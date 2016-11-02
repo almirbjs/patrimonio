@@ -1,0 +1,396 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/modeloSistema.xhtml">
+
+    <ui:define name="menu">
+        <ui:include src="/includes/menuPrincipal.xhtml"></ui:include>
+    </ui:define>
+    <!-- conteudo da aplicacação aqui vai as tabelas, dialog e entre outros -->
+
+    <ui:define name="conteudo">
+        <h:form id="formTabela">
+            <!-- criando uma tabela -->
+
+            <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado." 
+                         widgetVar="tabelaDocumentoFiscal" value="#{MBDocumentoFiscal.itens}" var="item"
+                         paginator="true" rows="10"
+                         filteredValue="#{MBDocumentoFiscal.itensFiltrados}">
+                <!-- rows="10"  me diz que o meu paginador deve ter 10 linhas-->
+
+                <f:facet name="header">
+                    Documentos fiscais e não fiscais
+                </f:facet>
+
+                <p:column headerText="Nº:" sortBy="#{item.numeroDocumentoFiscal}"
+                          filterBy="#{item.numeroDocumentoFiscal}">
+                    <h:outputText value="#{item.numeroDocumentoFiscal}" />
+                </p:column>
+                <p:column headerText="Tipo">
+
+                    <p:commandButton value="Danfe" rendered="#{item.tipoDocFiscal=='Danfe'}" 
+                                     oncomplete="PF('dlgChaveAcesso').show();"
+                                     update=":formChaveAcesso:painelChaveAcesso :msgGlobal" title="Vizualizar chave de acesso.">
+                        <f:setPropertyActionListener value="#{item}"
+                                                     target="#{MBDocumentoFiscal.documentoFiscal}"/>
+
+                    </p:commandButton>
+                    <p:commandButton value="NF" rendered="#{item.tipoDocFiscal=='NF Avulsa'}"  
+                                     oncomplete="PF('dlgDocumentoFiscal').show();"
+                                     update=":formDocumentoFiscal:painelDocumentoFiscal :msgGlobal">
+                        <f:setPropertyActionListener value="#{item}"
+                                                     target="#{MBDocumentoFiscal.documentoFiscal}"/>
+
+                    </p:commandButton>
+
+
+                    <p:commandButton value="CF" rendered="#{item.tipoDocFiscal=='Cupom'}" title="Vizualizar" />
+                    <p:commandButton value="Recibo" rendered="#{item.tipoDocFiscal=='Outros'}" title="Vizualizar" style=""/>
+
+                </p:column>
+
+                <p:column headerText="Data de emissão" sortBy="#{item.dataEmissao}"
+                          filterBy="#{item.dataEmissao}">
+                    <h:outputText value="#{item.dataEmissao}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText> 
+
+                </p:column>
+
+                <p:column headerText="Fornecedor" sortBy="#{item.fornecedor}"
+                          filterBy="#{item.fornecedor}">
+                    <h:outputText value="#{item.fornecedor.razaoSocialNome}" />
+                </p:column>
+
+                                               <!-- <f:setPropertyActionListener value="#{item}"
+                                                        target="#{MBUsuario.usuario}"></f:setPropertyActionListener> funciona como um prepara pesquisa para atualizar -->
+                <p:column headerText="Opções">
+                    <p:commandButton icon="ui-icon-pencil"
+                                     oncomplete="PF('dlgEditar').show();"
+                                     actionListener="#{MBDocumentoFiscal.prepararEditar}"
+                                     update=":formEditar:painelEditar :msgGlobal" title="Editar">
+                        <f:setPropertyActionListener value="#{item}"
+                                                     target="#{MBDocumentoFiscal.documentoFiscal}" />
+
+                    </p:commandButton>
+
+                    <p:commandButton icon="ui-icon-trash"
+                                     oncomplete="PF('dlgExcluir').show();"
+                                     update=":formExcluir:painelExcluir :msgGlobal" title="Excluir">
+                        <f:setPropertyActionListener value="#{item}"
+                                                     target="#{MBDocumentoFiscal.documentoFiscal}" />
+                    </p:commandButton>
+
+                </p:column>
+
+
+                <!-- linha de baixo da tabela -->
+                <f:facet name="footer">
+                    <p:commandButton value="Novo" oncomplete="PF('dlgNovo').show()"
+                                     actionListener="#{MBDocumentoFiscal.prepararSalvar}"
+                                     update=":formDlgNovo:painelDlgNovo" />
+                </f:facet>
+
+            </p:dataTable>
+        </h:form>
+
+        <!-- Criando o Salvar  -->
+
+
+        <!-- widgetVar=""> : utilizamos para buscar o nome da tabela 
+        draggable="false"> : A janela não pode ser movimentada 
+        resizable="false"> : não pode redimensionar-->
+        <p:dialog widgetVar="dlgNovo" closable="false" draggable="false"
+                  resizable="false" appendTo="@(body)" header="CADASTRO DE DOCUMENTO FISCAL"
+                  modal="true">
+            <!-- header="" nomea o dialogo
+            
+            modal="true" appendTo="@(body)" : desabilita todo campo atras do dialogo-->
+            <h:form id="formDlgNovo"  >
+                <h:panelGrid columns="2" id="painelDlgNovo" >
+
+                    <p:outputLabel value="Tipo documento:" />
+                    <p:selectOneMenu id="comboDocumentoFiscal" value="#{MBDocumentoFiscal.documentoFiscal.tipoDocFiscal}" required="true" requiredMessage="Selecione o tipo do documento fiscal!" >
+                        <f:selectItem itemLabel="NF Avulsa" itemValue="NF Avulsa" />
+                        <f:selectItem itemLabel="Danfe" itemValue="Danfe"  />
+                        <f:selectItem itemLabel="CF" itemValue="Cupom" />
+                        <f:selectItem itemLabel="Recibo" itemValue="Recibo" />
+                        <f:selectItem itemLabel="Outros" itemValue="Outros" />
+                        <p:ajax event="change" update="painelDlgNovo" process="comboDocumentoFiscal" />
+                    </p:selectOneMenu>
+
+                    <p:outputLabel id="IdNumeroDocumento" value="Nº:"   />
+                    <p:inputText value="#{MBDocumentoFiscal.documentoFiscal.numeroDocumentoFiscal}" 
+                                 required="true" requiredMessage="Informe o numero do documento"/>
+
+                    <p:outputLabel id="IdChaveAcesso" value="Chave de Acesso:"  rendered="#{MBDocumentoFiscal.documentoFiscal.tipoDocFiscal =='Danfe'}" />
+                    <p:inputText value="#{MBDocumentoFiscal.documentoFiscal.chaveDeAcesso}" required="true" requiredMessage="Informe a Chave de acesso"
+                                 rendered="#{MBDocumentoFiscal.documentoFiscal.tipoDocFiscal =='Danfe'}"  />
+
+
+
+                    <p:outputLabel value=" Data de emissão:" />
+
+                    <p:calendar locale="pt" mask="99/99/9999" pattern="dd/MM/yyyy" maxdate="today" 
+                                validatorMessage="Informe uma data valida!"
+                                value="#{MBDocumentoFiscal.documentoFiscal.dataEmissao}" required="true"
+                                requiredMessage="Informe a data de emissão!">
+                    </p:calendar>
+
+                    <p:outputLabel value="Fornecedor" for="fornecedor" />
+
+                    <h:panelGrid columns="2">
+                        <p:outputLabel id="fornecedor"  value="#{MBDocumentoFiscal.documentoFiscal.fornecedor.razaoSocialNome}"/>
+
+                        <p:commandButton icon="ui-icon-search"  title="Pesquisar" oncomplete="PF('dlgFornecedor').show();"
+                                         update=":formFornecedor" >
+                            <p:resetInput target="fornecedor" />
+                        </p:commandButton>
+                    </h:panelGrid>
+                    <p:outputLabel value="Anexar Nota Fiscal:" rendered="#{MBDocumentoFiscal.documentoFiscal.tipoDocFiscal !='Danfe'}" />
+                    <h:form enctype="multipart/form-data"  >
+                        <p:fileUpload fileUploadListener="#{MBDocumentoFiscal.UploadFileDocumento}" 
+                                      update=":msgGlobal"  mode="advanced"  auto="true" fileLimit="1"
+                                      fileLimitMessage="É permitido anexar apenas 1 arquivo!" 
+                                      rendered="#{MBDocumentoFiscal.documentoFiscal.tipoDocFiscal !='Danfe'}" />
+                    </h:form>
+
+                </h:panelGrid>
+                <!-- actionListener="" : serve para invocar metodos manageBean -->
+                <!-- update=":formTabela:tabela" :formulario e atualiza tabela  -->
+
+                <!-- PF('tabelaUsuario').clearFilters() :limpa os filtros da tabela  -->
+                <h:panelGrid columns="2">
+
+                    <p:commandButton value="Gravar"
+                                     actionListener="#{MBDocumentoFiscal.salvar}"
+                                     oncomplete="verificar(xhr, status, args, 'dlgNovo', 'tabelaDocumentoFiscal');"
+                                     update=":formTabela:tabela :msgGlobal" />
+                    <p:commandButton value="Cancelar" onclick="PF('dlgNovo').hide();"
+                                     process="@this">
+                        <p:resetInput target="painelDlgNovo" />
+                    </p:commandButton>
+                    <!-- process=@this : submete um formulario -->
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog widgetVar="dlgExcluir" closable="false" draggable="false"
+                  resizable="false" modal="true" appendTo="@(body)"
+                  header="Excluir Documento fiscal">
+
+            <h:form id="formExcluir">
+                <h:panelGrid columns="2" id="painelExcluir">
+                    <h:outputText value="Nº: " />
+                    <h:outputText value="#{MBDocumentoFiscal.documentoFiscal.numeroDocumentoFiscal}" />
+                    <h:outputText value="Tipo: " />
+                    <h:outputText value="#{MBDocumentoFiscal.documentoFiscal.tipoDocFiscal}" />
+                    <h:outputText value="Data da emissão: " />
+                    <p:calendar locale="pt" mask="99/99/9999" pattern="dd/MM/yyyy" maxdate="today" 
+                                validatorMessage="Informe uma data valida!"
+                                value="#{MBDocumentoFiscal.documentoFiscal.dataEmissao}" disabled="true">
+                    </p:calendar>
+                    <p:outputLabel value="Fornecedor:" />
+
+                    <p:outputLabel value="#{MBDocumentoFiscal.documentoFiscal.fornecedor.razaoSocialNome}"/>
+
+
+
+
+                </h:panelGrid>
+                <h:panelGrid columns="3">
+                    <p:commandButton value="Excluir"
+                                     actionListener="#{MBDocumentoFiscal.excluir}"
+                                     oncomplete="verificar(xhr, status, args, 'dlgExcluir', 'tabelaDocumentoFiscal');"
+                                     update=":formTabela:tabela :msgGlobal" />
+                    <!-- Atualiza tabela -->
+                    <p:commandButton value="Cancelar"
+                                     onclick="PF('dlgExcluir').hide();" />
+                </h:panelGrid>
+
+            </h:form>
+
+        </p:dialog>
+
+        <p:dialog widgetVar="dlgEditar" closable="false" draggable="false"
+                  resizable="false" appendTo="@(body)" header="Editar Documento Fiscal"
+                  modal="true">
+            <!-- header="" nomea o dialogo
+            
+            modal="true" appendTo="@(body)" : desabilita todo campo atras do dialogo-->
+            <h:form id="formEditar">
+                <h:panelGrid columns="2" id="painelEditar">
+
+                    <p:outputLabel value="Tipo documento:" />
+                    <p:outputLabel value="#{MBDocumentoFiscal.documentoFiscal.tipoDocFiscal}" />
+
+                    <p:outputLabel value="Nºdo doc.:" />
+
+                    <p:outputLabel value="#{MBDocumentoFiscal.documentoFiscal.numeroDocumentoFiscal}"/>
+
+
+                    <p:outputLabel  value="Chave de Acesso:" rendered="#{MBDocumentoFiscal.documentoFiscal.tipoDocFiscal =='Danfe'}" />
+                    <p:inputText value="#{MBDocumentoFiscal.documentoFiscal.chaveDeAcesso}"  rendered="#{MBDocumentoFiscal.documentoFiscal.tipoDocFiscal =='Danfe'}" />
+
+                    <p:outputLabel value="Anexar Nota Fiscal:" rendered="#{MBDocumentoFiscal.documentoFiscal.tipoDocFiscal !='Danfe'}" />
+
+                    <h:form enctype="multipart/form-data" >
+                        <p:fileUpload fileUploadListener="#{MBDocumentoFiscal.UploadFileDocumento}" update=":msgGlobal"  mode="advanced"  auto="true" rendered="#{MBDocumentoFiscal.documentoFiscal.tipoDocFiscal !='Danfe'}"/>
+                    </h:form>
+
+                    <p:outputLabel value=" Data de emissão:" />
+
+                    <p:calendar locale="pt" mask="99/99/9999" pattern="dd/mm/yyyy" maxdate="today" 
+                                validatorMessage="Informe uma data valida!"
+                                value="#{MBDocumentoFiscal.documentoFiscal.dataEmissao}" required="true"
+                                requiredMessage="Informe a data de emissão!">
+                    </p:calendar>
+
+
+                    <p:outputLabel value="Fornecedor" />
+
+                    <p:selectOneMenu id="oneMenuFornecedor" filter="true"
+                                     validatorMessage="Selecione um Fornecedor!"
+                                     value="#{MBDocumentoFiscal.documentoFiscal.fornecedor.codigo}" required="true"
+                                     requiredMessage="Selecione o Fornecedor">
+                        <f:selectItem itemValue="" itemLabel="Selecione"
+                                      noSelectionOption="true" />
+                        <f:selectItems value="#{MBDocumentoFiscal.comboFornecedor}" var="item"
+                                       itemValue="#{item.codigo}" itemLabel="#{item.razaoSocialNome}" />
+                    </p:selectOneMenu>
+
+                </h:panelGrid>
+
+                <h:panelGrid columns="2">
+
+                    <p:commandButton value="Editar"
+                                     actionListener="#{MBDocumentoFiscal.editar}"
+                                     oncomplete="verificar(xhr, status, args, 'dlgEditar', 'tabelaDocumentoFiscal');"
+                                     update=":formTabela:tabela :msgGlobal" />
+                    <p:commandButton value="Cancelar" onclick="PF('dlgEditar').hide();"
+                                     process="@this">
+                        <p:resetInput target="painelEditar" />
+                    </p:commandButton>
+                    <!-- process=@this : submete um formulario -->
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog widgetVar="dlgChaveAcesso" closable="false" draggable="false"
+                  resizable="false" modal="true" appendTo="@(body)"
+                  header="Chave de Acesso">
+
+            <h:form id="formChaveAcesso">
+                <h:panelGrid columns="1" id="painelChaveAcesso">
+                    <p:outputLabel value="Copie á chave e clique no site abaixo para consultar a Danfe. " />
+
+                    <p:inputText value="#{MBDocumentoFiscal.documentoFiscal.chaveDeAcesso}" />
+
+                    <a href="https://www.danfeonline.com.br/" target="_blank">www.danfeonline.com.br</a>
+                </h:panelGrid>
+                <h:panelGrid columns="2">
+
+
+
+                    <p:commandButton value="Sair"
+                                     onclick="PF('dlgChaveAcesso').hide();" />
+                </h:panelGrid>
+
+            </h:form>
+
+        </p:dialog>
+
+        <p:dialog widgetVar="dlgDocumentoFiscal" closable="false" draggable="false"
+                  resizable="false" modal="true" appendTo="@(body)"
+                  header="Documento fiscal">
+
+            <h:form id="formDocumentoFiscal">
+                <p:scrollPanel style="width:800px;height:550px">
+                    <h:panelGrid  id="painelDocumentoFiscal">
+
+                        <p:graphicImage style="align-content: center" id="imagem" cache="false" url="http://localhost:8080/uploads/#{MBDocumentoFiscal.documentoFiscal.numeroDocumentoFiscal}#{MBDocumentoFiscal.documentoFiscal.fornecedor.codigo}.png" height="700" width="850" />
+
+                    </h:panelGrid>
+                </p:scrollPanel>
+                <h:panelGrid columns="2">
+
+                    <p:commandButton value="Imprimir" type="button" icon="ui-icon-print" >
+                        <p:printer target="imagem   " />
+                    </p:commandButton>
+                    <p:commandButton value="Sair"
+                                     onclick="PF('dlgDocumentoFiscal').hide();" />
+                </h:panelGrid>
+
+            </h:form>
+
+        </p:dialog>
+
+        <p:dialog widgetVar="dlgFornecedor" closable="false" draggable="false" width="700" 
+                  resizable="false" modal="true" appendTo="@(body)"
+                  header="Selecione o Fornecedor">
+
+            <h:form id="formFornecedor">
+                <h:panelGrid columns="2" id="painelFornecedor">
+
+
+                    <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."  rowKey="#{item.codigo}" selectionMode="single" selection="#{item}"
+                                 widgetVar="tabelaFornecedor" value="#{MBFornecedor.itens}"  filteredValue="#{MBFornecedor.itensFiltrados}"
+                                 var="item"  rows="10" 
+                                 >
+                        <p:ajax event="rowSelect" listener="#{MBDocumentoFiscal.fornecedorSelecionado}" update=":formDlgNovo:fornecedor"  onsuccess="PF('dlgFornecedor').hide()"
+                                />
+
+
+
+                        <p:column headerText="Codigo" style="width: 30px; text-align: center" 
+                                  filterBy="#{item.codigo}">
+                            <h:outputText value="#{item.codigo}"  style="size: auto" />
+                        </p:column>
+                        <p:column headerText="Fornecedor" width="150"
+                                  filterBy="#{item.razaoSocialNome}">
+                            <h:outputText value="#{item.razaoSocialNome}" />
+                        </p:column>
+                        <p:column headerText="CNPJ/CPF" sortBy="#{item.cnpjCpf}" width="130" style="width: 30px; text-align: center"
+                                  filterBy="#{item.cnpjCpf}">
+                            <h:outputText value="#{item.cnpjCpf}" />
+                        </p:column>
+
+                        <p:column headerText="Contato" width="100" style="width: 30px; text-align: center">
+                            <h:outputText value="#{item.contato}" />
+                        </p:column>
+
+
+
+
+
+                                <!-- <f:setPropertyActionListener value="#{item}"
+                                                        target="#{MBFornecedor.fornecedor}"></f:setPropertyActionListener> funciona como um prepara pesquisa para atualizar -->
+                        <p:column headerText="Opções" width="50">
+
+                            <p:commandButton icon="1    ">
+
+                            </p:commandButton>
+
+                        </p:column>
+                    </p:dataTable>
+
+
+                </h:panelGrid>
+
+
+                <h:panelGrid columns="3">
+
+
+
+                    <p:commandButton value="Sair"
+                                     onclick="PF('dlgFornecedor').hide();" />
+
+                </h:panelGrid>
+
+            </h:form>
+        </p:dialog>
+    </ui:define>
+
+</ui:composition>

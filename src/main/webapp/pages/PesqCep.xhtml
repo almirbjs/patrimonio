@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/resources/Templates/modeloSistema.xhtml">
+
+    <ui:define name="Menu">
+        <ui:include src="/includes/menuPrincipal.xhtml" />
+    </ui:define>
+
+    <ui:define name="Conteudo">
+
+        <h:form id="formPais"
+                onkeypress="if (Event.keyCode === 13) {
+                            return false;
+                        }">
+            <!-- foi usado o forme para poder executar o filterby -->
+
+            <p:dataTable id="tabelaPais" widgetVar="tabelaPa�s"
+                         emptyMessage="Nenhum Registro Encontrado." value="" var="item"
+                         paginator="true" rowStyleClass="2" rows="6">
+
+                <f:facet name="header">
+
+
+
+                    <p:spacer></p:spacer>	Lista de Pa�s(es) 
+
+                </f:facet>
+
+                <p:column headerText="ID" sortBy="">
+                    <h:outputText value="" />
+                </p:column>
+
+                <p:column headerText="Pa�s" filterBy="" width="300"
+                          filterStyle="max-width: 290px; min-width: 290px;">
+                    <h:outputText value="" />
+                </p:column>
+
+                <p:column headerText="Sigla" sortBy="">
+                    <h:outputText value="" />
+                </p:column>
+
+
+
+                <p:column headerText="A��es" exportable="false">
+
+                    <p:commandButton icon="ui-icon-pencil"
+
+                                     oncomplete="PF('dlgPaisEditar').show();"
+                                     update=":formPaisEditar:pnlPaisEditar" />
+
+                    <p:commandButton icon="ui-icon-trash"
+
+
+                                     oncomplete=""
+                                     update=":formPaisExcluir:painelPaisExcluir " />
+
+                    <h:commandLink>
+                        <p:graphicImage library="imagens" name="pdf.png" width="24"
+                                        height="24" style="margin-bottom:-10px" />
+                        <p:dataExporter type="pdf" target="tabelaPais" fileName="Pais"
+                                        encoding="ISO-8859-1" />
+
+                    </h:commandLink>
+                </p:column>
+
+            </p:dataTable>
+
+        </h:form>
+
+        <p:dialog widgetVar="dlgPaisNovo" closable="false" draggable="false"
+                  resizable="false" modal="true" appendTo="@(body)" header="Novo Pa�s">
+
+            <h:form id="formPaisNovo">
+
+
+
+                <h:panelGrid id="painelNovoPais" columns="2">
+
+                    <p:outputLabel for="txtNome" value="Pa�s:" />
+
+                    <p:inputText id="txtNome" size="20" maxlength="50" required="true"
+                                 requiredMessage="Campo pa�s � obrigatorio!"
+                                 value="" />
+
+
+                    <p:outputLabel for="txtSigla" value="Sigla:" />
+                    <h:panelGroup>
+                        <p:inputText id="txtSigla" size="20" maxlength="19"
+                                     required="true" requiredMessage="Campo sigla � obrigatorio!  "
+                                     value="" />
+
+                    </h:panelGroup>
+
+                </h:panelGrid>
+
+                <h:panelGrid columns="2">
+
+                    <p:commandButton value="Gravar" 
+                                     oncomplete="verificar(xhr, status, args, 'dlgPaisNovo');"
+                                     update=":formPais:tabelaPais :msgGlobal" />
+
+                    <p:commandButton value="Cancelar" process="@this"
+                                     onclick="PF('').hide();"
+                                     update=":formPaisNovo:painelNovoPais">
+                        <p:resetInput target="painelNovoPais" />
+                    </p:commandButton>
+                </h:panelGrid>
+
+            </h:form>
+
+            <script type="text/javascript">
+                function verificar(xhr, status, args, dlg) {
+                    if (args.validationFailed) {
+                        PF(dlg).jq.effect("shake", {
+                            times: 5
+                        }, 100);
+                    } else {
+                        PF(dlg).hide();
+
+                    }
+                }
+            </script>
+
+
+        </p:dialog>
+
+        <p:dialog widgetVar="dlgPaisExcluir" closable="false"
+                  draggable="false" resizable="false" modal="true" appendTo="@(body)"
+                  header="Excluir Pa�s">
+
+
+            <h:form id="formPaisExcluir">
+
+                <h:panelGrid id="painelPaisExcluir" columns="2">
+
+                    <h:outputText value="Codigo:" />
+                    <h:outputText value="" />
+
+                    <h:outputText value="Nome:" />
+                    <h:outputText value="" />
+
+                    <h:outputText value="Sigla:" />
+                    <h:outputText value="" />
+
+                </h:panelGrid>
+
+                <h:panelGrid columns="2">
+
+                    <p:commandButton value="Excluir" 
+                                     oncomplete="PF('dlgPaisExcluir').hide();"
+                                     update=":formPais:tabelaPais :msgGlobal " />
+
+                    <p:commandButton value="Cancelar"
+                                     onclick="PF(dlgPaisExcluir).hide();" />
+
+                </h:panelGrid>
+
+            </h:form>
+        </p:dialog>
+
+        <p:dialog widgetVar="dlgPaisEditar" closable="false" draggable="false"
+                  resizable="false" modal="true" appendTo="@(body)"
+                  header="Editar Pa�s">
+
+            <h:form id="formPaisEditar">
+
+                <h:panelGrid id="pnlPaisEditar" columns="2">
+
+                    <p:outputLabel value="ID:" />
+
+                    <p:outputLabel value="" />
+
+                    <p:outputLabel value="Pa�s:" />
+
+                    <p:inputText value="" size="30"
+                                 maxlength="50" required="true"
+                                 requiredMessage="Campo pa�s � obrigatorio!" />
+
+
+                    <p:outputLabel for="txtSigla" value="Sigla:" />
+                    <p:inputText id="txtSigla" size="13"
+                                 value="" required="true"
+                                 requiredMessage="Campo senha � obrigatorio! Digite a sua nova senha." />
+
+
+                </h:panelGrid>
+
+                <h:panelGrid columns="2">
+
+                    <p:commandButton value="Editar" 
+                                     oncomplete="PF('dlgPaisEditar').hide();"
+                                     update=":formPais:tabelaPais :msgGlobal " />
+
+                    <p:commandButton value="Cancelar"
+                                     onclick="PF('dlgPaisEditar').hide();" />
+
+
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/templates/modeloSistema.xhtml">
+
+    <ui:define name="menu">
+        <ui:include src="/includes/menuPrincipal.xhtml" />
+    </ui:define>
+
+    <ui:define name="Conteudo">
+
+
+        <h:form id="formLogin">
+            <h:body>
+                <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+
+                <p:dialog header="Login" widgetVar="dlg" resizable="false" visible="true"
+                          >
+
+                    <h:panelGrid columns="2" cellpadding="5">
+
+                        <h:outputLabel value="Usuario:*" />
+
+                        <p:inputText required="true" />
+
+                        <h:outputLabel value="Senha:*" />
+
+                        <p:password required="true" label="senha"
+                                    requiredMessage=" Digite a senha" />
+
+                        <f:facet name="footer">
+
+                            <p:commandButton value="Login" />
+                        </f:facet>
+
+                    </h:panelGrid>
+                </p:dialog>
+
+
+
+
+
+
+            </h:body>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

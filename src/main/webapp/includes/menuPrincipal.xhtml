@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+
+    <h:form id="FormPrincipal">
+
+        <p:menubar id="MenuPrincipal">
+
+            <p:submenu label="Arquivo">
+                <p:menuitem value="Pagina Principal"
+                            outcome="/includes/Principal.xhtml" icon="ui-icon-home" />
+                <p:menuitem value="Entrar" outcome="/pages/Login.xhtml"
+                            icon="ui-icon-person" />
+                <p:separator />
+                <p:menuitem value="SAIR" icon="ui-icon-close">
+
+                </p:menuitem>
+
+            </p:submenu>
+
+            <p:submenu label="Cadastrar" icon="ui-icon-disk">
+
+                <p:menuitem value="Fornecedor" outcome="/pages/Fornecedor.xhtml" />
+                <p:menuitem value="Funcionario"/>
+
+                <p:menuitem value="Patrimonio " outcome="/pages/patrimonio.xhtml" />
+
+                <p:menuitem value="Produtos com defeito"
+                            outcome="/pages/CadProdutoDefeito.xhtml" />
+
+                <p:menuitem value="Setor" outcome="/pages/Setor.xhtml" />
+                <p:menuitem value="Produto" outcome="/pages/Produto.xhtml" />
+                <p:menuitem value="Usuario" outcome="/pages/Usuario.xhtml" />
+                <p:menuitem value="País" outcome="/pages/Pais.xhtml" />
+                <p:menuitem value="Estado" outcome="/pages/Estado.xhtml" />
+                <p:menuitem value="Cidade" outcome="/pages/Cidade.xhtml" />
+                <p:menuitem value="Rua" outcome="/pages/CadRua.xhtml" />
+                <p:menuitem value="Categoria" outcome="/pages/Categoria.xhtml"  />
+                <p:menuitem value="Chaves" outcome="/pages/Chave.xhtml" />
+                <p:menuitem value="Doc.fiscal/Outros" outcome="/pages/DocumentoFiscal.xhtml" />
+            </p:submenu>
+
+            <p:submenu label="Consultar" icon="ui-icon-search">
+
+                <p:menuitem value="Fornecedor" outcome="/pages/ConFornecedor.xhtml" />
+
+                <p:menuitem value="Patrimonio " outcome="/pages/ConPatrimonio.xhtml" />
+
+                <p:menuitem value="Produtos com defeito"
+                            outcome="/pages/ConProdutoComDefeito.xhtml" />
+
+                <p:menuitem value="Usuario" outcome="/pages/ConUsuario.xhtml" />
+
+                <p:menuitem value="País" outcome="/pages/ConPais.xhtml" />
+
+                <p:menuitem value="Estado" outcome="/pages/ConEstado.xhtml" />
+
+                <p:menuitem value="Cidade" outcome="/pages/ConCidade.xhtml" />
+
+                <p:menuitem value="Setor" outcome="/pages/ConSetor.xhtml" />
+
+                <p:menuitem value="Insumo" outcome="/pages/ConInsumo.xhtml" />
+            </p:submenu>
+
+            <p:submenu label="Transferir" icon="ui-icon-refresh">
+                <p:menuitem value="Patrimonio"
+                            outcome="/pages/TransPatrimonio.xhtml" />
+
+            </p:submenu>
+
+            <p:submenu label="Relatorio" icon="ui-icon-document">
+                <p:menuitem value="Usuarios" />
+                <p:menuitem value="Fornecedores" />
+                <p:menuitem value="Países" />
+                <p:menuitem value="Cidades" />
+                <p:menuitem value="Ruas" />
+                <p:menuitem value="Estados" />
+                <p:menuitem value="Patrimonio" />
+                <p:menuitem value="Tranferencias" />
+
+            </p:submenu>
+
+            <p:submenu label="Configurações" icon="ui-icon-wrench">
+
+                <p:menuitem value="Mudar Tema" />
+
+            </p:submenu>
+
+
+            <p:submenu label="Ajuda" icon="ui-icon-help" />
+
+        </p:menubar>
+
+    </h:form>
+
+</ui:composition>

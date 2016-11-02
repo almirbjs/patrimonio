@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/resources/Templates/modeloSistema.xhtml">
+
+    <ui:define name="Menu">
+        <ui:include src="/includes/menuPrincipal.xhtml" />
+    </ui:define>
+
+    <ui:define name="Conteudo">
+
+        <h:form>
+
+        </h:form>
+
+        <h:form id="formCadRua">
+            <h:body>
+                <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+
+                <p:dialog header="CADASTRO DE RUA" widgetVar="dlg" resizable="false"
+                          visible="true">
+
+                    <h:panelGrid id="painelCadRua" columns="2">
+
+                        <p:outputLabel for="txtRua" value="Rua:" />
+
+                        <p:inputText id="txtRua" size="36" maxlength="36" required="true"
+                                     requiredMessage="Informe um nome para a nova rua!" />
+
+                        <p:outputLabel for="txtBairro" value="Bairro:" />
+
+                        <p:inputText id="txtBairro" size="36" maxlength="36" required="true"
+                                     requiredMessage="Informe o nome do bairro!" />
+
+                        <p:outputLabel value="Cep:" />
+
+                        <p:inputMask size="10" maxlength="10" mask="99999-999"
+                                     onfocus="this.style.border = '1px solid orange'"
+                                     onblur="this.syle.border = '1'" required="true"
+                                     requiredMessage="Informe o cep">
+                        </p:inputMask>
+
+                        <p:outputLabel value="País:" />
+
+                        <p:selectOneMenu required="true"
+                                         requiredMessage="Selecione o país!">
+
+                            <f:selectItem itemLabel="Selecione" itemDisabled="true"
+                                          noSelectionOption="true" />
+
+                            <f:selectItems />
+
+                        </p:selectOneMenu>
+
+                        <p:outputLabel value="Estado:" />
+
+                        <p:selectOneMenu required="true"
+                                         requiredMessage="Selecione o Estado!">
+
+                            <f:selectItem itemLabel="Selecione" itemDisabled="true"
+                                          noSelectionOption="true" />
+
+                            <f:selectItems />
+
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Cidade" />
+
+                        <p:selectOneMenu required="true"
+                                         requiredMessage="Selecione a cidade!">
+
+                            <f:selectItem itemLabel="Selecione" itemDisabled="true"
+                                          noSelectionOption="true" />
+
+                            <f:selectItems />
+
+                        </p:selectOneMenu>
+
+
+
+                        <f:facet name="footer">
+                            <h:panelGrid columns="2">
+                                <p:commandButton value="Salvar" />
+                                <p:commandButton value="Cancelar" />
+                            </h:panelGrid>
+                        </f:facet>
+
+                    </h:panelGrid>
+                </p:dialog>
+
+
+
+
+
+
+            </h:body>
+        </h:form>
+
+    </ui:define>
+</ui:composition>
