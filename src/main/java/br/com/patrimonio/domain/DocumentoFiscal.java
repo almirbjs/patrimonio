@@ -1,6 +1,7 @@
 package br.com.patrimonio.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -45,19 +46,19 @@ public class DocumentoFiscal implements Serializable {
     private int codigo;
 
     @Column(name = "NumeroDocumentoFiscal", nullable = true)
-    private int NumeroDocumentoFiscal;
+    private BigDecimal NumeroDocumentoFiscal;
 
     @Transient
     private String caminhoTemporario;
 
-    @Column(name = "dataEmissao", length = 45)
+    @Column(name = "dataEmissao")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dataEmissao;
 
     @Column(name = "chaveDeAcesso")
-    private int chaveDeAcesso;
+    private BigDecimal chaveDeAcesso;
 
-    @Column(name = "tipoDocFiscal", length = 45)
+    @Column(name = "tipoDocFiscal")
     private String tipoDocFiscal;
 
     // --Criando a chave estrangeira(FK)----
@@ -103,11 +104,11 @@ public class DocumentoFiscal implements Serializable {
         this.dataEmissao = dataEmissao;
     }
 
-    public int getChaveDeAcesso() {
+    public BigDecimal getChaveDeAcesso() {
         return chaveDeAcesso;
     }
 
-    public void setChaveDeAcesso(int chaveDeAcesso) {
+    public void setChaveDeAcesso(BigDecimal chaveDeAcesso) {
         this.chaveDeAcesso = chaveDeAcesso;
     }
 
@@ -127,11 +128,11 @@ public class DocumentoFiscal implements Serializable {
         this.fornecedor = fornecedor;
     }
 
-    public void setNumeroDocumentoFiscal(int NumeroDocumentoFiscal) {
+    public void setNumeroDocumentoFiscal(BigDecimal NumeroDocumentoFiscal) {
         this.NumeroDocumentoFiscal = NumeroDocumentoFiscal;
     }
 
-    public int getNumeroDocumentoFiscal() {
+    public BigDecimal getNumeroDocumentoFiscal() {
         return NumeroDocumentoFiscal;
     }
 

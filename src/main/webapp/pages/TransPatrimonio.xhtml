@@ -14,202 +14,31 @@
 
     <ui:define name="Conteudo">
 
-        <h:form id="formTransferir">
+      
             <h:body>
                 <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+<p:dialog header="Autenticação" closable="false" draggable="false"
+		resizable="false" modal="true" visible="true">
+		<h:form>
+			<h:panelGrid columns="2">
+				<p:outputLabel for="cpf" value="CPF:" />
+				<p:inputMask id="cpf" mask="999.999.999-99" size="20"
+					required="true" requiredMessage="O campo CPF é obrigatório"
+					value="#{autenticacaoBean.usuario.pessoa.cpf}" />
 
-                <p:dialog header="TRANSFERIR PATRIMONIO " widgetVar="dlg"
-                          resizable="false" visible="true" width="400">
+				<p:outputLabel for="senha" value="Senha:" />
+				<p:password id="senha" maxlength="8" size="20" required="true"
+					requiredMessage="O campo Senha é obrigatório"
+					value="#{autenticacaoBean.usuario.senha}" />
+			</h:panelGrid>
 
-                    <h:panelGrid columns="1" cellpadding="5">
-                        <h:panelGrid columns="3">
-                            <h:outputLabel value="Patrimonio" />
-                            <p:inputText size="20" maxlength="20" />
-
-                            <p:commandButton value="pesquisar" icon="ui-icon-search"
-                                             onclick="PF('dlgConsultarPatrimonio').show();" />
-
-                            <h:outputLabel value="Setor de origem" />
-                            <p:inputText size="20" maxlength="20" />
-                            <p:spacer></p:spacer>
-                            <h:outputLabel value="Setor de destino" />
-                            <p:inputText size="20" maxlength="20" />
-
-                            <p:commandButton value="pesquisar" icon="ui-icon-search"
-                                             onclick="PF('dlgConsultarSetor').show();" />
-
-
-                        </h:panelGrid>
-
-
-                        <f:facet name="footer">
-                            <h:panelGrid columns="2">
-                                <p:commandButton value="Transferir"
-                                                 oncomplete="PF('dlg').hide();" icon="ui-icon-disk"
-                                                 process="@this" />
-                                <p:commandButton value="Cancelar" onclick="PF('dlg').hide();"
-                                                 icon="ui-icon-close" process="@this" />
-                            </h:panelGrid>
-
-                        </f:facet>
-
-                    </h:panelGrid>
-                </p:dialog>
-
-
-
-                <p:dialog header=" CONSULTAR PATRIMONIO" widgetVar="dlgConsultarPatrimonio"
-                          modal="true" width="850" appendTo="@(body)" resizable="false"
-                          >
-
-
-                    <h:panelGrid columns="1" cellpadding="5">
-                        <h:panelGrid columns="3">
-                            <h:outputLabel value="Patrimonio:" />
-                            <p:inputText size="36" maxlength="36" />
-
-                            <p:commandButton value="pesquisar" icon="ui-icon-search" />
-
-
-                        </h:panelGrid>
-
-                        <h:panelGroup>
-                            <p:dataTable id="tabelaCategoria" widgetVar="tabelaCategorias"
-                                         emptyMessage="Nenhum Registro Encontrado."
-                                         value="#{MBCategoria.itens}" var="item" rowStyleClass="2"
-                                         rows="6">
-
-                                <p:column headerText="COD" width="36">
-                                    <h:outputText value="" />
-                                </p:column>
-
-                                <p:column headerText="Patrimonio " width="160">
-                                    <h:outputText value="" />
-                                </p:column>
-
-                                <p:column headerText="Local" width="100">
-                                    <h:outputText value="" />
-                                </p:column>
-
-                                <p:column headerText="Marca" width="100">
-                                    <h:outputText value="" />
-                                </p:column>
-
-                                <p:column headerText="Modelo" width="100">
-                                    <h:outputText value="" />
-                                </p:column>
-
-
-
-                                <p:column headerText="Valor" width="70">
-                                    <h:outputText value="" />
-                                </p:column>
-
-                                <p:column headerText="Ações" exportable="false" width="90">
-
-                                    <p:commandButton icon="ui-icon-pencil"
-                                                     oncomplete="PF('dlgAlterar').show();"
-                                                     update=":formSetorEditar:pnlSetorEditar" />
-
-                                    <p:commandButton icon="ui-icon-trash"
-                                                     oncomplete="PF('dlgSetorExcluir').show();"
-                                                     update=":formSetorExcluir:painelSetorExcluir " />
-
-                                    <h:commandLink>
-                                        <p:graphicImage library="imagens" name="pdf.png" width="24"
-                                                        height="24" style="margin-bottom:-10px" />
-                                        <p:dataExporter type="pdf" target="tabelaSetor"
-                                                        fileName="Setor" />
-
-                                    </h:commandLink>
-                                </p:column>
-                            </p:dataTable>
-                        </h:panelGroup>
-
-                        <f:facet name="footer">
-                            <h:panelGrid columns="2">
-                                <p:commandButton value="Ok" icon="ui-icon-ok" />
-                                <p:commandButton value="Fechar" onclick="PF('dlgConsultarPatrimonio').hide();"
-                                                 icon="ui-icon-close" process="@this" />
-                            </h:panelGrid>
-
-                        </f:facet>
-
-                    </h:panelGrid>
-                </p:dialog>
-
-                <p:dialog header="CONSULTAR SETOR " widgetVar="dlgConsultarSetor"
-                          resizable="false" width="670" appendTo="@(body)"
-                          modal="true">
-
-                    <h:panelGrid columns="1" cellpadding="5">
-                        <h:panelGrid columns="3">
-                            <h:outputLabel value="Setor:" />
-                            <p:inputText size="36" maxlength="36" />
-
-                            <p:commandButton value="pesquisar" icon="ui-icon-search"
-                                             onclick="PF('dlgExcluir').show();" />
-
-
-                        </h:panelGrid>
-
-                        <h:panelGroup>
-                            <p:dataTable id="tabelaCategoriaSetor"
-                                         widgetVar="tabelaCategorias"
-                                         emptyMessage="Nenhum Registro Encontrado."
-                                         value="#{MBCategoria.itens}" var="item" rowStyleClass="2"
-                                         rows="6">
-
-                                <p:column headerText="ID" width="36">
-                                    <h:outputText value="" />
-                                </p:column>
-
-                                <p:column headerText="Setor " width="160">
-                                    <h:outputText value="" />
-                                </p:column>
-
-                                <p:column headerText="Observação" width="260">
-                                    <h:outputText value="" />
-                                </p:column>
-
-
-                                <p:column headerText="Ações" exportable="false" width="90">
-
-                                    <p:commandButton icon="ui-icon-pencil"
-                                                     oncomplete="PF('dlgAlterar').show();"
-                                                     update=":formSetorEditar:pnlSetorEditar" />
-
-                                    <p:commandButton icon="ui-icon-trash"
-                                                     oncomplete="PF('dlgSetorExcluir').show();"
-                                                     update=":formSetorExcluir:painelSetorExcluir " />
-
-                                    <h:commandLink>
-                                        <p:graphicImage library="imagens" name="pdf.png" width="24"
-                                                        height="24" style="margin-bottom:-10px" />
-                                        <p:dataExporter type="pdf" target="tabelaSetor"
-                                                        fileName="Setor" encoding="ISO-8859-1" />
-
-                                    </h:commandLink>
-                                </p:column>
-                            </p:dataTable>
-                        </h:panelGroup>
-
-                        <f:facet name="footer">
-                            <h:panelGrid columns="2">
-                                <p:commandButton value="Ok" />
-                                <p:commandButton value="Fechar" onclick="PF('dlgConsultarSetor').hide();"
-                                                 icon="ui-icon-close" process="@this" />
-                            </h:panelGrid>
-
-                        </f:facet>
-
-                    </h:panelGrid>
-                </p:dialog>
-
-
-
-            </h:body>
-        </h:form>
+			<h:panelGrid columns="1">
+				<p:commandButton value="Entrar" update=":mensagem"
+					actionListener="#{autenticacaoBean.autenticar}" />
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+</h:body>
 
     </ui:define>
 </ui:composition>

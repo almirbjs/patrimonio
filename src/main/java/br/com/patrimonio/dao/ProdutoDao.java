@@ -8,6 +8,8 @@ import org.hibernate.Transaction;
 
 import br.com.patrimonio.domain.Produto;
 import br.com.patrimonio.util.HibernateUtil;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class ProdutoDao {
 
@@ -109,18 +111,15 @@ public class ProdutoDao {
         try {
             // beginTransaction(): inicia a transa��o.
             transacao = sessao.beginTransaction();
-
-            if (u.getCaminhoTemporarioProduto() == null) {
-                u.setExisteImagem("nao");
-            } else {
-                u.setExisteImagem("");
+ if (u.getCaminhoTemporarioProduto() != null) {
+                u.setExisteImagem("sim");
             }
 
             // save: Salva a operação.
             sessao.update(u);
             // comfimar a operação.
             transacao.commit();
-
+            
         } catch (RuntimeException e) {
             // Mensagem de erro
             if (transacao != null) {
@@ -129,15 +128,11 @@ public class ProdutoDao {
                 transacao.rollback();
 
             }
-            throw e;// Força o usuario escrever a mensagem de erro para ser
-            // exibida na tela.
-
-            // finally{} � o finalizador
         } finally {
             // Fecha sess�o.
             sessao.close();
         }
-
+    
     }
 
     // Lista de entidades

@@ -142,19 +142,29 @@
                     <p:outputLabel value="Fornecedor" for="fornecedor" />
 
                     <h:panelGrid columns="2">
-                        <p:outputLabel id="fornecedor"  value="#{MBDocumentoFiscal.documentoFiscal.fornecedor.razaoSocialNome}"/>
 
-                        <p:commandButton icon="ui-icon-search"  title="Pesquisar" oncomplete="PF('dlgFornecedor').show();"
-                                         update=":formFornecedor" >
-                            <p:resetInput target="fornecedor" />
-                        </p:commandButton>
+                        <h:panelGroup>
+                            <p:inputText id="fornecedor" value="#{MBDocumentoFiscal.documentoFiscal.fornecedor.razaoSocialNome}"
+                                         readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"
+                                         required="true" requiredMessage="Selecione o Fornecedor!" />
+                            <p:commandButton icon="ui-icon-search" title="Pesquisa"
+                                             onclick="PF('dlgFornecedor').show();"
+                                             process="@this" update=":formFornecedor:tabela">
+                                <p:ajax event="dialogReturn" listener="#{MBDocumentoFiscal.fornecedorSelecionado}"
+                                        process="@this" update="fornecedor" />
+                                <p:resetInput target="fornecedor" />
+                            </p:commandButton>
+                        </h:panelGroup>                        
+
+
                     </h:panelGrid>
-                    <p:outputLabel value="Anexar Nota Fiscal:" rendered="#{MBDocumentoFiscal.documentoFiscal.tipoDocFiscal !='Danfe'}" />
+                    <p:outputLabel value="Documento Fiscal:" rendered="#{MBDocumentoFiscal.documentoFiscal.tipoDocFiscal !='Danfe'}"  />
                     <h:form enctype="multipart/form-data"  >
-                        <p:fileUpload fileUploadListener="#{MBDocumentoFiscal.UploadFileDocumento}" 
+                        <p:fileUpload fileUploadListener="#{MBDocumentoFiscal.UploadFileDocumento}"  id="fileUpload"
                                       update=":msgGlobal"  mode="advanced"  auto="true" fileLimit="1"
                                       fileLimitMessage="É permitido anexar apenas 1 arquivo!" 
-                                      rendered="#{MBDocumentoFiscal.documentoFiscal.tipoDocFiscal !='Danfe'}" />
+                                      rendered="#{MBDocumentoFiscal.documentoFiscal.tipoDocFiscal !='Danfe'}" required="true" requiredMessage="Anexar Documento Fiscal!" />
+                    
                     </h:form>
 
                 </h:panelGrid>
@@ -167,7 +177,7 @@
                     <p:commandButton value="Gravar"
                                      actionListener="#{MBDocumentoFiscal.salvar}"
                                      oncomplete="verificar(xhr, status, args, 'dlgNovo', 'tabelaDocumentoFiscal');" 
-                                     update=":formTabela:tabela :msgGlobal"/>
+                                     update=":formTabela:tabela :msgGlobal" />
                     <p:commandButton value="Cancelar" onclick="PF('dlgNovo').hide();"
                                      process="@this">
                         <p:resetInput target="painelDlgNovo" />
@@ -344,9 +354,9 @@
 
 
 
-                        <p:column headerText="Codigo" style="width: 30px; text-align: center" 
+                        <p:column headerText="Codigo" style="width: 30px; text-align: center"  filterStyle="max-width: 40px; min-width: 40px;"
                                   filterBy="#{item.codigo}">
-                            <h:outputText value="#{item.codigo}"  style="size: auto" />
+                            <h:outputText value="#{item.codigo}"   />
                         </p:column>
                         <p:column headerText="Fornecedor" width="150"
                                   filterBy="#{item.razaoSocialNome}">
@@ -361,19 +371,6 @@
                             <h:outputText value="#{item.contato}" />
                         </p:column>
 
-
-
-
-
-                                <!-- <f:setPropertyActionListener value="#{item}"
-                                                        target="#{MBFornecedor.fornecedor}"></f:setPropertyActionListener> funciona como um prepara pesquisa para atualizar -->
-                        <p:column headerText="Opções" width="50">
-
-                            <p:commandButton icon="1    ">
-
-                            </p:commandButton>
-
-                        </p:column>
                     </p:dataTable>
 
 
@@ -381,7 +378,6 @@
 
 
                 <h:panelGrid columns="3">
-
 
 
                     <p:commandButton value="Sair"
@@ -392,5 +388,5 @@
             </h:form>
         </p:dialog>
     </ui:define>
-
+    
 </ui:composition>

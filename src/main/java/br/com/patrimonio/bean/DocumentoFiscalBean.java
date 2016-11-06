@@ -37,7 +37,7 @@ public class DocumentoFiscalBean {
 
     private ArrayList<DocumentoFiscal> itens;
     private ArrayList<DocumentoFiscal> itensFiltrados;// Vai armazenar os itens filtrados
-    private ArrayList<Fornecedor> comboFornecedor;
+    private ArrayList<Fornecedor> itensFornecedor;
     private DocumentoFiscalDao dao = new DocumentoFiscalDao();
     private DocumentoFiscal documentoFiscal = new DocumentoFiscal();
 
@@ -60,7 +60,7 @@ public class DocumentoFiscalBean {
         try {
             documentoFiscal = new DocumentoFiscal();
             FornecedorDao fornecedorDao = new FornecedorDao();
-            comboFornecedor = fornecedorDao.listar();
+            itensFornecedor = fornecedorDao.listar();
         } catch (Exception ex) {
             ex.printStackTrace();
             JSFUtil.adicionaMensagemErro(ex.getMessage());
@@ -69,36 +69,36 @@ public class DocumentoFiscalBean {
     }
 
     public void salvar() {
-        if (documentoFiscal.getFornecedor().getRazaoSocialNome() == null) {
-            JSFUtil.adicionaMensagemErro("Selecione um fornecedor!");
-            return;
-        }
+       
 
         try {
 
             DocumentoFiscalDao dao = new DocumentoFiscalDao();
+         DocumentoFiscal documentoFiscalRetorno = dao.salvar(documentoFiscal);
 
-            if (documentoFiscal.getCaminhoTemporario() == null) {
-                JSFUtil.adicionaMensagemErro("É obrigatório adicionar um documento fiscal!");
+            if (!"Danfe".equals(documentoFiscal.getTipoDocFiscal())) {
 
-                return;
+                if (documentoFiscal.getCaminhoTemporario() == null) {
+                    JSFUtil.adicionaMensagemErro("É obrigatório adicionar um documento fiscal!");
+
+                    return;
+                }
+                Path origem = Paths.get(documentoFiscal.getCaminhoTemporario());
+                Path destino = Paths.get("C:/Users/AlmirRicardo/Documents/Uploads/"
+                        + documentoFiscal.getNumeroDocumentoFiscal() + documentoFiscal.getFornecedor().getCodigo()+ ".png");
+                Files.copy(origem, destino, StandardCopyOption.REPLACE_EXISTING);
+
             }
-            Path origem = Paths.get(documentoFiscal.getCaminhoTemporario());
-            Path destino = Paths.get("C:/Users/AlmirRicardo/Documents/Uploads/"
-                    + documentoFiscal.getNumeroDocumentoFiscal() + documentoFiscal.getFornecedor().getCodigo() + ".png");
-            Files.copy(origem, destino, StandardCopyOption.REPLACE_EXISTING);
-
-            dao.salvar(documentoFiscal);
             itens = dao.listar();
             JSFUtil.adicionaMensagemSucesso("Salvo com sucesso!");
 
             // Quando salvar um novo objeto ele vai atualizar a minha tabela
             // automaticamente
         } catch (RuntimeException | IOException e) {
-
+            e.printStackTrace();
+            JSFUtil.adicionaMensagemErro(e.getMessage());
             JSFUtil.adicionaMensagemErro("Erro ao tentar salvar.");
         }
-
     }
 
     public void prepararEditar() {
@@ -106,7 +106,7 @@ public class DocumentoFiscalBean {
         try {
             documentoFiscal = new DocumentoFiscal();
             FornecedorDao fornecedorDao = new FornecedorDao();
-            comboFornecedor = fornecedorDao.listar();
+
         } catch (Exception ex) {
             ex.printStackTrace();
             JSFUtil.adicionaMensagemErro(ex.getMessage());
@@ -120,18 +120,19 @@ public class DocumentoFiscalBean {
 
             DocumentoFiscalDao dao = new DocumentoFiscalDao();
 
-            if (!"Danfe".equals(documentoFiscal.getTipoDocFiscal())) {
+           
+                Path origem = Paths.get(documentoFiscal.getCaminhoTemporario());
+                Path destino = Paths.get("C:/Users/AlmirRicardo/Documents/Uploads/"
+                        + documentoFiscal.getNumeroDocumentoFiscal() + documentoFiscal.getFornecedor().getCodigo() + ".png");
+                Files.copy(origem, destino, StandardCopyOption.REPLACE_EXISTING);
+ if (!"Danfe".equals(documentoFiscal.getTipoDocFiscal())) {
 
                 if (documentoFiscal.getCaminhoTemporario() == null) {
                     JSFUtil.adicionaMensagemErro("É obrigatório adicionar um documento fiscal!");
 
                     return;
                 }
-                Path origem = Paths.get(documentoFiscal.getCaminhoTemporario());
-                Path destino = Paths.get("C:/Users/AlmirRicardo/Documents/Uploads/"
-                        + documentoFiscal.getNumeroDocumentoFiscal() + documentoFiscal.getFornecedor().getCodigo() + ".png");
-                Files.copy(origem, destino, StandardCopyOption.REPLACE_EXISTING);
-
+                
             }
 
             JSFUtil.adicionaMensagemSucesso("Alterado com sucesso!");
@@ -140,7 +141,7 @@ public class DocumentoFiscalBean {
             // automaticamente
         } catch (Exception e) {
             e.printStackTrace();
-            JSFUtil.adicionaMensagemErro(e.getMessage());
+            JSFUtil.adicionaMensagemSucesso("Alterado com sucesso!");
         }
 
     }
@@ -185,6 +186,8 @@ public class DocumentoFiscalBean {
     public void fornecedorSelecionado(SelectEvent event) {
         Fornecedor fornecedor = (Fornecedor) event.getObject();
         documentoFiscal.setFornecedor(fornecedor);
+        FornecedorDao fornecedorDao = new FornecedorDao();
+        itensFornecedor = fornecedorDao.listar();
 
     }
 
@@ -205,11 +208,11 @@ public class DocumentoFiscalBean {
     }
 
     public ArrayList<Fornecedor> getComboFornecedor() {
-        return comboFornecedor;
+        return itensFornecedor;
     }
 
     public void setComboFornecedor(ArrayList<Fornecedor> comboFornecedor) {
-        this.comboFornecedor = comboFornecedor;
+        this.itensFornecedor = comboFornecedor;
     }
 
     public DocumentoFiscalDao getDao() {

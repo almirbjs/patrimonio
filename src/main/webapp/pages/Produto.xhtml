@@ -26,26 +26,26 @@
                     Produtos
                 </f:facet>
 
-                <p:column headerText="Codigo" sortBy="#{item.codigo}"
+                <p:column headerText="Codigo" sortBy="#{item.codigo}" style="width: 70px; text-align: center"  filterStyle="max-width: 60px; min-width: 60px;"
                           filterBy="#{item.codigo}">
                     <h:outputText value="#{item.codigo}" />
                 </p:column>
-                <p:column headerText="Produto" sortBy="#{item.produto}"
+                <p:column headerText="Produto" sortBy="#{item.produto}" style="width: 270px;"
                           filterBy="#{item.produto}">
                     <h:outputText value="#{item.produto}" />
                 </p:column>
 
-                <p:column headerText="Modelo" filterBy="#{item.modelo}">
+                <p:column headerText="Modelo" filterBy="#{item.modelo}" style="width: 200px; text-align: center"> 
                     <h:outputText value="#{item.modelo}" />
                 </p:column>
 
                 <p:column headerText="Categoria"
-                          sortBy="#{item.categoria}" filterBy="#{item.categoria}">
+                          sortBy="#{item.categoria}" filterBy="#{item.categoria}" style="width: 200px; text-align: center">
                     <h:outputText value="#{item.categoria.categoria}" />
                 </p:column>
 
                 <p:column headerText="Fabricante"
-                          filterBy="#{item.fornecedor.razaoSocialNome}">
+                          filterBy="#{item.fornecedor.razaoSocialNome}"  style="width: 270px;" >
                     <h:outputText value="#{item.fornecedor.razaoSocialNome}" />
                 </p:column>
 
@@ -107,11 +107,11 @@
 
                     <p:outputLabel value="Produto:" />
                     <p:inputText id="txtProduto" size="45" maxlength="45"
-                                 value="#{MBProduto.produto.produto}" required="true"
+                                 value="#{MBProduto.produto.produto}" required="true" onblur="value=value.toUpperCase()"
                                  requiredMessage="Informe o nome do Produto!" />
 
                     <p:outputLabel value="Modelo:" />
-                    <p:inputText id="txtModelo" size="20" maxlength="20"
+                    <p:inputText id="txtModelo" size="20" maxlength="20" onblur="value=value.toUpperCase()"
                                  value="#{MBProduto.produto.modelo}" required="true"
                                  requiredMessage="Informe o modelo do produto!" />
 
@@ -127,16 +127,33 @@
 
                     </p:selectOneMenu>
 
-                    <p:outputLabel value="Fabricante:" for="fabricante" />
+
+                    <p:outputLabel value="Fabricante" for="fornecedor" />
+
                     <h:panelGrid columns="2">
-                        <p:outputLabel id="fabricante" value="#{MBProduto.produto.fornecedor.razaoSocialNome}"  />
-                            
-                      
+
+                        <h:panelGroup>
+                            <p:inputText id="fornecedor" value="#{MBProduto.produto.fornecedor.razaoSocialNome}"
+                                         readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"
+                                         required="true" requiredMessage="Selecione um Fabricante!" />
+                            <p:commandButton icon="ui-icon-search" title="Pesquisa"
+                                             onclick="PF('dlgFornecedor').show();"
+                                             process="@this" update=":formFornecedor:tabela">
+                                <p:ajax event="dialogReturn" listener="#{MBProduto.produtoSelecionado}"
+                                        process="@this" update="fornecedor" />
+                                <p:resetInput target="fornecedor" />
+                            </p:commandButton>
+                        </h:panelGroup>                        
+
+
                     </h:panelGrid>
-                    <p:outputLabel value="Anexar imagem:" />
+
+
+
+                    <p:outputLabel value="Imagem:" />
 
                     <h:form enctype="multipart/form-data" >
-                        <p:fileUpload fileUploadListener="#{MBProduto.UploadImagem}" update=":msgGlobal"  mode="advanced"  auto="true"/>
+                        <p:fileUpload fileUploadListener="#{MBProduto.UploadImagem}" update=":msgGlobal"  mode="advanced"  auto="true" label="Anexar"/>
                     </h:form>
 
                     <p:outputLabel value="OBS.:" />
@@ -172,15 +189,14 @@
             modal="true" appendTo="@(body)" : desabilita todo campo atras do dialogo-->
             <h:form id="formEditar">
                 <h:panelGrid columns="2" id="painelEditar">
-                    <p:outputLabel value="Codigo:" />
-                    <p:outputLabel value="#{MBProduto.produto.codigo}" />
+
                     <p:outputLabel value="Produto:" />
                     <p:inputText id="txtProduto" size="45" maxlength="45"
-                                 value="#{MBProduto.produto.produto}" required="true"
-                                 requiredMessage="Informe o nome do Produto!"  />
+                                 value="#{MBProduto.produto.produto}" required="true" onblur="value=value.toUpperCase()"
+                                 requiredMessage="Informe o nome do Produto!" />
 
                     <p:outputLabel value="Modelo:" />
-                    <p:inputText id="txtModelo" size="20" maxlength="20"
+                    <p:inputText id="txtModelo" size="20" maxlength="20" onblur="value=value.toUpperCase()"
                                  value="#{MBProduto.produto.modelo}" required="true"
                                  requiredMessage="Informe o modelo do produto!" />
 
@@ -197,30 +213,33 @@
                     </p:selectOneMenu>
 
 
-                    <p:outputLabel value="Fabricante:" />
+                    <p:outputLabel value="Fabricante" for="fornecedor" />
+
                     <h:panelGrid columns="2">
-                        <p:selectOneMenu id="oneMenuFabricante" filter="true"
-                                         validatorMessage="Selecione um Fabricante!"
-                                         value="#{MBProduto.produto.fornecedor.codigo}" required="true"
-                                         requiredMessage="Selecione um fabricante">
-                            <f:selectItem itemValue="" itemLabel="Selecione"
-                                          noSelectionOption="true" />
-                            <f:selectItems value="#{MBProduto.comboFornecedores}" var="item"
-                                           itemValue="#{item.codigo}" itemLabel="#{item.razaoSocialNome}" />
-                        </p:selectOneMenu>
-                        <p:commandButton value="Adicionar" />
+
+                        <h:panelGroup>
+                            <p:inputText id="fornecedor" value="#{MBProduto.produto.fornecedor.razaoSocialNome}"
+                                         readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"
+                                         required="true" requiredMessage="Selecione um Fabricante!" />
+
+                        </h:panelGroup>                        
+
+
                     </h:panelGrid>
-                    <p:outputLabel value="Anexar imagem:" />
+
+
+
+                    <p:outputLabel value="Imagem:" />
 
                     <h:form enctype="multipart/form-data" >
-                        <p:fileUpload fileUploadListener="#{MBProduto.UploadImagem}" update=":msgGlobal"  mode="advanced"  auto="true"/>
+                        <p:fileUpload fileUploadListener="#{MBProduto.UploadImagem}" update=":msgGlobal"  mode="advanced"  auto="true" label="Anexar"/>
                     </h:form>
 
                     <p:outputLabel value="OBS.:" />
                     <p:inputText id="txtObs" size="45" maxlength="45"
                                  value="#{MBProduto.produto.obs}" />
-
                 </h:panelGrid>
+
                 <h:panelGrid columns="2">
 
                     <p:commandButton value="Editar"
@@ -248,12 +267,12 @@
                     <p:outputLabel value="#{MBProduto.produto.produto}" />
                     <p:outputLabel value="Modelo: " />
                     <p:outputLabel value="#{MBProduto.produto.modelo}" />
-                    <p:outputLabel value="Observação: " />
-                    <p:outputLabel value="#{MBProduto.produto.obs}" />
                     <p:outputLabel value="Fabricante:" />
                     <p:outputLabel value="#{MBProduto.produto.fornecedor.razaoSocialNome}" />
                     <p:outputLabel value="Categoria:" />
                     <p:outputLabel value="#{MBProduto.produto.categoria.categoria}" />
+                    <p:outputLabel value="Observação: " />
+                    <p:outputLabel value="#{MBProduto.produto.obs}" />
                 </h:panelGrid>
                 <h:panelGrid columns="3">
                     <p:commandButton value="Excluir"
@@ -290,6 +309,82 @@
 
             </h:form>
 
+        </p:dialog>
+
+        <p:dialog widgetVar="dlgDocumentoFiscal" closable="false" draggable="false"
+                  resizable="false" modal="true" appendTo="@(body)"
+                  header="Documento fiscal">
+
+            <h:form id="formDocumentoFiscal">
+                <p:scrollPanel style="width:800px;height:550px">
+                    <h:panelGrid  id="painelDocumentoFiscal">
+
+                        <p:graphicImage style="align-content: center" id="imagem" cache="false" url="http://localhost:8080/uploads/#{MBDocumentoFiscal.documentoFiscal.numeroDocumentoFiscal}#{MBDocumentoFiscal.documentoFiscal.fornecedor.codigo}.png" height="700" width="850" />
+
+                    </h:panelGrid>
+                </p:scrollPanel>
+                <h:panelGrid columns="2">
+
+                    <p:commandButton value="Imprimir" type="button" icon="ui-icon-print" >
+                        <p:printer target="imagem   " />
+                    </p:commandButton>
+                    <p:commandButton value="Sair"
+                                     onclick="PF('dlgDocumentoFiscal').hide();" />
+                </h:panelGrid>
+
+            </h:form>
+
+        </p:dialog>
+
+        <p:dialog widgetVar="dlgFornecedor" closable="false" draggable="false" width="700" 
+                  resizable="false" modal="true" appendTo="@(body)"
+                  header="Selecione o Fornecedor">
+
+            <h:form id="formFornecedor">
+                <h:panelGrid columns="2" id="painelFornecedor">
+
+
+                    <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."  rowKey="#{item.codigo}" selectionMode="single" selection="#{item}"
+                                 widgetVar="tabelaFornecedor" value="#{MBFornecedor.itens}"  filteredValue="#{MBFornecedor.itensFiltrados}"
+                                 var="item"  rows="10" 
+                                 >
+                        <p:ajax event="rowSelect" listener="#{MBProduto.produtoSelecionado}" update=":formDlgNovo:fornecedor"  onsuccess="PF('dlgFornecedor').hide()"
+                                />
+
+
+
+                        <p:column headerText="Codigo" style="width: 30px; text-align: center"  filterStyle="max-width: 40px; min-width: 40px;"
+                                  filterBy="#{item.codigo}">
+                            <h:outputText value="#{item.codigo}"   />
+                        </p:column>
+                        <p:column headerText="Fornecedor" width="150"
+                                  filterBy="#{item.razaoSocialNome}">
+                            <h:outputText value="#{item.razaoSocialNome}" />
+                        </p:column>
+                        <p:column headerText="CNPJ/CPF" sortBy="#{item.cnpjCpf}" width="130" style="width: 30px; text-align: center"
+                                  filterBy="#{item.cnpjCpf}">
+                            <h:outputText value="#{item.cnpjCpf}" />
+                        </p:column>
+
+                        <p:column headerText="Contato" width="100" style="width: 30px; text-align: center">
+                            <h:outputText value="#{item.contato}" />
+                        </p:column>
+
+                    </p:dataTable>
+
+
+                </h:panelGrid>
+
+
+                <h:panelGrid columns="3">
+
+
+                    <p:commandButton value="Sair"
+                                     onclick="PF('dlgFornecedor').hide();" />
+
+                </h:panelGrid>
+
+            </h:form>
         </p:dialog>
 
     </ui:define>

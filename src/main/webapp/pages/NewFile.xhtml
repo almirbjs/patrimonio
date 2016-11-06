@@ -1,46 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:p="http://primefaces.org/ui"
-                template="/templates/modeloSistema.xhtml">
+<xhtml xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Autenticação</title>
+</h:head>
+<h:body>
+	<p:growl id="mensagem" />
 
-    <ui:define name="Menu">
-        <ui:include src="/includes/menuPrincipal.xhtml" />
-    </ui:define>
+	<p:dialog header="Autenticação" closable="false" draggable="false"
+		resizable="false" modal="true" visible="true">
+		<h:form>
+			<h:panelGrid columns="2">
+				<p:outputLabel for="cpf" value="CPF:" />
+				<p:inputMask id="cpf" mask="999.999.999-99" size="20"
+					required="true" requiredMessage="O campo CPF é obrigatório"
+					value="#{autenticacaoBean.usuario.pessoa.cpf}" />
 
-    <ui:define name="Conteudo">
+				<p:outputLabel for="senha" value="Senha:" />
+				<p:password id="senha" maxlength="8" size="20" required="true"
+					requiredMessage="O campo Senha é obrigatório"
+					value="#{autenticacaoBean.usuario.senha}" />
+			</h:panelGrid>
 
-        <h:form id="formCadRua">
-            <h:body>
-                <p:growl id="growl" sticky="true" showDetail="true" life="3000" />
-
-                <h:form>
-                    <p:growl id="message" showDetail="true" />
-
-                    <p:commandButton value="Destroy the World"
-                                     actionListener="#{dialogView.destroyWorld}" update="message">
-                        <p:confirm header="Confirmation" message="Deseja realmente excluir?"
-                                   icon="ui-icon-alert" />
-                    </p:commandButton>
-
-                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                        <p:commandButton value="Yes" type="button"
-                                         styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                        <p:commandButton value="No" type="button"
-                                         styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                    </p:confirmDialog>
-                </h:form>
-
-
-
-
-
-
-            </h:body>
-        </h:form>
-
-    </ui:define>
-</ui:composition>
+			<h:panelGrid columns="1">
+				<p:commandButton value="Entrar" update=":mensagem"
+					actionListener="#{autenticacaoBean.autenticar}" />
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+</h:body>
+</xhtml>

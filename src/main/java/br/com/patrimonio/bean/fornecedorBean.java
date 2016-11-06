@@ -154,7 +154,7 @@ public class fornecedorBean {
             }
         } catch (Exception e) {
             JSFUtil.adicionaMensagemErro(e.getMessage());
-            JSFUtil.adicionaMensagemErro("Pa�s nulo ");
+            JSFUtil.adicionaMensagemErro("País nulo ");
         }
 
     }

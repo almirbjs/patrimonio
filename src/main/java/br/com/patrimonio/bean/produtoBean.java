@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.SelectEvent;
 import org.primefaces.model.UploadedFile;
 
 //ele vai estar por tras de uma interface grafica
@@ -39,7 +40,7 @@ public class produtoBean {
 
     private ArrayList<Produto> itens;
     private ArrayList<Produto> itensFiltrados;// Vai armazenar os itens filtrados
-    private ArrayList<Fornecedor> comboFornecedores; // Carrega o combox com o nome dos
+    private ArrayList<Fornecedor> itensFornecedores; // Carrega o combox com o nome dos
     private ArrayList<Categoria> comboCategoria;										// paises
     private ProdutoDao dao = new ProdutoDao();
     private Produto produto = new Produto();
@@ -75,11 +76,7 @@ public class produtoBean {
 
     public void salvar() {
 
-        if (produto.getFornecedor().getRazaoSocialNome() == null) {
-          FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Contact admin."));
             
-        }
-        
         
         try {
 
@@ -97,7 +94,7 @@ public class produtoBean {
             // Quando salvar um novo objeto ele vai atualizar a minha tabela
             // automaticamente
         } catch (RuntimeException e) {
-            JSFUtil.adicionaMensagemErro("Salvo com sucesso!");
+            JSFUtil.adicionaMensagemSucesso("Salvo com sucesso!");
             setItens(dao.listar());
         } catch (IOException ex) {
             Logger.getLogger(produtoBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -184,6 +181,15 @@ public class produtoBean {
         }
 
     }
+    
+    public void produtoSelecionado(SelectEvent event) {
+        Fornecedor fornecedor = (Fornecedor) event.getObject();
+        produto.setFornecedor(fornecedor);
+        FornecedorDao fornecedorDao = new FornecedorDao();
+        itensFornecedores = fornecedorDao.listar();
+
+    }
+
 
     public ArrayList<Produto> getItens() {
         return itens;
@@ -202,11 +208,11 @@ public class produtoBean {
     }
 
     public ArrayList<Fornecedor> getComboFornecedores() {
-        return comboFornecedores;
+        return itensFornecedores;
     }
 
     public void setComboFornecedores(ArrayList<Fornecedor> comboFornecedores) {
-        this.comboFornecedores = comboFornecedores;
+        this.itensFornecedores = comboFornecedores;
     }
 
     public ArrayList<Categoria> getComboCategoria() {

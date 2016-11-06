@@ -9,6 +9,7 @@ import org.hibernate.Transaction;
 
 import br.com.patrimonio.domain.Usuario;
 import br.com.patrimonio.util.HibernateUtil;
+import br.com.patrimonio.util.JSFUtil;
 import java.io.IOException;
 
 public class DocumentoFiscalDao {
@@ -17,8 +18,10 @@ public class DocumentoFiscalDao {
     Transaction transacao = null;
 
     public DocumentoFiscal salvar(DocumentoFiscal u) {
-
         try {
+
+            
+           
             // beginTransaction(): inicia a transa��o.
             transacao = sessao.beginTransaction();
             // save: Salva a operação.
@@ -102,22 +105,7 @@ public class DocumentoFiscalDao {
     }
 
     public void alterar(DocumentoFiscal u) {
-        Session sessao = HibernateUtil.getSessionFactory().openSession();
-        Transaction transacao = null;
-
-        try {
-            transacao = sessao.beginTransaction();
-            sessao.update(u);
-            transacao.commit();
-        } catch (RuntimeException erro) {
-            if (transacao != null) {
-                transacao.rollback();
-            }
-            throw erro;
-        } finally {
-            sessao.close();
-        }
-
+       
     }
 
     // Lista de entidades
