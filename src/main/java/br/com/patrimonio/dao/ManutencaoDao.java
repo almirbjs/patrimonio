@@ -6,26 +6,26 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import br.com.patrimonio.domain.Manutencao;
 import br.com.patrimonio.domain.Patrimonio;
 import br.com.patrimonio.util.HibernateUtil;
-import java.util.List;
 
-public class PatrimonioDao {
+public class ManutencaoDao {
 
     Session sessao = HibernateUtil.getSessionFactory().openSession();
     Transaction transacao = null;
 
-    public void salvar(Patrimonio e) throws Exception {
+    public void salvar(Manutencao c) throws Exception {
 
         try {
             // beginTransaction(): inicia a transa��o.
             transacao = sessao.beginTransaction();
             // save: Salva a opera��o.
-            sessao.save(e);
+            sessao.save(c);
             // comfimar � opera��o.
             transacao.commit();
 
-        } catch (Exception ex) {
+        } catch (Exception e) {
             // Mensagem de erro
             if (transacao != null) {
                 // Se algo der errado eu utilizo rollback para disfazer a
@@ -33,7 +33,7 @@ public class PatrimonioDao {
                 transacao.rollback();
 
             }
-            throw ex;// For�a o usuario escrever a mensagem de erro para ser
+            throw e;// For�a o usuario escrever a mensagem de erro para ser
             // exibida na tela.
 
             // finally{} � o finalizador
@@ -44,20 +44,19 @@ public class PatrimonioDao {
 
     }
 
-    @SuppressWarnings("unchecked")
-    public ArrayList<Patrimonio> BuscaPorCodigoDoFornecedor(int codigo) {
+    public Manutencao
+            BuscaPorCodigo(int codigo) {
         Session sessao = HibernateUtil.getSessionFactory().openSession();
 
-        ArrayList<Patrimonio> estado = null;
+        Manutencao c = null;
         try {
-
             //
-            org.hibernate.Query consulta = sessao.getNamedQuery("Patrimonio.buscarPorCodigoFornecedor");
+            org.hibernate.Query consulta = sessao.getNamedQuery("Manutencao.buscarPorCodigo");
             // consulta.setInteger("codigo", codigo);o primeiro codigo � o da
             // @NamedQuery ou segundo � o da entidade.
             consulta.setInteger("codigo", codigo);
             // uniqueResult() busca apenas um resultado
-            estado = (ArrayList<br.com.patrimonio.domain.Patrimonio>) consulta.list();
+            c = (Manutencao) consulta.uniqueResult();
 
         } catch (RuntimeException ex) {
             throw ex;
@@ -66,11 +65,11 @@ public class PatrimonioDao {
             sessao.close();
         }
 
-        return estado;
+        return c;
 
     }
 
-    public void excluir(Patrimonio e) throws Exception {
+    public void excluir(Manutencao c) throws Exception {
         Session sessao = HibernateUtil.getSessionFactory().openSession();
         Transaction transacao = null;
 
@@ -78,11 +77,11 @@ public class PatrimonioDao {
             // beginTransaction(): inicia a transa��o.
             transacao = sessao.beginTransaction();
             // delete: deleta a opera��o.
-            sessao.delete(e);
+            sessao.delete(c);
             // comfimar � opera��o.
             transacao.commit();
 
-        } catch (Exception ex) {
+        } catch (Exception e) {
             // Mensagem de erro
             if (transacao != null) {
                 // Se algo der errado eu utilizo rollback para disfazer a
@@ -90,7 +89,7 @@ public class PatrimonioDao {
                 transacao.rollback();
 
             }
-            throw ex;// For�a o usuario escrever a mensagem de erro para ser
+            throw e;// For�a o usuario escrever a mensagem de erro para ser
             // exibida na tela.
 
             // finally{} � o finalizador
@@ -101,7 +100,7 @@ public class PatrimonioDao {
 
     }
 
-    public void alterar(Patrimonio e) throws Exception {
+    public void alterar(Manutencao c) throws Exception {
         Session sessao = HibernateUtil.getSessionFactory().openSession();
         Transaction transacao = null;
 
@@ -109,11 +108,11 @@ public class PatrimonioDao {
             // beginTransaction(): inicia a transa��o.
             transacao = sessao.beginTransaction();
             // update: altera os dados da entidade.
-            sessao.update(e);
+            sessao.update(c);
             // comfimar � opera��o.
             transacao.commit();
 
-        } catch (Exception ex) {
+        } catch (Exception e) {
             // Mensagem de erro
             if (transacao != null) {
                 // Se algo der errado eu utilizo rollback para disfazer a
@@ -121,7 +120,7 @@ public class PatrimonioDao {
                 transacao.rollback();
 
             }
-            throw ex;// For�a o usuario escrever a mensagem de erro para ser
+            throw e;// For�a o usuario escrever a mensagem de erro para ser
             // exibida na tela.
 
             // finally{} � o finalizador
@@ -134,26 +133,29 @@ public class PatrimonioDao {
 
     // Lista de entidades
     @SuppressWarnings("unchecked")
-    public ArrayList<Patrimonio> listar() {
+    public ArrayList<Manutencao> listar() {
 
         Session sessao = HibernateUtil.getSessionFactory().openSession();
 
         // iniciamos a lista nula porque n�o tenhos entidades ainda listada
-        ArrayList<Patrimonio> Patrimonio = null;
+        ArrayList<Manutencao> Manutencao
+                = null;
 
         try {
 
-            Query consulta = sessao.getNamedQuery("Patrimonio.listar");
-            Patrimonio = (ArrayList<br.com.patrimonio.domain.Patrimonio>) consulta.list();
+            Query consulta = sessao.getNamedQuery("Manutencao.listar");
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            Manutencao = (ArrayList<br.com.patrimonio.domain.Manutencao>) consulta.list();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         // retorna entidades
-        return Patrimonio;
+        return Manutencao;
 
     }
-// Lista de entidades
+    
+    // Lista de entidades
     @SuppressWarnings("unchecked")
     public ArrayList<Patrimonio> listarFuncionando() {
 
@@ -174,8 +176,5 @@ public class PatrimonioDao {
         return Patrimonio;
 
     }
-   
-    
-    
-    
+
 }

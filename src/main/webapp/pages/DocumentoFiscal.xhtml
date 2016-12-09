@@ -156,15 +156,14 @@
                             </p:commandButton>
                         </h:panelGroup>                        
 
-
                     </h:panelGrid>
+                    
                     <p:outputLabel value="Documento Fiscal:" rendered="#{MBDocumentoFiscal.documentoFiscal.tipoDocFiscal !='Danfe'}"  />
                     <h:form enctype="multipart/form-data"  >
                         <p:fileUpload fileUploadListener="#{MBDocumentoFiscal.UploadFileDocumento}"  id="fileUpload"
                                       update=":msgGlobal"  mode="advanced"  auto="true" fileLimit="1"
                                       fileLimitMessage="É permitido anexar apenas 1 arquivo!" 
-                                      rendered="#{MBDocumentoFiscal.documentoFiscal.tipoDocFiscal !='Danfe'}" required="true" requiredMessage="Anexar Documento Fiscal!" />
-                    
+                                      rendered="#{MBDocumentoFiscal.documentoFiscal.tipoDocFiscal !='Danfe'}"  />
                     </h:form>
 
                 </h:panelGrid>
@@ -244,6 +243,7 @@
                     <p:outputLabel  value="Chave de Acesso:" rendered="#{MBDocumentoFiscal.documentoFiscal.tipoDocFiscal =='Danfe'}" />
                     <p:inputText value="#{MBDocumentoFiscal.documentoFiscal.chaveDeAcesso}"  rendered="#{MBDocumentoFiscal.documentoFiscal.tipoDocFiscal =='Danfe'}" />
 
+                    <p:spacer rendered="#{MBDocumentoFiscal.documentoFiscal.tipoDocFiscal =='Danfe'}"/> 
                     <p:outputLabel value="Anexar Nota Fiscal:" rendered="#{MBDocumentoFiscal.documentoFiscal.tipoDocFiscal !='Danfe'}" />
 
                     <h:form enctype="multipart/form-data" >
@@ -252,24 +252,28 @@
 
                     <p:outputLabel value=" Data de emissão:" />
 
-                    <p:calendar locale="pt" mask="99/99/9999" pattern="dd/mm/yyyy" maxdate="today" 
+                    <p:calendar locale="pt" mask="99/99/9999" pattern="dd/MM/yyyy" maxdate="today" 
                                 validatorMessage="Informe uma data valida!"
                                 value="#{MBDocumentoFiscal.documentoFiscal.dataEmissao}" required="true"
                                 requiredMessage="Informe a data de emissão!">
                     </p:calendar>
 
+                    <p:outputLabel value="Fornecedor" for="fornecedor" />
 
-                    <p:outputLabel value="Fornecedor" />
+                    <h:panelGrid columns="2">
 
-                    <p:selectOneMenu id="oneMenuFornecedor" filter="true"
-                                     validatorMessage="Selecione um Fornecedor!"
-                                     value="#{MBDocumentoFiscal.documentoFiscal.fornecedor.codigo}" required="true"
-                                     requiredMessage="Selecione o Fornecedor">
-                        <f:selectItem itemValue="" itemLabel="Selecione"
-                                      noSelectionOption="true" />
-                        <f:selectItems value="#{MBDocumentoFiscal.comboFornecedor}" var="item"
-                                       itemValue="#{item.codigo}" itemLabel="#{item.razaoSocialNome}" />
-                    </p:selectOneMenu>
+                        <h:panelGroup>
+                            <p:inputText id="fornecedor" value="#{MBDocumentoFiscal.documentoFiscal.fornecedor.razaoSocialNome}"
+                                         readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"
+                                         required="true" requiredMessage="Selecione o Fornecedor!" />
+                           
+                        </h:panelGroup>                        
+
+
+                    </h:panelGrid>
+                    
+                    
+                    
 
                 </h:panelGrid>
 

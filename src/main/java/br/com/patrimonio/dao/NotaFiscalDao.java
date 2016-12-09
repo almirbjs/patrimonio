@@ -6,7 +6,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import br.com.patrimonio.domain.NotaFiscal;
+import br.com.patrimonio.domain.Manutencao;
 import br.com.patrimonio.util.HibernateUtil;
 
 public class NotaFiscalDao {
@@ -14,7 +14,7 @@ public class NotaFiscalDao {
     Session sessao = HibernateUtil.getSessionFactory().openSession();
     Transaction transacao = null;
 
-    public void salvar(NotaFiscal n) throws Exception {
+    public void salvar(Manutencao n) throws Exception {
 
         try {
             // beginTransaction(): inicia a transa��o.
@@ -43,7 +43,7 @@ public class NotaFiscalDao {
 
     }
 
-    public void excluir(NotaFiscal n) throws Exception {
+    public void excluir(Manutencao n) throws Exception {
         Session sessao = HibernateUtil.getSessionFactory().openSession();
         Transaction transacao = null;
 
@@ -74,7 +74,7 @@ public class NotaFiscalDao {
 
     }
 
-    public void alterar(NotaFiscal n) throws Exception {
+    public void alterar(Manutencao n) throws Exception {
         Session sessao = HibernateUtil.getSessionFactory().openSession();
         Transaction transacao = null;
 
@@ -107,17 +107,17 @@ public class NotaFiscalDao {
 
     // Lista de entidades
     @SuppressWarnings("unchecked")
-    public ArrayList<NotaFiscal> listar() {
+    public ArrayList<Manutencao> listar() {
 
         Session sessao = HibernateUtil.getSessionFactory().openSession();
 
         // iniciamos a lista nula porque n�o tenhos entidades ainda listada
-        ArrayList<NotaFiscal> notaFiscal = null;
+        ArrayList<Manutencao> notaFiscal = null;
 
         try {
 
             Query consulta = sessao.getNamedQuery("Usuario.listar");
-            notaFiscal = (ArrayList<br.com.patrimonio.domain.NotaFiscal>) consulta.list();
+            notaFiscal = (ArrayList<br.com.patrimonio.domain.Manutencao>) consulta.list();
 
         } catch (Exception e) {
             e.printStackTrace();

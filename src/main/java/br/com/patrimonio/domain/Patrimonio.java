@@ -19,9 +19,12 @@ import javax.persistence.TemporalType;
 @NamedQueries({
     @NamedQuery(name = "Patrimonio.listar", query = "SELECT p FROM Patrimonio p")
     ,
+    @NamedQuery(name = "Patrimonio.listarFuncionando", query = "SELECT p FROM Patrimonio p WHERE p.funcionando='S'")
+    ,
     @NamedQuery(name = "Patrimonio.buscarPorCodigo", query = "SELECT p FROM Patrimonio p WHERE p.codigo = :codigo")})
 @Entity
 @Table(name = "patrimonio")
+@SuppressWarnings("serial")
 public class Patrimonio implements Serializable {
 
     @Id
@@ -40,19 +43,21 @@ public class Patrimonio implements Serializable {
     private BigDecimal valor;
 
     @Column(name = "numserie")
-    private String numeroSerie;
+    private long numeroSerie;
+    
+    
 
-    @Column(name = "anofabricacao")
-    private String anoFabricacao;
-
-    @Column(name = "notafiscal")
-    private int numeroNotaFiscal;
-
-    @Column(name = "dataemissao")
-    private String dataEmissao;
+      @Column(name = "garantia")
+    private short garantia;
 
     @Column(name = "obs", length = 45)
     private String observacao;
+    
+    
+    @Column(name = "funcionando")
+    private String funcionando;
+    
+    
 
     @JoinColumn(name = "fk_patrimonio_idsetor", referencedColumnName = "idsetor", nullable = false)
     //Muitos setores tem um patrimonio
@@ -64,18 +69,11 @@ public class Patrimonio implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     private Produto produto = new Produto();
 
+        
     @JoinColumn(name = "fk_patrimonio_idDocumentoFiscal", referencedColumnName = "idDocumentoFiscal")
 
     @ManyToOne(fetch = FetchType.EAGER)
     private DocumentoFiscal documentoFiscal = new DocumentoFiscal();
-
-    @Override
-    public String toString() {
-        return "Patrimonio [codigo=" + getCodigo() + ", dataCadastro=" + getDataCadastro() + ", valor=" + getValor() + ", numeroSerie="
-                + getNumeroSerie() + ", anoFabricacao=" + getAnoFabricacao() + ", numeroNotaFiscal=" + getNumeroNotaFiscal()
-                + ", dataEmissao=" + getDataEmissao() + ", observacao=" + getObservacao()
-                + ", setor=" + getSetor() + ", produto=" + getProduto() + "]";
-    }
 
     public int getCodigo() {
         return codigo;
@@ -101,36 +99,14 @@ public class Patrimonio implements Serializable {
         this.valor = valor;
     }
 
-    public String getNumeroSerie() {
-        return numeroSerie;
+   
+
+    public short getGarantia() {
+        return garantia;
     }
 
-    public void setNumeroSerie(String numeroSerie) {
-        this.numeroSerie = numeroSerie;
-    }
-
-    public String getAnoFabricacao() {
-        return anoFabricacao;
-    }
-
-    public void setAnoFabricacao(String anoFabricacao) {
-        this.anoFabricacao = anoFabricacao;
-    }
-
-    public int getNumeroNotaFiscal() {
-        return numeroNotaFiscal;
-    }
-
-    public void setNumeroNotaFiscal(int numeroNotaFiscal) {
-        this.numeroNotaFiscal = numeroNotaFiscal;
-    }
-
-    public String getDataEmissao() {
-        return dataEmissao;
-    }
-
-    public void setDataEmissao(String dataEmissao) {
-        this.dataEmissao = dataEmissao;
+    public void setGarantia(short garantia) {
+        this.garantia = garantia;
     }
 
     public String getObservacao() {
@@ -157,18 +133,31 @@ public class Patrimonio implements Serializable {
         this.produto = produto;
     }
 
-    /**
-     * @return the documentoFiscal
-     */
     public DocumentoFiscal getDocumentoFiscal() {
         return documentoFiscal;
     }
 
-    /**
-     * @param documentoFiscal the documentoFiscal to set
-     */
     public void setDocumentoFiscal(DocumentoFiscal documentoFiscal) {
         this.documentoFiscal = documentoFiscal;
     }
 
+    public long getNumeroSerie() {
+        return numeroSerie;
+    }
+
+    public void setNumeroSerie(long numeroSerie) {
+        this.numeroSerie = numeroSerie;
+    }
+
+    public String getFuncionando() {
+        return funcionando;
+    }
+
+    public void setFuncionando(String funcionando) {
+        this.funcionando = funcionando;
+    }
+
+   
+    
+    
 }

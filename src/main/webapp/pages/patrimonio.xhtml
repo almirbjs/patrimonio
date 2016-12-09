@@ -48,6 +48,12 @@
                     <h:outputText value="#{item.produto.fornecedor.razaoSocialNome}" />
                 </p:column>
 
+                <p:column headerText="Setor"
+                          sortBy="#{item.setor.setor}"
+                          filterBy="#{item.setor.setor}">
+                    <h:outputText value="#{item.setor.setor}" />
+                </p:column>
+
 
 
                 <p:column headerText="Observação" sortBy="#{item.produto.obs}"
@@ -67,15 +73,28 @@
 
                     </p:commandButton>
 
-                    <p:commandButton icon="ui-icon-trash"
-                                     oncomplete="PF('dlgExcluir').show();"
-                                     update=":formExcluir:painelExcluir :msgGlobal" title="Excluir">
+
+
+                    <p:commandButton icon="fa fa-refresh"
+                                     oncomplete="PF('dlgTransferir').show();"
+                                     actionListener="#{MBPatrimonio.prepararEditar}"
+                                     update=":formTransferir:painelTransferir :msgGlobal" title="Transferir">
                         <f:setPropertyActionListener value="#{item}"
                                                      target="#{MBPatrimonio.patrimonio}" />
                     </p:commandButton>
+
+                    <p:commandButton icon="fa fa-wrench"
+                                     oncomplete="PF('dlgManutencao').show();"
+                                     actionListener="#{MBPatrimonio.prepararEditar}"
+                                     update=":formManutencao:painelManutencao :msgGlobal" title="Enviar para manutençao">
+                        <f:setPropertyActionListener value="#{item}"
+                                                     target="#{MBPatrimonio.patrimonio}" />
+                    </p:commandButton>
+
+
                     <p:commandButton icon="ui-icon-trash"
-                                     oncomplete="PF('dlgTransferir').show();"
-                                     update=":formTransferir:painelTransferir :msgGlobal" title="Transferir">
+                                     oncomplete="PF('dlgExcluir').show();"
+                                     update=":formExcluir:painelExcluir :msgGlobal" title="Excluir">
                         <f:setPropertyActionListener value="#{item}"
                                                      target="#{MBPatrimonio.patrimonio}" />
                     </p:commandButton>
@@ -111,29 +130,45 @@
                     <p:inputText id="txtCodigo" size="20" maxlength="20"
                                  value="#{MBPatrimonio.patrimonio.codigo}" required="true" />
 
-                    <p:outputLabel value="Produto:"/>
-                    <p:selectOneMenu id="oneMenuProduto" filter="true"
-                                     value="#{MBPatrimonio.patrimonio.produto.codigo}" required="true"
-                                     requiredMessage="Selecione o produto.">
-                        <f:selectItem itemValue="" itemLabel="Selecione o produto"
-                                      noSelectionOption="true" />
-                        <f:selectItems value="#{MBPatrimonio.comboProduto}" var="item"
-                                       itemValue="#{item.codigo}" itemLabel="#{item.produto}" />
-                    </p:selectOneMenu>
+                    <p:outputLabel value="Produto:" for="prod" />
 
-                    <p:outputLabel value="Fornecedor:"/>
+                    <h:panelGrid columns="2">
 
-                    <p:selectOneMenu id="oneMenuFabricante" filter="true"
-                                     validatorMessage="Selecione um Fabricante!"
-                                     value="#{MBDocumentoFiscal.documentoFiscal.fornecedor.codigo}" required="true"
-                                     requiredMessage="Selecione um fabricante">
-                        <f:selectItem itemValue="" itemLabel="Selecione"
-                                      noSelectionOption="true" />
-                        <f:selectItems value="#{MBPatrimonio.comboFornecedores}" var="item"
-                                       itemValue="#{item.codigo}" itemLabel="#{item.razaoSocialNome}" />
-                    </p:selectOneMenu>
+                        <h:panelGroup>
+                            <p:inputText id="prod" value="#{MBPatrimonio.patrimonio.produto.produto}"
+                                         readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"
+                                         required="true" requiredMessage="Selecione um produto!" />
+                            <p:commandButton icon="ui-icon-search" title="Pesquisa"
+                                             onclick="PF('dlgProduto').show();"
+                                             process="@this" update=":formProduto:tabelaProduto">
+                                <p:ajax event="dialogReturn" listener="#{MBPatrimonio.produtoSelecionado}"
+                                        process="@this" update="prod" />
+                                <p:resetInput target="prod" />
+                            </p:commandButton>
+                        </h:panelGroup>                        
 
 
+                    </h:panelGrid>
+
+                    <p:outputLabel value="Doc.Fiscal" for="doc" />
+
+                    <h:panelGrid columns="2">
+
+                        <h:panelGroup>
+                            <p:inputText id="doc" value="#{MBPatrimonio.patrimonio.documentoFiscal.numeroDocumentoFiscal}"
+                                         readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"
+                                         required="true" requiredMessage="Selecione um documento fiscal!" />
+                            <p:commandButton icon="ui-icon-search" title="Pesquisa"
+                                             onclick="PF('dlgDoc').show();"
+                                             process="@this" update=":formDoc:tabelaDoc">
+                                <p:ajax event="dialogReturn" listener="#{MBPatrimonio.docSelecionado}"
+                                        process="@this" update="doc" />
+                                <p:resetInput target="doc" />
+                            </p:commandButton>
+                        </h:panelGroup>                        
+
+
+                    </h:panelGrid>
 
 
                     <p:outputLabel value="Valor:" />
@@ -143,11 +178,24 @@
                         <f:convertNumber pattern="#,##0.00" />
                     </p:inputText>
 
+                    <p:outputLabel value="Garantia:"/>
 
+                    <p:selectOneMenu id="comboGarantia" value="#{MBPatrimonio.patrimonio.garantia}" required="true" requiredMessage="Campo garantia é obrigatorio!" >
 
-                    <p:outputLabel id="IdChaveAcesso" value="Chave de Acesso:" rendered="#{MBDocumentoFiscal.documentoFiscal.tipoDocFiscal =='Danfe'}" />
-                    <p:inputText value="#{MBDocumentoFiscal.documentoFiscal.chaveDeAcesso}"  rendered="#{MBDocumentoFiscal.documentoFiscal.tipoDocFiscal =='Danfe'}" />
+                        <f:selectItem itemLabel="--Sem--" itemValue="0" />
+                        <f:selectItem itemLabel="1 ano" itemValue="1" />
+                        <f:selectItem itemLabel="2 anos" itemValue="2" />
+                        <f:selectItem itemLabel="3 anos" itemValue="3" />
+                        <f:selectItem itemLabel="4 anos" itemValue="4" />
+                        <f:selectItem itemLabel="5 anos" itemValue="5" />
+                        <f:selectItem itemLabel="6 anos" itemValue="6" />
+                        <f:selectItem itemLabel="7 anos" itemValue="7" />
+                        <f:selectItem itemLabel="8 anos" itemValue="8" />
+                        <f:selectItem itemLabel="9 anos" itemValue="9" />
+                        <f:selectItem itemLabel="10 anos" itemValue="10"/>
+                        <f:selectItem itemLabel="15 anos" itemValue="15"/>
 
+                    </p:selectOneMenu>
 
                     <p:outputLabel value="Setor de destino:" />
 
@@ -160,6 +208,7 @@
                                        itemValue="#{item.codigo}" itemLabel="#{item.setor}" />
 
                     </p:selectOneMenu>
+
 
                     <p:outputLabel value="Obs.:" />
                     <p:inputText id="txtObs" size="45" maxlength="45"
@@ -182,6 +231,7 @@
                     </p:commandButton>
                     <!-- process=@this : submete um formulario -->
                 </h:panelGrid>
+
             </h:form>
         </p:dialog>
 
@@ -190,15 +240,27 @@
                   header="Excluir Patrimonio">
 
             <h:form id="formExcluir">
+
                 <h:panelGrid columns="2" id="painelExcluir">
-                    <h:outputText value="Codigo: " />
-                    <h:outputText value="#{MBPatrimonio.patrimonio.codigo}" />
-                    <h:outputText value="Nota Fiscal: " />
-                    <h:outputText value="#{MBPatrimonio.patrimonio.numeroNotaFiscal}" />
 
-
+                    <p:outputLabel value="ID:" />
+                    <p:outputLabel value="#{MBPatrimonio.patrimonio.codigo}" />
+                    <p:outputLabel value="Produto:"  />
+                    <p:outputLabel value="#{MBPatrimonio.patrimonio.produto.produto}"/>
+                    <p:outputLabel value="Doc.Fiscal" />
+                    <p:outputLabel value="#{MBPatrimonio.patrimonio.documentoFiscal.numeroDocumentoFiscal}" />
+                    <p:outputLabel value="Valor:" />
+                    <p:outputLabel value="#{MBPatrimonio.patrimonio.valor}" /> 
+                    <p:outputLabel value="Garantia:"/>
+                    <p:outputLabel id="comboGarantia" value="#{MBPatrimonio.patrimonio.garantia}"/>
+                    <p:outputLabel value="Setor de destino:" />
+                    <p:outputLabel value="#{MBPatrimonio.patrimonio.setor.codigo}"/>
+                    <p:outputLabel value="Obs.:" />
+                    <p:outputLabel value="#{MBPatrimonio.patrimonio.observacao}" />
 
                 </h:panelGrid>
+
+
                 <p:panelGrid>
                     <p:commandButton value="Excluir"
                                      actionListener="#{MBPatrimonio.excluir}"
@@ -221,11 +283,77 @@
             modal="true" appendTo="@(body)" : desabilita todo campo atras do dialogo-->
             <h:form id="formEditar">
                 <h:panelGrid columns="2" id="painelEditar">
+                    <p:outputLabel value="ID:" />
+                    <p:outputLabel id="txtCodigo" value="#{MBPatrimonio.patrimonio.codigo}" />
 
-                    <p:outputLabel value="Nº Nota fiscal:" />
-                    <p:inputText id="txtNumeroNotaFiscal" size="45" maxlength="45"
-                                 value="#{MBPatrimonio.patrimonio.numeroNotaFiscal}"
-                                 required="true" requiredMessage="Informe o nome do Patrimonio!" />
+                    <p:outputLabel value="Produto:" />
+
+                    <h:panelGrid columns="2">
+
+                        <h:panelGroup>
+                            <p:outputLabel value="#{MBPatrimonio.patrimonio.produto.produto}"/>
+                        </h:panelGroup>                        
+
+
+                    </h:panelGrid>
+
+                    <p:outputLabel value="Doc.Fiscal"  />
+
+                    <h:panelGrid columns="2">
+
+
+                        <p:outputLabel  value="#{MBPatrimonio.patrimonio.documentoFiscal.numeroDocumentoFiscal}" />
+
+
+
+                    </h:panelGrid>
+
+
+                    <p:outputLabel value="Valor:" />
+                    <p:inputText id="txtValor" size="20" maxlength="20"
+                                 value="#{MBPatrimonio.patrimonio.valor}" required="true"
+                                 requiredMessage="Informe o valor para o patrimonio!" >
+                        <f:convertNumber pattern="#,##0.00" />
+                    </p:inputText>
+
+                    <p:outputLabel value="Garantia:"/>
+
+                    <p:selectOneMenu id="comboGarantia" value="#{MBPatrimonio.patrimonio.garantia}" required="true" requiredMessage="Campo garantia é obrigatorio!" >
+
+                        <f:selectItem itemLabel="--Sem--" itemValue="0" />
+                        <f:selectItem itemLabel="1 ano" itemValue="1" />
+                        <f:selectItem itemLabel="2 anos" itemValue="2" />
+                        <f:selectItem itemLabel="3 anos" itemValue="3" />
+                        <f:selectItem itemLabel="4 anos" itemValue="4" />
+                        <f:selectItem itemLabel="5 anos" itemValue="5" />
+                        <f:selectItem itemLabel="6 anos" itemValue="6" />
+                        <f:selectItem itemLabel="7 anos" itemValue="7" />
+                        <f:selectItem itemLabel="8 anos" itemValue="8" />
+                        <f:selectItem itemLabel="9 anos" itemValue="9" />
+                        <f:selectItem itemLabel="10 anos" itemValue="10"/>
+                        <f:selectItem itemLabel="15 anos" itemValue="15"/>
+
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Setor de destino:" />
+
+                    <p:selectOneMenu id="oneMenuSetor" filter="true"
+                                     value="#{MBPatrimonio.patrimonio.setor.codigo}" required="true"
+                                     requiredMessage="Selecione o setor de destino.">
+                        <f:selectItem itemValue="" itemLabel="Selecione o Setor"
+                                      noSelectionOption="true" />
+                        <f:selectItems value="#{MBPatrimonio.comboSetores}" var="item"
+                                       itemValue="#{item.codigo}" itemLabel="#{item.setor}" />
+
+                    </p:selectOneMenu>
+
+
+                    <p:outputLabel value="Obs.:" />
+                    <p:inputText id="txtObs" size="45" maxlength="45"
+                                 value="#{MBPatrimonio.patrimonio.observacao}" />
+
+
+
 
                 </h:panelGrid>
 
@@ -245,19 +373,17 @@
         </p:dialog>
 
 
-        <p:dialog widgetVar="dlgTranferir" closable="false" draggable="false"
-                  resizable="false" appendTo="@(body)" header="Transferir patrimonio"
-                  modal="true">
-            <!-- header="" nomea o dialogo
-            
-            modal="true" appendTo="@(body)" : desabilita todo campo atras do dialogo-->
+
+        <p:dialog widgetVar="dlgTransferir" closable="false" draggable="false"
+                  resizable="false" modal="true" appendTo="@(body)"
+                  header="Transferir Patrimonio">
+
             <h:form id="formTransferir">
                 <h:panelGrid columns="2" id="painelTransferir">
 
                     <p:outputLabel value="Nº do patrimonio:" />
-                    <p:inputText id="txtNumeroPatrimonio" size="45" maxlength="45"
-                                 value="#{MBPatrimonio.patrimonio.codigo}"
-                                 required="true" requiredMessage="Informe o codigo do Patrimonio!" />
+                    <p:outputLabel id="txtNumeroPatrimonio" value="#{MBPatrimonio.patrimonio.codigo}"
+                                   />
                     <p:outputLabel value="Setor de origem"/>
                     <p:outputLabel value="#{MBPatrimonio.patrimonio.setor.setor}"/>       
 
@@ -288,6 +414,184 @@
                     </p:commandButton>
                     <!-- process=@this : submete um formulario -->
                 </h:panelGrid>
+
+            </h:form>
+
+        </p:dialog>
+
+
+
+        <p:dialog widgetVar="dlgManutencao" closable="false" draggable="false"
+                  resizable="false" modal="true" appendTo="@(body)"
+                  header="Envio de Patrimonio para manutenção">
+
+            <h:form id="formManutencao">
+                <h:panelGrid columns="2" id="painelManutencao">
+
+
+                    <p:outputLabel value="Patrimonio:"/>
+
+                    <h:panelGrid columns="2">
+
+                        <h:panelGroup>
+                            <p:inputText 
+                                readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"
+                                required="true" requiredMessage="Selecione o patrimonio com defeito!" />
+                            
+                            <p:commandButton icon="ui-icon-search" title="Pesquisa">
+                                             
+                                
+                            </p:commandButton>
+                        </h:panelGroup>                        
+
+
+                    </h:panelGrid>
+
+
+
+                    <p:outputLabel value="Defeito:"/>
+                    <p:inputTextarea/>       
+
+                    <p:outputLabel value="Manutencionista:" />
+
+                    <p:selectOneMenu id="oneMenuFuncionario" filter="true"
+                                     required="true"
+                                     requiredMessage="Selecione o colaborador.">
+                        <f:selectItem itemValue="" itemLabel="Selecione o Manutencionista"
+                                      noSelectionOption="true" />
+
+
+                    </p:selectOneMenu>
+
+
+                </h:panelGrid>
+
+                <h:panelGrid columns="2">
+
+                    <p:commandButton value="comfirmar"
+                                     actionListener="#{MBPatrimonio.editar}"
+                                     oncomplete="verificar(xhr, status, args, 'dlgTransferir', 'tabelaPatrimonio');"
+                                     update=":formTabela:tabela :msgGlobal" />
+                    <p:commandButton value="Cancelar" onclick="PF('dlgManutencao').hide();"
+                                     process="@this">
+                        <p:resetInput target="painelManutencao" />
+                    </p:commandButton>
+                    <!-- process=@this : submete um formulario -->
+                </h:panelGrid>
+
+            </h:form>
+
+        </p:dialog>
+
+
+
+
+
+        <p:dialog widgetVar="dlgDoc" closable="false" draggable="false" width="700" 
+                  resizable="false" modal="true" appendTo="@(body)"
+                  header="Selecione o documento">
+
+            <h:form id="formDoc">
+                <h:panelGrid columns="2" id="painelDoc">
+
+
+                    <p:dataTable id="tabelaDoc" emptyMessage="Nenhum registro encontrado."  rowKey="#{item.codigo}" selectionMode="single" selection="#{item}"
+                                 widgetVar="tabelaDoc" value="#{MBDocumentoFiscal.itens}"  filteredValue="#{MBDocumentoFiscal.itensFiltrados}"
+                                 var="item"  rows="10" 
+                                 >
+                        <p:ajax event="rowSelect" listener="#{MBPatrimonio.docSelecionado}" update=":formDlgNovo:doc"  onsuccess="PF('dlgDoc').hide()"
+                                />
+
+
+
+                        <p:column headerText="Codigo" style="width: 30px; text-align: center"  filterStyle="max-width: 40px; min-width: 40px;"
+                                  filterBy="#{item.numeroDocumentoFiscal}">
+                            <h:outputText value="#{item.numeroDocumentoFiscal}"   />
+                        </p:column>
+                        <p:column headerText="Tipo do documento" width="150"
+                                  filterBy="#{item.tipoDocFiscal}">
+                            <h:outputText value="#{item.tipoDocFiscal}" />
+                        </p:column>
+                        <p:column headerText="Fornecedor" sortBy="#{item.fornecedor.razaoSocialNome}" width="200" style="width: 210px;"
+                                  filterBy="#{item.fornecedor.razaoSocialNome}">
+                            <h:outputText value="#{item.fornecedor.razaoSocialNome}" />
+                        </p:column>
+
+                        <p:column headerText="Emissão" sortBy="#{item.dataEmissao}"  style="width: 60px; text-align: center" >
+                            <h:outputText value="#{item.dataEmissao}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText> 
+
+                        </p:column>
+
+                    </p:dataTable>
+
+
+                </h:panelGrid>
+
+
+                <h:panelGrid columns="3">
+
+
+                    <p:commandButton value="Sair"
+                                     onclick="PF('dlgFornecedor').hide();" />
+
+                </h:panelGrid>
+
+            </h:form>
+        </p:dialog>
+
+        <p:dialog widgetVar="dlgProduto" closable="false" draggable="false" width="700" 
+                  resizable="false" modal="true" appendTo="@(body)"
+                  header="Selecione o produto">
+
+            <h:form id="formProduto">
+                <h:panelGrid columns="2" id="painelProduto">
+
+
+                    <p:dataTable id="tabelaProduto" emptyMessage="Nenhum registro encontrado."  rowKey="#{item.codigo}" selectionMode="single" selection="#{item}"
+                                 widgetVar="tabelaDoc" value="#{MBProduto.itens}"  filteredValue="#{MBProduto.itensFiltrados}"
+                                 var="item"  rows="10" 
+                                 >
+                        <p:ajax event="rowSelect" listener="#{MBPatrimonio.produtoSelecionado}" update=":formDlgNovo:prod"  onsuccess="PF('dlgProduto').hide()"
+                                />
+
+
+
+                        <p:column headerText="Codigo" style="width: 60px; text-align: center"  filterStyle="max-width: 50px; min-width: 50px;"
+                                  filterBy="#{item.codigo}">
+                            <h:outputText value="#{item.codigo}"   />
+                        </p:column>
+
+                        <p:column headerText="Produto" style="width: 170px;" 
+                                  filterBy="#{item.produto}">
+                            <h:outputText value="#{item.produto}"   />
+                        </p:column>
+
+                        <p:column headerText="Modelo" style="width: 140px; text-align: center" 
+                                  filterBy="#{item.modelo}">
+                            <h:outputText value="#{item.modelo}"   />
+                        </p:column>
+
+                        <p:column headerText="Observações" style="width: 180px;"
+                                  filterBy="#{item.obs}">
+                            <h:outputText value="#{item.obs}"   />
+                        </p:column>
+
+                    </p:dataTable>
+
+
+                </h:panelGrid>
+
+
+                <h:panelGrid columns="3">
+
+
+                    <p:commandButton value="Sair"
+                                     onclick="PF('dlgProduto').hide();" />
+
+                </h:panelGrid>
+
             </h:form>
         </p:dialog>
 

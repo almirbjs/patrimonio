@@ -20,6 +20,7 @@ import javax.persistence.Transient;
     @NamedQuery(name = "Produto.buscarPorCodigo", query = "SELECT p FROM Produto p WHERE p.codigo = :codigo")})
 @Entity
 @Table(name = "produto")
+@SuppressWarnings("serial")
 public class Produto implements Serializable {
 
     @Id

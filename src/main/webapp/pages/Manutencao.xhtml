@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/templates/modeloSistema.xhtml">
+
+    <ui:define name="menu">
+        <ui:include src="/includes/menuPrincipal.xhtml"></ui:include>
+    </ui:define>
+    <!-- conteudo da aplicacação aqui vai as tabelas, dialog e entre outros -->
+
+    <ui:define name="conteudo">
+        <h:form id="formTabela">
+            <!-- criando uma tabela -->
+
+            <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
+                         widgetVar="tabelaManutencao" value="#{MBManutencao.itens}" var="item"
+                         paginator="true" rows="10"
+                         filteredValue="#{MBManutencao.itensFiltrados}">
+                <!-- rows="10"  me diz que o meu paginador deve ter 10 linhas-->
+
+                <f:facet name="header">
+                    Manutencao de itens
+                </f:facet>
+
+                <p:column headerText="Codigo" sortBy="#{item.codigo}" style="width: 70px; text-align: center"  filterStyle="max-width: 60px; min-width: 60px;"
+                          filterBy="#{item.codigo}">
+                    <h:outputText value="#{item.codigo}" />
+                </p:column>
+
+                <p:column headerText="Nº do Patrimonio"
+                          sortBy="#{item.patrimonio.codigo}">
+                    <h:outputText value="#{item.patrimonio.codigo}" />
+                </p:column>
+
+
+                <p:column headerText="Patrimonio"
+                          sortBy="#{item.patrimonio.produto.produto}">
+                    <h:outputText value="#{item.patrimonio.produto.produto}" />
+                </p:column>
+
+                <p:column headerText="Modelo"
+                          sortBy="#{item.patrimonio.produto.modelo}">
+                    <h:outputText value="#{item.patrimonio.produto.modelo}"  />
+                </p:column>
+
+                <p:column headerText="Observação"
+                          sortBy="#{item.obs}">
+                    <h:outputText value="#{item.obs}"  />
+                </p:column>
+                <p:column headerText="Status"
+                          sortBy="#{item.status}">
+                    <h:outputText value="#{item.status}" />
+                </p:column>
+
+
+
+
+                <p:column headerText="Opções">
+
+
+
+                    <p:commandButton icon="ui-icon-pencil"
+                                     oncomplete="PF('dlgEditar').show();"
+                                     actionListener="#{MBManutencao.prepararEditar()}"
+                                     update=":formEditar:painelEditar :msgGlobal" title="Editar">
+                        <f:setPropertyActionListener value="#{item}"
+                                                     target="#{MBManutencao.manutencao}" />
+
+                    </p:commandButton>
+
+                    <p:commandButton icon="ui-icon-trash"
+                                     oncomplete="PF('dlgExcluir').show();"
+                                     update=":formExcluir:painelExcluir :msgGlobal" title="Excluir">
+                        <f:setPropertyActionListener value="#{item}"
+                                                     target="#{MBManutencao.manutencao}" />
+                    </p:commandButton>
+
+                </p:column>
+
+                <!-- linha de baixo da tabela -->
+                <f:facet name="footer">
+                    <p:commandButton value="Novo" oncomplete="PF('dlgNovo').show()"
+                                     actionListener="#{MBManutencao.prepararSalvar}"
+                                     update=":formDlgNovo:painelDlgNovo" />
+                </f:facet>
+
+            </p:dataTable>
+        </h:form>
+
+        <!-- Criando o Salvar  -->
+
+
+        <!-- widgetVar=""> : utilizamos para buscar o nome da tabela 
+        draggable="false"> : A janela não pode ser movimentada 
+        resizable="false"> : não pode redimensionar-->
+        <p:dialog widgetVar="dlgNovo" closable="false" draggable="false"
+                  resizable="false" appendTo="@(body)" header="Produtos na manutencao"
+                  modal="true">
+            <!-- header="" nomea o dialogo
+            
+            modal="true" appendTo="@(body)" : desabilita todo campo atras do dialogo-->
+            <h:form id="formDlgNovo">
+                <h:panelGrid columns="2" id="painelDlgNovo">
+
+
+
+                    <p:outputLabel value="Patrimonio" for="patrimonio" />
+
+                    <h:panelGrid columns="2">
+
+                        <h:panelGroup>
+                            <p:inputText id="patrimonio" value="#{MBManutencao.manutencao.patrimonio.produto.produto}"
+                                         readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"
+                                         required="true" requiredMessage="Selecione o Patrimonio!" />
+                            <p:commandButton icon="ui-icon-search" title="Pesquisa"
+                                             onclick="PF('dlgPatrimonio').show();"
+                                             process="@this" update=":formPatrimonio:tabela">
+                                <p:ajax event="dialogReturn" listener="#{MBManutencao.patrimonioSelecionado}"
+                                        process="@this" update="patrimonio" />
+                                <p:resetInput target="patrimonio" />
+                            </p:commandButton>
+                        </h:panelGroup>                        
+
+                    </h:panelGrid>
+
+
+                    <p:outputLabel value="obs" />
+                    <p:inputTextarea id="txtModelo"  maxlength="20" onblur="value = value.toUpperCase()"
+                                     value="#{MBManutencao.manutencao.obs}" required="true" />
+
+
+
+                </h:panelGrid>
+
+
+                <h:panelGrid columns="2">
+
+                    <p:commandButton value="Gravar"
+                                     actionListener="#{MBManutencao.salvar}"
+                                     oncomplete="verificar(xhr, status, args, 'dlgNovo', 'tabelaManutencao');"
+                                     update=":formTabela:tabela :msgGlobal" />
+                    <p:commandButton value="Cancelar" onclick="PF('dlgNovo').hide();"
+                                     process="@this">
+                        <p:resetInput target="painelDlgNovo" />
+                    </p:commandButton>
+                    <!-- process=@this : submete um formulario -->
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+
+
+        <p:dialog widgetVar="dlgEditar" closable="false" draggable="false"
+                  resizable="false" appendTo="@(body)" header="Editar Manutencao"
+                  modal="true">
+            <!-- header="" nomea o dialogo
+            
+            modal="true" appendTo="@(body)" : desabilita todo campo atras do dialogo-->
+            <h:form id="formEditar">
+                <h:panelGrid columns="2" id="painelEditar">
+
+
+
+                    <p:outputLabel value="Patrimonio:" />
+
+                    <p:selectOneMenu id="oneMenuPatrimonio" filter="true"
+                                     value="#{MBManutencao.manutencao.patrimonio.produto}"
+                                     required="true" requiredMessage="Selecione a categoria.">
+                        <f:selectItem itemValue="" itemLabel="Selecione a categoria"
+                                      noSelectionOption="true" />
+                        <f:selectItems value="#{MBManutencao.itensPatrimonio}" var="item"
+                                       itemValue="#{item.codigo}" itemLabel="#{item.produto}" />
+
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="obs" />
+                    <p:inputTextarea id="txtModelo"  maxlength="20" onblur="value = value.toUpperCase()"
+                                     value="#{MBManutencao.manutencao.obs}" required="true" />
+
+
+                </h:panelGrid>
+
+                <h:panelGrid columns="2">
+
+                    <p:commandButton value="Editar"
+                                     actionListener="#{MBManutencao.editar}"
+                                     oncomplete="verificar(xhr, status, args, 'dlgEditar', 'tabelaManutencao');"
+                                     update=":formTabela:tabela :msgGlobal" />
+                    <p:commandButton value="Cancelar" onclick="PF('dlgEditar').hide();"
+                                     process="@this">
+                        <p:resetInput target="painelEditar" />
+                    </p:commandButton>
+                    <!-- process=@this : submete um formulario -->
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog widgetVar="dlgExcluir" closable="false" draggable="false"
+                  resizable="false" modal="true" appendTo="@(body)"
+                  header="Excluir Manutencao">
+
+            <h:form id="formExcluir">
+                <h:panelGrid columns="2" id="painelExcluir">
+                    <p:outputLabel value="Codigo: " />
+                    <p:outputLabel value="#{MBManutencao.manutencao.codigo}" />
+                    <p:outputLabel value="Patrimonio: " />
+                    <p:outputLabel value="#{MBManutencao.manutencao.patrimonio}" />
+                    <p:outputLabel value="Status: " />
+                    <p:outputLabel value="#{MBManutencao.manutencao.status}" />
+                    <p:outputLabel value="Observação: " />
+                    <p:outputLabel value="#{MBManutencao.manutencao.obs}" />
+                </h:panelGrid>
+                <h:panelGrid columns="3">
+                    <p:commandButton value="Excluir"
+                                     actionListener="#{MBManutencao.excluir}"
+                                     oncomplete="verificar(xhr, status, args, 'dlgExcluir', 'tabelaManutencao');"
+                                     update=":formTabela:tabela :msgGlobal" />
+                    <!-- Atualiza tabela -->
+                    <p:commandButton value="Cancelar"
+                                     onclick="PF('dlgExcluir').hide();" />
+                </h:panelGrid>
+
+            </h:form>
+
+        </p:dialog>
+
+
+
+        <p:dialog widgetVar="dlgPatrimonio" closable="false" draggable="false" width="700" 
+                  resizable="false" modal="true" appendTo="@(body)"
+                  header="Selecione o Patrimonio">
+
+            <h:form id="formPatrimonio">
+                <h:panelGrid columns="2" id="painelPatrimonio">
+
+
+                    <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."  rowKey="#{item.codigo}" selectionMode="single" selection="#{item}"
+                                 widgetVar="tabelaPatrimonio" value="#{MBManutencao.listaFuncionando()}"  filteredValue="#{MBPatrimonio.itensFiltrados}"
+                                 var="item"  rows="10" 
+                                 >
+                        <p:ajax event="rowSelect" listener="#{MBManutencao.patrimonioSelecionado}" 
+                                update=":formDlgNovo:patrimonio"  onsuccess="PF('dlgPatrimonio').hide()"
+                                />
+
+
+
+                        <p:column headerText="Codigo" style="width: 30px; text-align: center"
+                                  filterStyle="max-width: 40px; min-width: 40px;"
+                                  filterBy="#{item.codigo}">
+                            <h:outputText value="#{item.codigo}"   />
+                        </p:column>
+                        
+                           <p:column headerText="Patrimonio" style="width: 100px;"
+                                  filterStyle="max-width: 100px; min-width: 100px;"
+                                  filterBy="#{item.produto.produto}">
+                            <h:outputText value="#{item.produto.produto}"   />
+                        </p:column>
+<p:column headerText="Modelo" style="width: 100px; text-align: center"
+                                  filterStyle="max-width: 100px; min-width: 100px;"
+                                  filterBy="#{item.produto.modelo}">
+    <h:outputText value="#{item.produto.modelo}"   />
+                        </p:column>
+
+
+                    </p:dataTable>
+
+
+                </h:panelGrid>
+
+
+                <h:panelGrid columns="3">
+
+
+                    <p:commandButton value="Sair"
+                                     onclick="PF('dlgPatrimonio').hide();" />
+
+                </h:panelGrid>
+
+            </h:form>
+        </p:dialog>
+
+    </ui:define>
+
+</ui:composition>

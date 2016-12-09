@@ -45,6 +45,7 @@
     <mapping class="br.com.patrimonio.domain.Produto"/>
     <mapping class="br.com.patrimonio.domain.DocumentoFiscal"/>
     <mapping class="br.com.patrimonio.domain.Patrimonio"/>
+    <mapping class="br.com.patrimonio.domain.Manutencao"/>
     <mapping class="br.com.patrimonio.domain.Chave"/>
   </session-factory>
 </hibernate-configuration>
