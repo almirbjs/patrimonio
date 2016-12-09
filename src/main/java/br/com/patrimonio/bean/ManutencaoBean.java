@@ -62,8 +62,11 @@ public class ManutencaoBean {
 
         try {
             ManutencaoDao dao = new ManutencaoDao();
-            manutencao.setStatus("Aguardando ");
+            manutencao.setStatus("Aguardando");
+          
+            patrimonio.setFuncionando("N");
             dao.salvar(manutencao);
+            
             itens = dao.listar();
             JSFUtil.adicionaMensagemSucesso("Salvo com sucesso!");
 
@@ -128,20 +131,19 @@ public class ManutencaoBean {
     public void patrimonioSelecionado(SelectEvent event) {
         Patrimonio p = (Patrimonio) event.getObject();
         manutencao.setPatrimonio(p);
-        PatrimonioDao patrimonioDao = new PatrimonioDao();
-        itensPatrimonio = patrimonioDao.listarFuncionando();
+       // PatrimonioDao patrimonioDao = new PatrimonioDao();
+       // itensPatrimonio = patrimonioDao.listarFuncionando();
 
     }
-    
-    public ArrayList<Patrimonio> listaFuncionando(){
-        
-         PatrimonioDao patrimonioDao = new PatrimonioDao();
-        itensPatrimonio = patrimonioDao.listarFuncionando();
+
+    @SuppressWarnings("ReturnOfCollectionOrArrayField")
+    public ArrayList<Patrimonio> listaFuncionando() {
+
+        PatrimonioDao patrimonioDao = new PatrimonioDao();
+      return patrimonioDao.listarFuncionando();
+
        
-        
-        return itensPatrimonio;
-        
-        
+
     }
 
     public ArrayList<Manutencao> getItens() {
@@ -191,7 +193,5 @@ public class ManutencaoBean {
     public void setPatrimonio(Patrimonio patrimonio) {
         this.patrimonio = patrimonio;
     }
-    
-    
 
 }

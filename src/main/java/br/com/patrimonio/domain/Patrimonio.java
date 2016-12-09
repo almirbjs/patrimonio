@@ -19,7 +19,7 @@ import javax.persistence.TemporalType;
 @NamedQueries({
     @NamedQuery(name = "Patrimonio.listar", query = "SELECT p FROM Patrimonio p")
     ,
-    @NamedQuery(name = "Patrimonio.listarFuncionando", query = "SELECT p FROM Patrimonio p WHERE p.funcionando='S'")
+    @NamedQuery(name = "Patrimonio.listarFuncionando", query = "SELECT p FROM Patrimonio p WHERE p.funcionando ='S'")
     ,
     @NamedQuery(name = "Patrimonio.buscarPorCodigo", query = "SELECT p FROM Patrimonio p WHERE p.codigo = :codigo")})
 @Entity
