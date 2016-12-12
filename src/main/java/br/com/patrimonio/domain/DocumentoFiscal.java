@@ -46,7 +46,7 @@ public class DocumentoFiscal implements Serializable {
     private int codigo;
 
     @Column(name = "NumeroDocumentoFiscal", nullable = true)
-    private BigDecimal NumeroDocumentoFiscal;
+    private long NumeroDocumentoFiscal;
 
     @Transient
     private String caminhoTemporario;
@@ -56,29 +56,14 @@ public class DocumentoFiscal implements Serializable {
     private Date dataEmissao;
 
     @Column(name = "chaveDeAcesso")
-    private BigDecimal chaveDeAcesso;
+    private long chaveDeAcesso;
 
     @Column(name = "tipoDocFiscal")
     private String tipoDocFiscal;
-
-    // --Criando a chave estrangeira(FK)----
-    // usa-se FetchType.EAGER quando eu carregar os usuarios juntos como os
-    // privilegios,j  no FetchType.LAZY ele s  carrega os usuarios
-    // Para indeteficar qual   a chave estrangeira dentro da tabela   utilezado
-    // o @joinColunn
-    // name informe qual   o nome da fk que ser  exibido na tabela
-    // referencedColumnName="idprivilegio informa a pk da tabela pai, tem que
-    // ser igual sen o da erro
-    // Muitos Usuarios tem um privelegio
+   
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_documentoFiscal_idfornecedor", referencedColumnName = "idfornecedor", nullable = false)
     private Fornecedor fornecedor = new Fornecedor();
-
-    @Override
-    public String toString() {
-        return "DocumentoFiscal [codigo=" + getCodigo() + " dataEmissao=" + getDataEmissao() + ", chaveDeAcesso=" + getChaveDeAcesso() + ", tipoDocFiscal="
-                + getTipoDocFiscal() + "NumeroDocumentoFiscal" + getNumeroDocumentoFiscal() + "]";
-    }
 
     public int getCodigo() {
         return codigo;
@@ -86,6 +71,14 @@ public class DocumentoFiscal implements Serializable {
 
     public void setCodigo(int codigo) {
         this.codigo = codigo;
+    }
+
+    public long getNumeroDocumentoFiscal() {
+        return NumeroDocumentoFiscal;
+    }
+
+    public void setNumeroDocumentoFiscal(long NumeroDocumentoFiscal) {
+        this.NumeroDocumentoFiscal = NumeroDocumentoFiscal;
     }
 
     public String getCaminhoTemporario() {
@@ -104,11 +97,11 @@ public class DocumentoFiscal implements Serializable {
         this.dataEmissao = dataEmissao;
     }
 
-    public BigDecimal getChaveDeAcesso() {
+    public long getChaveDeAcesso() {
         return chaveDeAcesso;
     }
 
-    public void setChaveDeAcesso(BigDecimal chaveDeAcesso) {
+    public void setChaveDeAcesso(long chaveDeAcesso) {
         this.chaveDeAcesso = chaveDeAcesso;
     }
 
@@ -128,12 +121,5 @@ public class DocumentoFiscal implements Serializable {
         this.fornecedor = fornecedor;
     }
 
-    public void setNumeroDocumentoFiscal(BigDecimal NumeroDocumentoFiscal) {
-        this.NumeroDocumentoFiscal = NumeroDocumentoFiscal;
-    }
-
-    public BigDecimal getNumeroDocumentoFiscal() {
-        return NumeroDocumentoFiscal;
-    }
-
+    
 }

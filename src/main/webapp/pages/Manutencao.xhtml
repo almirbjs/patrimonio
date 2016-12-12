@@ -47,7 +47,7 @@
                     <h:outputText value="#{item.patrimonio.produto.modelo}"  />
                 </p:column>
 
-                <p:column headerText="Observação"
+                <p:column headerText="Defeito"
                           sortBy="#{item.obs}">
                     <h:outputText value="#{item.obs}"  />
                 </p:column>
@@ -170,24 +170,15 @@
             <h:form id="formEditar">
                 <h:panelGrid columns="2" id="painelEditar">
 
-
-
+                    <p:outputLabel value="ID" />
+                    <p:outputLabel value="#{MBManutencao.manutencao.patrimonio.codigo}"/>
                     <p:outputLabel value="Patrimonio:" />
-
-                    <p:selectOneMenu id="oneMenuPatrimonio" filter="true"
-                                     value="#{MBManutencao.manutencao.patrimonio.produto}"
-                                     required="true" requiredMessage="Selecione a categoria.">
-                        <f:selectItem itemValue="" itemLabel="Selecione a categoria"
-                                      noSelectionOption="true" />
-                        <f:selectItems value="#{MBManutencao.itensPatrimonio}" var="item"
-                                       itemValue="#{item.codigo}" itemLabel="#{item.produto}" />
-
-                    </p:selectOneMenu>
-
-                    <p:outputLabel value="obs" />
+                    <p:outputLabel value="#{MBManutencao.manutencao.patrimonio.produto.produto}"/>
+                    <p:outputLabel value="Modelo:" />
+                    <p:outputLabel value="#{MBManutencao.manutencao.patrimonio.produto.modelo}"/>
+                    <p:outputLabel value="Defeito:" />
                     <p:inputTextarea id="txtModelo"  maxlength="20" onblur="value = value.toUpperCase()"
-                                     value="#{MBManutencao.manutencao.obs}" required="true" />
-
+                                     value="#{MBManutencao.manutencao.obs}" required="true" requiredMessage="Informe o defeito!" />
 
                 </h:panelGrid>
 
@@ -215,7 +206,9 @@
                     <p:outputLabel value="Codigo: " />
                     <p:outputLabel value="#{MBManutencao.manutencao.codigo}" />
                     <p:outputLabel value="Patrimonio: " />
-                    <p:outputLabel value="#{MBManutencao.manutencao.patrimonio}" />
+                    <p:outputLabel value="#{MBManutencao.manutencao.patrimonio.produto.produto}" />
+                    <p:outputLabel value="Modelo: " />
+                    <p:outputLabel value="#{MBManutencao.manutencao.patrimonio.produto.modelo}" />
                     <p:outputLabel value="Status: " />
                     <p:outputLabel value="#{MBManutencao.manutencao.status}" />
                     <p:outputLabel value="Observação: " />
@@ -298,14 +291,16 @@
                     <p:selectOneMenu id="oneMenuStatus" 
                                      value="#{MBManutencao.manutencao.status}" required="true"
                                      requiredMessage="Selecione o Status">
-                        <f:selectItem itemValue="Orçamento" itemLabel="Orçamento"  />
+                        <f:selectItem itemValue="" itemLabel="Selecione" noSelectionOption="true" />
+                        <f:selectItem itemValue="Orçamento" itemLabel="Orçamento" rendered="#{MBManutencao.manutencao.status =='Pendente'}" />
                         <f:selectItem itemValue="Assitencia Tecnica" itemLabel="Assitencia Tecnica"  />
                         <f:selectItem itemValue="Concerto efetuado" itemLabel="Concerto efetuado"  />
 
-
                         <p:ajax event="change" update="painelStatus" process="oneMenuStatus" />
+
                     </p:selectOneMenu>
 
+                    <p:commandButton value="oi" icon="fa fa-plus" rendered="#{MBManutencao.manutencao.status =='Orçamento'}"/>
                     <p:outputLabel value="Valor do reparo:" rendered="#{MBManutencao.manutencao.status =='Concerto efetuado'}"/>
 
                 </h:panelGrid>

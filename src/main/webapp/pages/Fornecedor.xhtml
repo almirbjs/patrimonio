@@ -39,7 +39,7 @@
                     <h:outputText value="#{item.cnpjCpf}" />
                 </p:column>
 
-                <p:column headerText="Contato" sortBy="#{item.contato}"
+                <p:column headerText="Representante" sortBy="#{item.contato}"
                           filterBy="#{item.contato}">
                     <h:outputText value="#{item.contato}" />
                 </p:column>
@@ -109,7 +109,7 @@
 
                     <p:outputLabel value="Tipo de Pessoa:" />
 
-                    <h:selectOneRadio id="pessoa"
+                    <h:selectOneRadio id="pessoa" 
                                       value="#{MBFornecedor.fornecedor.pessoa}" required="true"
                                       requiredMessage="Campo [Pessoa] é obrigatório.">
 
@@ -160,7 +160,7 @@
                                  requiredMessage="Informe a Razão social da Pessoa Juridica ou Nome da Pessoa fisíca!">
                     </p:inputText>
 
-                    <p:outputLabel value="Contato:"
+                    <p:outputLabel value="Representante:"
                                    rendered="#{MBFornecedor.fornecedor.pessoa=='Jurídica'}" />
                     <p:inputText id="txtContato" size="20" maxlength="20"
                                  rendered="#{MBFornecedor.fornecedor.pessoa=='Jurídica'}"

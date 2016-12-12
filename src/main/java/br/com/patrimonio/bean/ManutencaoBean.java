@@ -63,7 +63,7 @@ public class ManutencaoBean {
         try {
            patrimonio.getCodigo();
             ManutencaoDao dao = new ManutencaoDao();
-            manutencao.setStatus("Aguardando reparo...");
+            manutencao.setStatus("Pendente");
             dao.salvar(manutencao);
             patrimonio = manutencao.getPatrimonio();
             PatrimonioDao patrimonioDao = new PatrimonioDao();
@@ -125,6 +125,12 @@ public class ManutencaoBean {
 
             JSFUtil.adicionaMensagemSucesso("Excluido com Sucesso.");
 
+            patrimonio = manutencao.getPatrimonio();
+            PatrimonioDao patrimonioDao = new PatrimonioDao();
+           patrimonio.setFuncionando("S");
+           
+            patrimonioDao.alterar(patrimonio);
+            
         } catch (Exception e) {
             JSFUtil.adicionaMensagemErro(e.getMessage());
             JSFUtil.adicionaMensagemSucesso("Erro ao tentar excluir ");
