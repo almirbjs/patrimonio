@@ -6,10 +6,12 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import br.com.patrimonio.dao.DocumentoFiscalDao;
+import br.com.patrimonio.dao.ManutencaoDao;
 import br.com.patrimonio.dao.PatrimonioDao;
 import br.com.patrimonio.dao.ProdutoDao;
 import br.com.patrimonio.dao.SetorDao;
 import br.com.patrimonio.domain.DocumentoFiscal;
+import br.com.patrimonio.domain.Manutencao;
 import br.com.patrimonio.domain.Patrimonio;
 import br.com.patrimonio.domain.Produto;
 import br.com.patrimonio.domain.Setor;
@@ -33,10 +35,11 @@ public class patrimonioBean {
     private ArrayList<Setor> comboSetores; // Carrega o combox com o nome dos
     private ArrayList<Produto> itensProdutos;
     private ArrayList<DocumentoFiscal> itensDocumentoFiscal;// setores
+    private ArrayList<Manutencao> itensManutencao;
     private PatrimonioDao dao = new PatrimonioDao();
     private Patrimonio patrimonio = new Patrimonio();
     private DocumentoFiscal documentoFiscal = new DocumentoFiscal();
-    
+    private Manutencao manutencao = new Manutencao();
 
     @PostConstruct
     public void prepararPesquisa() {
@@ -54,12 +57,22 @@ public class patrimonioBean {
         // metodo criado para resolver o problema do objeto= null
         try {
             setPatrimonio(new Patrimonio());
-            
+
             SetorDao dao = new SetorDao();
-            
+
             setComboSetores(dao.listar());
 
-           
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JSFUtil.adicionaMensagemErro(ex.getMessage());
+        }
+
+    }
+
+    public void prepararSalvarManutencao() {
+        // metodo criado para resolver o problema do objeto= null
+        try {
+            setManutencao(new Manutencao());
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -71,8 +84,6 @@ public class patrimonioBean {
     public void salvar() {
 
         try {
-
-            
 
             PatrimonioDao dao = new PatrimonioDao();
 
@@ -142,19 +153,46 @@ public class patrimonioBean {
 
     public void produtoSelecionado(SelectEvent event) {
         Produto p = (Produto) event.getObject();
-       patrimonio.setProduto(p);
-       ProdutoDao produtoDao= new ProdutoDao();
+        patrimonio.setProduto(p);
+        ProdutoDao produtoDao = new ProdutoDao();
         itensProdutos = produtoDao.listar();
 
     }
-    
-     public void docSelecionado(SelectEvent event) {
+
+    public void docSelecionado(SelectEvent event) {
         DocumentoFiscal f = (DocumentoFiscal) event.getObject();
         patrimonio.setDocumentoFiscal(f);
         DocumentoFiscalDao documentoFiscalDao = new DocumentoFiscalDao();
         itensDocumentoFiscal = documentoFiscalDao.listar();
 
     }
+
+    public void salvarManutencao() {
+
+        try {
+
+            ManutencaoDao Mdao = new ManutencaoDao();
+            manutencao.setStatus("Aguardando reparo...");
+            manutencao.setObs(patrimonio.getObservacao());
+            manutencao.setPatrimonio(patrimonio);
+            Mdao.salvar(manutencao);
+           
+            PatrimonioDao patrimonioDao = new PatrimonioDao();
+            patrimonio.setFuncionando("N");
+            patrimonio.setObservacao("");
+            patrimonioDao.alterar(patrimonio);
+
+            JSFUtil.adicionaMensagemSucesso(" Operacão efetuada com sucesso!");
+
+            // Quando salvar um novo objeto ele vai atualizar a minha tabela
+            // automaticamente
+        } catch (Exception e) {
+            e.printStackTrace();
+            JSFUtil.adicionaMensagemErro(e.getMessage());
+        }
+
+    }
+
     public ArrayList<Patrimonio> getItens() {
         return itens;
     }
@@ -219,5 +257,20 @@ public class patrimonioBean {
         this.itensDocumentoFiscal = itensDocumentoFiscal;
     }
 
-   
+    public Manutencao getManutencao() {
+        return manutencao;
+    }
+
+    public void setManutencao(Manutencao manutencao) {
+        this.manutencao = manutencao;
+    }
+
+    public ArrayList<Manutencao> getItensManutencao() {
+        return itensManutencao;
+    }
+
+    public void setItensManutencao(ArrayList<Manutencao> itensManutencao) {
+        this.itensManutencao = itensManutencao;
+    }
+
 }

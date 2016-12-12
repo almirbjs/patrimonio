@@ -138,8 +138,7 @@ public class ManutencaoDao {
         Session sessao = HibernateUtil.getSessionFactory().openSession();
 
         // iniciamos a lista nula porque n�o tenhos entidades ainda listada
-        ArrayList<Manutencao> Manutencao
-                = null;
+        ArrayList<Manutencao> Manutencao = null;
 
         try {
 

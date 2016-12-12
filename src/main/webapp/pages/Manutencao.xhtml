@@ -61,6 +61,13 @@
 
                 <p:column headerText="Opções">
 
+                    <p:commandButton icon="fa fa-refresh"
+                                     oncomplete="PF('dlgStatus').show();"
+                                     actionListener="#{MBManutencao.prepararEditar}"
+                                     update=":formStatus:painelStatus :msgGlobal" title=" Mudar Status">
+                        <f:setPropertyActionListener value="#{item}"
+                                                     target="#{MBManutencao.manutencao}" />
+                    </p:commandButton>
 
 
                     <p:commandButton icon="ui-icon-pencil"
@@ -128,7 +135,7 @@
                     </h:panelGrid>
 
 
-                    <p:outputLabel value="obs" />
+                    <p:outputLabel value="Defeito" />
                     <p:inputTextarea id="txtModelo"  maxlength="20" onblur="value = value.toUpperCase()"
                                      value="#{MBManutencao.manutencao.obs}" required="true" />
 
@@ -240,12 +247,10 @@
 
                     <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."  rowKey="#{item.codigo}" selectionMode="single" selection="#{item}"
                                  widgetVar="tabelaPatrimonio" value="#{MBManutencao.listaFuncionando()}"  filteredValue="#{MBPatrimonio.itensFiltrados}"
-                                 var="item"  rows="10" 
-                                 >
+                                 var="item"  rows="10"  >
                         <p:ajax event="rowSelect" listener="#{MBManutencao.patrimonioSelecionado}" 
                                 update=":formDlgNovo:patrimonio"  onsuccess="PF('dlgPatrimonio').hide()"
                                 />
-
 
 
                         <p:column headerText="Codigo" style="width: 30px; text-align: center"
@@ -253,22 +258,18 @@
                                   filterBy="#{item.codigo}">
                             <h:outputText value="#{item.codigo}"   />
                         </p:column>
-                        
-                           <p:column headerText="Patrimonio" style="width: 100px;"
+
+                        <p:column headerText="Patrimonio" style="width: 100px;"
                                   filterStyle="max-width: 100px; min-width: 100px;"
                                   filterBy="#{item.produto.produto}">
                             <h:outputText value="#{item.produto.produto}"   />
                         </p:column>
-<p:column headerText="Modelo" style="width: 100px; text-align: center"
+                        <p:column headerText="Modelo" style="width: 100px; text-align: center"
                                   filterStyle="max-width: 100px; min-width: 100px;"
                                   filterBy="#{item.produto.modelo}">
-    <h:outputText value="#{item.produto.modelo}"   />
+                            <h:outputText value="#{item.produto.modelo}"   />
                         </p:column>
-
-
                     </p:dataTable>
-
-
                 </h:panelGrid>
 
 
@@ -281,6 +282,49 @@
                 </h:panelGrid>
 
             </h:form>
+        </p:dialog>
+
+
+        <p:dialog widgetVar="dlgStatus" closable="false" draggable="false"
+                  resizable="false" modal="true" appendTo="@(body)"
+                  header="Status">
+
+            <h:form id="formStatus">
+                <h:panelGrid columns="2" id="painelStatus">
+
+
+                    <p:outputLabel value="Status:" />
+
+                    <p:selectOneMenu id="oneMenuStatus" 
+                                     value="#{MBManutencao.manutencao.status}" required="true"
+                                     requiredMessage="Selecione o Status">
+                        <f:selectItem itemValue="Orçamento" itemLabel="Orçamento"  />
+                        <f:selectItem itemValue="Assitencia Tecnica" itemLabel="Assitencia Tecnica"  />
+                        <f:selectItem itemValue="Concerto efetuado" itemLabel="Concerto efetuado"  />
+
+
+                        <p:ajax event="change" update="painelStatus" process="oneMenuStatus" />
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Valor do reparo:" rendered="#{MBManutencao.manutencao.status =='Concerto efetuado'}"/>
+
+                </h:panelGrid>
+
+                <h:panelGrid columns="2">
+
+                    <p:commandButton value="Atualizar"
+                                     actionListener="#{MBManutencao.editar}"
+                                     oncomplete="verificar(xhr, status, args, 'dlgStatus', 'tabelaManutencao');"
+                                     update=":formTabela:tabela :msgGlobal" />
+                    <p:commandButton value="Cancelar" onclick="PF('dlgStatus').hide();"
+                                     process="@this">
+                        <p:resetInput target="painelStatus" />
+                    </p:commandButton>
+                    <!-- process=@this : submete um formulario -->
+                </h:panelGrid>
+
+            </h:form>
+
         </p:dialog>
 
     </ui:define>

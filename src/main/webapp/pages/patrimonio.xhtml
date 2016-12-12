@@ -56,10 +56,7 @@
 
 
 
-                <p:column headerText="Observação" sortBy="#{item.produto.obs}"
-                          filterBy="#{item.produto.obs}">
-                    <h:outputText value="#{item.produto.obs}" />
-                </p:column>
+
 
                                 <!-- <f:setPropertyActionListener value="#{item}"
                                                         target="#{MBPatrimonio.patrimonio}"></f:setPropertyActionListener> funciona como um prepara pesquisa para atualizar -->
@@ -83,10 +80,10 @@
                                                      target="#{MBPatrimonio.patrimonio}" />
                     </p:commandButton>
 
-                    <p:commandButton icon="fa fa-wrench"
+                    <p:commandButton icon="fa fa-wrench" rendered="#{item.funcionando =='S'}"
                                      oncomplete="PF('dlgManutencao').show();"
-                                     actionListener="#{MBPatrimonio.prepararEditar}"
-                                     update=":formManutencao:painelManutencao :msgGlobal" title="Enviar para manutençao">
+                                     actionListener="#{MBPatrimonio.prepararSalvarManutencao()}"
+                                     update=":formManutencao:painelManutencao :msgGlobal" title="Enviar para manutençao" >
                         <f:setPropertyActionListener value="#{item}"
                                                      target="#{MBPatrimonio.patrimonio}" />
                     </p:commandButton>
@@ -181,19 +178,13 @@
                     <p:outputLabel value="Garantia:"/>
 
                     <p:selectOneMenu id="comboGarantia" value="#{MBPatrimonio.patrimonio.garantia}" required="true" requiredMessage="Campo garantia é obrigatorio!" >
-
                         <f:selectItem itemLabel="--Sem--" itemValue="0" />
-                        <f:selectItem itemLabel="1 ano" itemValue="1" />
-                        <f:selectItem itemLabel="2 anos" itemValue="2" />
-                        <f:selectItem itemLabel="3 anos" itemValue="3" />
-                        <f:selectItem itemLabel="4 anos" itemValue="4" />
-                        <f:selectItem itemLabel="5 anos" itemValue="5" />
-                        <f:selectItem itemLabel="6 anos" itemValue="6" />
-                        <f:selectItem itemLabel="7 anos" itemValue="7" />
-                        <f:selectItem itemLabel="8 anos" itemValue="8" />
-                        <f:selectItem itemLabel="9 anos" itemValue="9" />
-                        <f:selectItem itemLabel="10 anos" itemValue="10"/>
-                        <f:selectItem itemLabel="15 anos" itemValue="15"/>
+                        <f:selectItem itemLabel="3 meses" itemValue="90" />
+                        <f:selectItem itemLabel="1 ano" itemValue="365" />
+                        <f:selectItem itemLabel="2 anos" itemValue="730" />
+                        <f:selectItem itemLabel="3 anos" itemValue="1095" />
+                        <f:selectItem itemLabel="4 anos" itemValue="1460" />
+                        <f:selectItem itemLabel="5 anos" itemValue="1825" />
 
                     </p:selectOneMenu>
 
@@ -209,12 +200,8 @@
 
                     </p:selectOneMenu>
 
-
-                    <p:outputLabel value="Obs.:" />
-                    <p:inputText id="txtObs" size="45" maxlength="45"
-                                 value="#{MBPatrimonio.patrimonio.observacao}" />
-
                 </h:panelGrid>
+
                 <!-- actionListener="" : serve para invocar metodos manageBean -->
                 <!-- update=":formTabela:tabela" :formulario e atualiza tabela  -->
 
@@ -255,8 +242,6 @@
                     <p:outputLabel id="comboGarantia" value="#{MBPatrimonio.patrimonio.garantia}"/>
                     <p:outputLabel value="Setor de destino:" />
                     <p:outputLabel value="#{MBPatrimonio.patrimonio.setor.codigo}"/>
-                    <p:outputLabel value="Obs.:" />
-                    <p:outputLabel value="#{MBPatrimonio.patrimonio.observacao}" />
 
                 </h:panelGrid>
 
@@ -320,18 +305,14 @@
 
                     <p:selectOneMenu id="comboGarantia" value="#{MBPatrimonio.patrimonio.garantia}" required="true" requiredMessage="Campo garantia é obrigatorio!" >
 
+
                         <f:selectItem itemLabel="--Sem--" itemValue="0" />
-                        <f:selectItem itemLabel="1 ano" itemValue="1" />
-                        <f:selectItem itemLabel="2 anos" itemValue="2" />
-                        <f:selectItem itemLabel="3 anos" itemValue="3" />
-                        <f:selectItem itemLabel="4 anos" itemValue="4" />
-                        <f:selectItem itemLabel="5 anos" itemValue="5" />
-                        <f:selectItem itemLabel="6 anos" itemValue="6" />
-                        <f:selectItem itemLabel="7 anos" itemValue="7" />
-                        <f:selectItem itemLabel="8 anos" itemValue="8" />
-                        <f:selectItem itemLabel="9 anos" itemValue="9" />
-                        <f:selectItem itemLabel="10 anos" itemValue="10"/>
-                        <f:selectItem itemLabel="15 anos" itemValue="15"/>
+                        <f:selectItem itemLabel="3 meses" itemValue="90" />
+                        <f:selectItem itemLabel="1 ano" itemValue="365" />
+                        <f:selectItem itemLabel="2 anos" itemValue="730" />
+                        <f:selectItem itemLabel="3 anos" itemValue="1095" />
+                        <f:selectItem itemLabel="4 anos" itemValue="1460" />
+                        <f:selectItem itemLabel="5 anos" itemValue="1825" />
 
                     </p:selectOneMenu>
 
@@ -423,54 +404,45 @@
 
         <p:dialog widgetVar="dlgManutencao" closable="false" draggable="false"
                   resizable="false" modal="true" appendTo="@(body)"
-                  header="Envio de Patrimonio para manutenção">
+                  header="Enviar patrimonio para manutenção">
 
             <h:form id="formManutencao">
                 <h:panelGrid columns="2" id="painelManutencao">
 
-
+                    <p:outputLabel value="ID:"/>
+                    <p:outputLabel value="#{MBPatrimonio.patrimonio.codigo}"/>
                     <p:outputLabel value="Patrimonio:"/>
+                    <p:outputLabel value="#{MBPatrimonio.patrimonio.produto.produto}"/>
+                    <p:outputLabel value="Modelo:"/>
+                    <p:outputLabel value="#{MBPatrimonio.patrimonio.produto.modelo}"/>
+                    <p:outputLabel value="Fabricante:"/>
+                    <p:outputLabel value="#{MBPatrimonio.patrimonio.produto.fornecedor.razaoSocialNome}"/>
+                    <p:outputLabel value="Doc Fiscal:"/>
 
                     <h:panelGrid columns="2">
+                        <p:outputLabel value="#{MBPatrimonio.patrimonio.documentoFiscal.numeroDocumentoFiscal}"/>
+                        <p:button icon="fa fa-file-text-o" rendered="#{MBPatrimonio.patrimonio.documentoFiscal.tipoDocFiscal !='Danfe'}"></p:button>
 
-                        <h:panelGroup>
-                            <p:inputText 
-                                readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"
-                                required="true" requiredMessage="Selecione o patrimonio com defeito!" />
-                            
-                            <p:commandButton icon="ui-icon-search" title="Pesquisa">
-                                             
-                                
-                            </p:commandButton>
-                        </h:panelGroup>                        
-
+                        <p:link styleClass="fa fa-external-link" href="https://www.danfeonline.com.br/" target="_blank" rendered="#{MBPatrimonio.patrimonio.documentoFiscal.tipoDocFiscal =='Danfe'}" />                             
 
                     </h:panelGrid>
-
-
+                    <p:outputLabel value="Data da compra:"/>
+                    <p:outputLabel value="#{MBPatrimonio.patrimonio.documentoFiscal.dataEmissao}"/>
+                    <p:outputLabel value="Garantia:"/>
+                    <p:outputLabel value="#{MBPatrimonio.patrimonio.garantia} dias"/>
+                    <p:outputLabel value="Termino em:"/>
+                    <p:outputLabel value="#{MBPatrimonio.patrimonio.garantia} dias"/>
 
                     <p:outputLabel value="Defeito:"/>
-                    <p:inputTextarea/>       
-
-                    <p:outputLabel value="Manutencionista:" />
-
-                    <p:selectOneMenu id="oneMenuFuncionario" filter="true"
-                                     required="true"
-                                     requiredMessage="Selecione o colaborador.">
-                        <f:selectItem itemValue="" itemLabel="Selecione o Manutencionista"
-                                      noSelectionOption="true" />
-
-
-                    </p:selectOneMenu>
-
-
+                    <p:inputTextarea id="txtModelo"   maxlength="20" onblur="value = value.toUpperCase()"
+                                     value="#{MBPatrimonio.patrimonio.observacao}" required="true" requiredMessage="Informe o defeito!"/>
                 </h:panelGrid>
 
                 <h:panelGrid columns="2">
 
                     <p:commandButton value="comfirmar"
-                                     actionListener="#{MBPatrimonio.editar}"
-                                     oncomplete="verificar(xhr, status, args, 'dlgTransferir', 'tabelaPatrimonio');"
+                                     actionListener="#{MBPatrimonio.salvarManutencao()}"
+                                     oncomplete="verificar(xhr, status, args, 'dlgManutencao', 'tabelaPatrimonio');"
                                      update=":formTabela:tabela :msgGlobal" />
                     <p:commandButton value="Cancelar" onclick="PF('dlgManutencao').hide();"
                                      process="@this">
@@ -482,8 +454,6 @@
             </h:form>
 
         </p:dialog>
-
-
 
 
 

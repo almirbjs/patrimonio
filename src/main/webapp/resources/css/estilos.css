@@ -1,6 +1,6 @@
 @CHARSET "ISO-8859-1";
 
-/* � aqui que eu consigo mudar o tamanho e estilo da fonte	*/
+/* Mudar o tamanho e estilo da fonte	*/
 .ui-layout-north {
     z-index: 20 !important;
     overflow: visible !important;
@@ -13,3 +13,6 @@
 .ui-widget, .ui-widget .ui-widget {
     font-size: 13px !important;
 }
+	
+
+
