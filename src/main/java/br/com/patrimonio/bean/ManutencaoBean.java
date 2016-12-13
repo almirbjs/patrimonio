@@ -1,5 +1,6 @@
 package br.com.patrimonio.bean;
 
+import br.com.patrimonio.dao.FornecedorDao;
 import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
@@ -8,7 +9,9 @@ import javax.faces.bean.ViewScoped;
 
 import br.com.patrimonio.dao.ManutencaoDao;
 import br.com.patrimonio.dao.PatrimonioDao;
+import br.com.patrimonio.domain.Fornecedor;
 import br.com.patrimonio.domain.Manutencao;
+import br.com.patrimonio.domain.Orcamento;
 import br.com.patrimonio.domain.Patrimonio;
 import br.com.patrimonio.util.JSFUtil;
 import java.util.List;
@@ -29,9 +32,12 @@ public class ManutencaoBean {
     private ArrayList<Manutencao> itens;
     private ArrayList<Manutencao> itensFiltrados;// Vai armazenar os itens filtrados
     private ArrayList<Patrimonio> itensPatrimonio; // Carrega o combox com o nome dos
+    private ArrayList<Fornecedor> itensFornecedor; 
     private ManutencaoDao dao = new ManutencaoDao();
     private Manutencao manutencao = new Manutencao();
     private Patrimonio patrimonio = new Patrimonio();
+    private Orcamento orcamento=new Orcamento();
+            
 
     @PostConstruct
     public void prepararPesquisa() {
@@ -145,7 +151,14 @@ public class ManutencaoBean {
         itensPatrimonio = patrimonioDao.listar();
 
     }
+ public void fornecedorSelecionado(SelectEvent event) {
+        Fornecedor p = (Fornecedor) event.getObject();
+        orcamento.setFornecedor(p);
+        FornecedorDao fornecedorDao = new FornecedorDao();
+        itensFornecedor = fornecedorDao.listar();
 
+    }
+    
     @SuppressWarnings("ReturnOfCollectionOrArrayField")
     public ArrayList<Patrimonio> listaFuncionando() {
  itensPatrimonio = null;
@@ -211,6 +224,22 @@ public class ManutencaoBean {
 
     public void setPatrimonio(Patrimonio patrimonio) {
         this.patrimonio = patrimonio;
+    }
+
+    public ArrayList<Fornecedor> getItensFornecedor() {
+        return itensFornecedor;
+    }
+
+    public void setItensFornecedor(ArrayList<Fornecedor> itensFornecedor) {
+        this.itensFornecedor = itensFornecedor;
+    }
+
+    public Orcamento getOrcamento() {
+        return orcamento;
+    }
+
+    public void setOrcamento(Orcamento orcamento) {
+        this.orcamento = orcamento;
     }
 
 }

@@ -19,7 +19,7 @@ public class OrcamentoBean {
     private ArrayList<Orcamento> itensFiltrados;// Vai armazenar os itens
     // filtrados
 
-    OrcamentoDao dao = new OrcamentoDao();
+    private OrcamentoDao dao = new OrcamentoDao();
     private Orcamento orcamento = new Orcamento();
 
     // @PostConstruct :esse metodo vai ser desenhado antes da pagina ser
@@ -116,4 +116,35 @@ public class OrcamentoBean {
         }
 
     }
+
+    public void setItens(ArrayList<Orcamento> itens) {
+        this.itens = itens;
+    }
+
+    public ArrayList<Orcamento> getItensFiltrados() {
+        return itensFiltrados;
+    }
+
+    public void setItensFiltrados(ArrayList<Orcamento> itensFiltrados) {
+        this.itensFiltrados = itensFiltrados;
+    }
+
+    public OrcamentoDao getDao() {
+        return dao;
+    }
+
+    public void setDao(OrcamentoDao dao) {
+        this.dao = dao;
+    }
+
+    public Orcamento getOrcamento() {
+        return orcamento;
+    }
+
+    public void setOrcamento(Orcamento orcamento) {
+        this.orcamento = orcamento;
+    }
+    
+    
+    
 }

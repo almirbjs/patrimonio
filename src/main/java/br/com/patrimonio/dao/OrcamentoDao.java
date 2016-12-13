@@ -7,9 +7,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import br.com.patrimonio.domain.Patrimonio;
 import br.com.patrimonio.util.HibernateUtil;
-import java.util.List;
+
 
 public class OrcamentoDao {
 
@@ -144,7 +143,7 @@ public class OrcamentoDao {
 
         try {
 
-            Query consulta = sessao.getNamedQuery("Patrimonio.listar");
+            Query consulta = sessao.getNamedQuery("Orcamento.listar");
             Orcamento= (ArrayList<br.com.patrimonio.domain.Orcamento>) consulta.list();
 
         } catch (Exception ex) {
@@ -165,7 +164,7 @@ public class OrcamentoDao {
 
         try {
 
-            Query consulta = sessao.getNamedQuery("Patrimonio.listarFuncionando");
+            Query consulta = sessao.getNamedQuery("Orcamento.listarFuncionando");
             Orcamento = (ArrayList<br.com.patrimonio.domain.Orcamento>) consulta.list();
 
         } catch (Exception ex) {
