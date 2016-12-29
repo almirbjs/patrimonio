@@ -29,38 +29,37 @@ public class Orcamento implements Serializable {
     @Id
     @Column(name = "idOrcamento")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int codigo;
+    int codigo;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "dtOrcamento")
-    private Date dataOrcamento;
+    Date dataOrcamento;
 
     @Column(precision = 7, scale = 2, nullable = false)
-    private BigDecimal valor;
+    BigDecimal valor;
 
     @Column(name = "previsao", length = 45)
-    private String previsaoDeEntrega;
-    
-    @Column(name = "formapagamento", length = 45)
-    private String FormaDePagamento;
-    
-     @Column(name = "prazopagamento", length = 45)
-    private String prazoParaPagamento;
-    
-    @Column(name = "tipoorcamento", length = 45)
-    private String tipoDeOrcamento;
-    
-    @Column(name = "obs", length = 45)
-    private String observacao;
+    String previsaoDeEntrega;
 
-    @JoinColumn(name = "fk_orcamento_idfornecedor", referencedColumnName = "idfornecedor", nullable = false)
+    @Column(name = "formapagamento", length = 45)
+    String FormaDePagamento;
+
+    @Column(name = "prazopagamento", length = 45)
+    String prazoParaPagamento;
+
+    @Column(name = "tipoorcamento", length = 45)
+    String tipoDeOrcamento;
+
+    @Column(name = "obs", length = 45)
+    String observacao;
+
     @ManyToOne(fetch = FetchType.EAGER)
-    private Fornecedor fornecedor = new Fornecedor();
+    @JoinColumn(name = "fk_orcamento_idfornecedor", referencedColumnName = "idfornecedor", nullable = false)
+    Fornecedor fornecedor = new Fornecedor();
 
     @JoinColumn(name = "fk_orcamento_idmanutencao", referencedColumnName = "idmanutencao", nullable = false)
-    // Muitos produtos tem um patrimonio.
     @ManyToOne(fetch = FetchType.EAGER)
-    private Manutencao manutencao = new Manutencao();
+    Manutencao manutencao = new Manutencao();
 
     public int getCodigo() {
         return codigo;
@@ -142,5 +141,4 @@ public class Orcamento implements Serializable {
         this.manutencao = manutencao;
     }
 
-   
 }

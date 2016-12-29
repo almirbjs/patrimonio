@@ -67,6 +67,7 @@
                                      update=":formStatus:painelStatus :msgGlobal" title=" Mudar Status">
                         <f:setPropertyActionListener value="#{item}"
                                                      target="#{MBManutencao.manutencao}" />
+
                     </p:commandButton>
 
 
@@ -84,6 +85,21 @@
                                      update=":formExcluir:painelExcluir :msgGlobal" title="Excluir">
                         <f:setPropertyActionListener value="#{item}"
                                                      target="#{MBManutencao.manutencao}" />
+                    </p:commandButton>
+
+                    <p:commandButton icon="fa fa-money"
+                                     oncomplete="PF('dlgOrcamento').show();"
+                                     actionListener="#{MBOrcamento.prepararSalvar()}"
+                                     update=":formOrcamento:painelOrcamento :msgGlobal " title="Orçamento" >
+                        <f:setPropertyActionListener value="#{item}"
+                                                     target="#{MBManutencao.manutencao}"/>
+
+                    </p:commandButton>
+
+                    <p:commandButton icon="fa fa-file-text-o" title="Relatorio de Reparo"
+                                     oncomplete="PF('dlgHistorico').show();" >
+
+
                     </p:commandButton>
 
                 </p:column>
@@ -300,6 +316,14 @@
 
                     </p:selectOneMenu>
 
+                    <p:commandButton icon="fa fa-plus"
+                                     oncomplete="PF('dlgFornecedor').show();"
+                                     actionListener="#{MBFornecedor.prepararEditar()}"
+                                     update=":formFornecedor:painelFornecedor :msgGlobal" title=" Mudar Status">
+                        <f:setPropertyActionListener value="#{item}"
+                                                     target="#{MBFornecedor.fornecedor}" />
+                    </p:commandButton>
+
                     <p:commandButton value="oi" icon="fa fa-plus" rendered="#{MBManutencao.manutencao.status =='Orçamento'}"/>
                     <p:outputLabel value="Valor do reparo:" rendered="#{MBManutencao.manutencao.status =='Concerto efetuado'}"/>
 
@@ -321,8 +345,201 @@
             </h:form>
 
         </p:dialog>
-        
-        
+
+
+
+        <p:dialog widgetVar="dlgFornecedor" closable="false" draggable="false" width="700" 
+                  resizable="false" modal="true" appendTo="@(body)"
+                  header="Selecione o Fornecedor">
+
+            <h:form id="formFornecedor">
+                <h:panelGrid columns="2" id="painelFornecedor">
+
+
+                    <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado." 
+                                 rowKey="#{item.codigo}" selectionMode="single" selection="#{item}"
+                                 widgetVar="tabelaFornecedor" value="#{MBFornecedor.itens}"  filteredValue="#{MBFornecedor.itensFiltrados}"
+                                 var="item"  rows="10" >
+                        <p:ajax event="rowSelect" listener="#{MBOrcamento.fornecedorSelecionado}" 
+                                update=":formOrcamento:fornecedor"  onsuccess="PF('dlgFornecedor').hide()"  />
+
+                        <p:column headerText="Codigo" style="width: 30px; text-align: center"  filterStyle="max-width: 40px; min-width: 40px;"
+                                  filterBy="#{item.codigo}">
+                            <h:outputText value="#{item.codigo}"   />
+                        </p:column>
+                        <p:column headerText="Fornecedor" width="150"
+                                  filterBy="#{item.razaoSocialNome}">
+                            <h:outputText value="#{item.razaoSocialNome}" />
+                        </p:column>
+                        <p:column headerText="CNPJ/CPF" sortBy="#{item.cnpjCpf}" width="130" style="width: 30px; text-align: center"
+                                  filterBy="#{item.cnpjCpf}">
+                            <h:outputText value="#{item.cnpjCpf}" />
+                        </p:column>
+
+                        <p:column headerText="Contato" width="100" style="width: 30px; text-align: center">
+                            <h:outputText value="#{item.contato}" />
+                        </p:column>
+
+                    </p:dataTable>
+
+
+                </h:panelGrid>
+
+
+                <h:panelGrid columns="3">
+
+                    <p:commandButton value="Sair"
+                                     onclick="PF('dlgFornecedor').hide();" />
+                    
+
+                </h:panelGrid>
+
+            </h:form>
+        </p:dialog>
+
+        <p:dialog widgetVar="dlgOrcamento" closable="false" draggable="false"
+                  resizable="false" modal="true" appendTo="@(body)"
+                  header="Orçamento">
+
+            <h:form id="formOrcamento">
+
+                <h:panelGrid columns="2" id="painelOrcamento">
+
+                    <p:outputLabel value="ID" />
+                    <p:outputLabel value="#{MBManutencao.manutencao.patrimonio.codigo}"/>
+                    <p:outputLabel value="Patrimonio:" />
+                    <p:outputLabel value="#{MBManutencao.manutencao.patrimonio.produto.produto}"/>
+                    <p:outputLabel value="Modelo:" />
+                    <p:outputLabel value="#{MBManutencao.manutencao.patrimonio.produto.modelo}"/>     
+
+                    <p:outputLabel value="Assistência técnica:" for="fornecedor" />
+
+                    <h:panelGrid columns="2">
+
+                        <h:panelGroup>
+                            
+                            <p:inputText id="fornecedor" value="#{MBOrcamento.orcamento.fornecedor.razaoSocialNome}"
+                                         readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"
+                                         required="true" requiredMessage="Selecione o Fornecedor!" >
+                            </p:inputText>
+
+                            <p:commandButton icon="ui-icon-search" title="Pesquisa"
+                                             onclick="PF('dlgFornecedor').show();"
+                                             process="@this" update=":formFornecedor:tabela">
+                                <p:ajax event="dialogReturn" listener="#{MBOrcamento.fornecedorSelecionado}"
+                                        process="@this" update="fornecedor" />
+                                <p:resetInput target=":formOrcamento:fornecedor" />
+                            </p:commandButton>
+                        </h:panelGroup>                        
+
+                    </h:panelGrid>
+
+                    <p:outputLabel value="Forma de pagamento:" />
+
+                    <p:selectOneMenu id="oneMenuFormaPagamento" 
+                                     value="#{MBOrcamento.orcamento.formaDePagamento}" required="true"
+                                     requiredMessage="Selecione a forma de pagamento">
+                        <f:selectItem itemValue="" itemLabel="Selecione" noSelectionOption="true" />
+                        <f:selectItem itemValue="Boleto" itemLabel="Boleto" />
+                        <f:selectItem itemValue="Cartao" itemLabel="Cartão" />
+                        <f:selectItem itemValue="Cheque" itemLabel="Cheque" />
+                        <f:selectItem itemValue="Dinheiro" itemLabel="Dinheiro" />
+
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Valor:R$" />
+                    <p:inputNumber />
+
+                    <p:outputLabel value="Prazo de pagamento:" />
+                    <p:inputText />
+                    <p:outputLabel value="Previsão de entrega:" />
+                    <p:calendar  validatorMessage="Informe uma data valida!"  
+                                 locale="pt" mask="99/99/9999" pattern="dd/MM/yyyy"    mindate="today" 
+                                 value="#{MBOrcamento.orcamento.previsaoDeEntrega}"  />
+                    <p:outputLabel value="Coletado por:" />
+                    <p:inputText value="#{MBOrcamento.orcamento.observacao}" />             
+
+                    <h:panelGrid columns="2">
+
+                    <p:commandButton value="Gravar"
+                                     actionListener="#{MBOrcamento.salvar}"
+                                     oncomplete="verificar(xhr, status, args, 'dlgOrcamento', 'tabelaManutencao');"
+                                     update=":formTabela:tabela :msgGlobal" />
+                    <p:commandButton value="Cancelar" onclick="PF('dlgOrcamento').hide();"
+                                     process="@this">
+                        <p:resetInput target="painelOrcamento"/>
+                    </p:commandButton>
+                    <!-- process=@this : submete um formulario -->
+                </h:panelGrid>
+                </h:panelGrid>
+            </h:form>
+
+        </p:dialog>
+
+
+
+        <p:dialog widgetVar="dlgHistorico" closable="false" draggable="false" width="900" 
+                  resizable="false" modal="true" appendTo="@(body)"
+                  header="Historico de reparo">
+
+            <h:form id="formHistorico">
+                <h:panelGrid columns="2" id="painelHistorico">
+
+
+                    <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."  rowKey="#{item.codigo}"  selection="#{item}"
+                                 widgetVar="tabelaHistorico" value="#{MBManutencao.listaFuncionando()}"  filteredValue="#{MBPatrimonio.itensFiltrados}"
+                                 var="item"  rows="10"  >
+
+
+                        <p:column headerText="Patrimonio" style="width: 150px; text-align: center">
+
+                        </p:column>
+
+
+                        <p:column headerText="Assistência" style="width: 150px;"
+                                  filterStyle="max-width: 200px; min-width: 200px;">
+
+                        </p:column>
+                        <p:column headerText="Defeito" style="width: 200px; text-align: center" >
+                        </p:column>
+
+                        <p:column headerText="Saida" style="width: 50px;"
+                                  filterStyle="max-width: 200px; min-width: 200px;">
+
+                        </p:column>
+                        <p:column headerText="Reparo " style="width: 50px;"
+                                  filterStyle="max-width: 200px; min-width: 200px;">
+
+                        </p:column>
+                        <p:column headerText="Valor" style="width: 60px; text-align: center"
+                                  filterStyle="max-width: 100px; min-width: 100px;">
+                        </p:column>
+                        <p:column headerText="Ações" style="width: 60px; text-align: center" >
+
+
+                        </p:column>
+
+
+                    </p:dataTable>
+
+                </h:panelGrid>
+
+
+                <h:panelGrid columns="4">
+
+
+                    <p:commandButton value="Sair"
+                                     onclick="PF('dlgHistorico').hide();" />
+                    <p:spacer/>
+                    <p:outputLabel value="Valor total gasto com reparo(s):R$" />
+                    <p:outputLabel value="100,00"/>
+
+                </h:panelGrid>
+
+
+            </h:form>
+        </p:dialog>
+
 
     </ui:define>
 

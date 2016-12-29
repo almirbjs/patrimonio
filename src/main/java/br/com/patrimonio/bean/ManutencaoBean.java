@@ -2,19 +2,17 @@ package br.com.patrimonio.bean;
 
 import br.com.patrimonio.dao.FornecedorDao;
 import java.util.ArrayList;
-
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-
 import br.com.patrimonio.dao.ManutencaoDao;
+import br.com.patrimonio.dao.OrcamentoDao;
 import br.com.patrimonio.dao.PatrimonioDao;
 import br.com.patrimonio.domain.Fornecedor;
 import br.com.patrimonio.domain.Manutencao;
 import br.com.patrimonio.domain.Orcamento;
 import br.com.patrimonio.domain.Patrimonio;
 import br.com.patrimonio.util.JSFUtil;
-import java.util.List;
 import org.primefaces.event.SelectEvent;
 
 //ele vai estar por tras de uma interface grafica
@@ -29,21 +27,22 @@ import org.primefaces.event.SelectEvent;
 public class ManutencaoBean {
     // variavel que guarda o resultado de consulta (variavel de tela)
 
-    private ArrayList<Manutencao> itens;
-    private ArrayList<Manutencao> itensFiltrados;// Vai armazenar os itens filtrados
-    private ArrayList<Patrimonio> itensPatrimonio; // Carrega o combox com o nome dos
-    private ArrayList<Fornecedor> itensFornecedor; 
-    private ManutencaoDao dao = new ManutencaoDao();
-    private Manutencao manutencao = new Manutencao();
-    private Patrimonio patrimonio = new Patrimonio();
-    private Orcamento orcamento=new Orcamento();
-            
+    ArrayList<Manutencao> itens;
+    ArrayList<Manutencao> itensFiltrados;// Vai armazenar os itens filtrados
+    ArrayList<Patrimonio> itensPatrimonio; // Carrega o combox com o nome dos
+    ArrayList<Fornecedor> itensFornecedor;
+    ArrayList<Fornecedor> itensOrcamento;
+    ManutencaoDao dao = new ManutencaoDao();
+    Manutencao manutencao = new Manutencao();
+    Patrimonio patrimonio = new Patrimonio();
+    Orcamento orcamento = new Orcamento();
+    Fornecedor fornecedor = new Fornecedor();
 
     @PostConstruct
     public void prepararPesquisa() {
         try {
             ManutencaoDao dao = new ManutencaoDao();
-            itens = dao.listar();
+            setItens(dao.listar());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,30 +53,32 @@ public class ManutencaoBean {
     public void prepararSalvar() {
         // metodo criado para resolver o problema do objeto= null
         try {
-            manutencao = new Manutencao();
+            setManutencao(new Manutencao());
             PatrimonioDao dao = new PatrimonioDao();
-            itensPatrimonio = dao.listar();
+            setItensPatrimonio(dao.listar());
         } catch (Exception ex) {
             ex.printStackTrace();
             JSFUtil.adicionaMensagemErro(ex.getMessage());
         }
 
     }
+    
+     
 
     public void salvar() {
 
         try {
-           patrimonio.getCodigo();
+            getPatrimonio().getCodigo();
             ManutencaoDao dao = new ManutencaoDao();
-            manutencao.setStatus("Pendente");
-            dao.salvar(manutencao);
-            patrimonio = manutencao.getPatrimonio();
+            getManutencao().setStatus("Pendente");
+            dao.salvar(getManutencao());
+            setPatrimonio(getManutencao().getPatrimonio());
             PatrimonioDao patrimonioDao = new PatrimonioDao();
-           patrimonio.setFuncionando("N");
-           
-            patrimonioDao.alterar(patrimonio);
+            getPatrimonio().setFuncionando("N");
 
-            itens = dao.listar();
+            patrimonioDao.alterar(getPatrimonio());
+
+            setItens(dao.listar());
             JSFUtil.adicionaMensagemSucesso("Salvo com sucesso!");
 
             // Quando salvar um novo objeto ele vai atualizar a minha tabela
@@ -94,7 +95,7 @@ public class ManutencaoBean {
         try {
             //manutencao = new Manutencao();
             PatrimonioDao daoPatrimonio = new PatrimonioDao();
-            itensPatrimonio = daoPatrimonio.listar();
+            setItensPatrimonio(daoPatrimonio.listar());
         } catch (Exception ex) {
             ex.printStackTrace();
             JSFUtil.adicionaMensagemErro(ex.getMessage());
@@ -106,10 +107,10 @@ public class ManutencaoBean {
 
         try {
 
-            dao = new ManutencaoDao();
-            dao.alterar(manutencao);
+            setDao(new ManutencaoDao());
+            getDao().alterar(getManutencao());
 
-            itens = dao.listar();
+            setItens(getDao().listar());
             JSFUtil.adicionaMensagemSucesso("Alterado com sucesso!");
 
             // Quando salvar um novo objeto ele vai atualizar a minha tabela
@@ -126,17 +127,17 @@ public class ManutencaoBean {
         try {
 
             ManutencaoDao dao = new ManutencaoDao();
-            dao.excluir(manutencao);
-            itens = dao.listar();
+            dao.excluir(getManutencao());
+            setItens(dao.listar());
 
             JSFUtil.adicionaMensagemSucesso("Excluido com Sucesso.");
 
-            patrimonio = manutencao.getPatrimonio();
+            setPatrimonio(getManutencao().getPatrimonio());
             PatrimonioDao patrimonioDao = new PatrimonioDao();
-           patrimonio.setFuncionando("S");
-           
-            patrimonioDao.alterar(patrimonio);
-            
+            getPatrimonio().setFuncionando("S");
+
+            patrimonioDao.alterar(getPatrimonio());
+
         } catch (Exception e) {
             JSFUtil.adicionaMensagemErro(e.getMessage());
             JSFUtil.adicionaMensagemSucesso("Erro ao tentar excluir ");
@@ -146,38 +147,28 @@ public class ManutencaoBean {
 
     public void patrimonioSelecionado(SelectEvent event) {
         Patrimonio p = (Patrimonio) event.getObject();
-        manutencao.setPatrimonio(p);
+        getManutencao().setPatrimonio(p);
         PatrimonioDao patrimonioDao = new PatrimonioDao();
-        itensPatrimonio = patrimonioDao.listar();
+        setItensPatrimonio(patrimonioDao.listar());
 
     }
- public void fornecedorSelecionado(SelectEvent event) {
-        Fornecedor p = (Fornecedor) event.getObject();
-        orcamento.setFornecedor(p);
-        FornecedorDao fornecedorDao = new FornecedorDao();
-        itensFornecedor = fornecedorDao.listar();
 
-    }
-    
     @SuppressWarnings("ReturnOfCollectionOrArrayField")
     public ArrayList<Patrimonio> listaFuncionando() {
- itensPatrimonio = null;
-        
-       {
-           if (itensPatrimonio==null) {
-               
-                    
-           PatrimonioDao patrimonioDao = new PatrimonioDao();
-        itensPatrimonio = patrimonioDao.listarFuncionando();
+        setItensPatrimonio(null);
 
-           }
-        
-        return itensPatrimonio;
+        {
+            if (getItensPatrimonio() == null) {
+
+                PatrimonioDao patrimonioDao = new PatrimonioDao();
+                setItensPatrimonio(patrimonioDao.listarFuncionando());
+
+            }
+
+            return getItensPatrimonio();
+        }
     }
-    }
-  
-    
-    
+
     public ArrayList<Manutencao> getItens() {
         return itens;
     }
@@ -240,6 +231,22 @@ public class ManutencaoBean {
 
     public void setOrcamento(Orcamento orcamento) {
         this.orcamento = orcamento;
+    }
+
+    public ArrayList<Fornecedor> getItensOrcamento() {
+        return itensOrcamento;
+    }
+
+    public void setItensOrcamento(ArrayList<Fornecedor> itensOrcamento) {
+        this.itensOrcamento = itensOrcamento;
+    }
+
+    public Fornecedor getFornecedor() {
+        return fornecedor;
+    }
+
+    public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
     }
 
 }
