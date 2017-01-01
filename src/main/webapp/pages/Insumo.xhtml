@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/templates/modeloSistema.xhtml">
+
+    <ui:define name="menu">
+        <ui:include src="/includes/menuPrincipal.xhtml"></ui:include>
+    </ui:define>
+    <!-- conteudo da aplicacação aqui vai as tabelas, dialog e entre outros -->
+
+    <ui:define name="conteudo">
+        <h:form id="formTabela">
+            <!-- criando uma tabela -->
+
+            <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
+                         widgetVar="tabelaProduto" value="#{MBInsumo.itens}" var="item"
+                         paginator="true" rows="10"
+                         filteredValue="#{MBInsumo.itensFiltrados}">
+                <!-- rows="10"  me diz que o meu paginador deve ter 10 linhas-->
+
+                <f:facet name="header">
+                    Insumos
+                </f:facet>
+
+                <p:column headerText="Codigo" sortBy="#{item.codigo}" style="width: 70px; text-align: center"  filterStyle="max-width: 60px; min-width: 60px;"
+                          filterBy="#{item.codigo}">
+                    <h:outputText value="#{item.codigo}" />
+                </p:column>
+                <p:column headerText="Produto" sortBy="#{item.insumo}" style="width: 270px;"
+                          filterBy="#{item.insumo}">
+                    <h:outputText value="#{item.insumo}" />
+                </p:column>
+
+                <p:column headerText="Unidade"  style="width: 60px;">
+                    <h:outputText value="#{item.insumo}" />
+                </p:column>
+
+                <p:column headerText="Marca" filterBy="#{item.marca}" style="width: 200px; text-align: center"> 
+                    <h:outputText value="#{item.marca}" />
+                </p:column>
+
+                <p:column headerText="Outras" >
+                    <h:outputText value="#{item.obs}" />
+                </p:column>
+
+                <p:column headerText="Grupo"
+                          sortBy="#{item.grupo}" filterBy="#{item.grupo}" style="width: 200px; text-align: center">
+                    <h:outputText value="#{item.grupo}" />
+                </p:column>
+
+                <p:column headerText="Quant.Max.Alta" >
+                    <h:outputText value="#{item.qtdMaxAltaTemp}" />
+                </p:column>
+                <p:column headerText="Quant. Min. Alta"> 
+                    <h:outputText value="#{item.qtdMinAltaTemp}" />
+                </p:column>
+                <p:column headerText="Quant.Max.Baixa" >
+                    <h:outputText value="#{item.qtdMaxBaixaTemp}" />
+                </p:column>
+                <p:column headerText="Quant. Min. Baixa"> 
+                    <h:outputText value="#{item.qtdMinBaixaTemp}" />
+                </p:column>
+
+
+
+
+
+                <p:column headerText="Opções">
+
+
+                    <p:commandButton icon="ui-icon-pencil"
+                                     oncomplete="PF('dlgEditar').show();"
+                                     actionListener="#{MBProduto.prepararEditar()}"
+                                     update=":formEditar:painelEditar :msgGlobal" title="Editar">
+                        <f:setPropertyActionListener value="#{item}"
+                                                     target="#{MBProduto.produto}" />
+
+                    </p:commandButton>
+
+                    <p:commandButton icon="ui-icon-trash"
+                                     oncomplete="PF('dlgExcluir').show();"
+                                     update=":formExcluir:painelExcluir :msgGlobal" title="Excluir">
+                        <f:setPropertyActionListener value="#{item}"
+                                                     target="#{MBProduto.produto}" />
+                    </p:commandButton>
+
+                </p:column>
+
+                <!-- linha de baixo da tabela -->
+                <f:facet name="footer">
+                    <p:commandButton value="Novo" oncomplete="PF('dlgNovo').show()"
+                                     actionListener="#{MBInsumo.prepararSalvar}"
+                                     update=":formDlgNovo:painelDlgNovo" />
+                </f:facet>
+
+            </p:dataTable>
+        </h:form>
+
+        <!-- Criando o Salvar  -->
+
+
+        <!-- widgetVar=""> : utilizamos para buscar o nome da tabela 
+        draggable="false"> : A janela não pode ser movimentada 
+        resizable="false"> : não pode redimensionar-->
+        <p:dialog widgetVar="dlgNovo" closable="false" draggable="false"
+                  resizable="false" appendTo="@(body)" header="CADASTRO DE INSUMOS"
+                  modal="true">
+            <!-- header="" nomea o dialogo
+            
+            modal="true" appendTo="@(body)" : desabilita todo campo atras do dialogo-->
+            <h:form id="formDlgNovo">
+                <h:panelGrid columns="2" id="painelDlgNovo">
+
+                    <p:outputLabel value="Insumo:" />
+                    <p:inputText id="txtInsumo" size="45" maxlength="45"
+                                 value="#{MBInsumo.insumo.insumo}" required="true" onblur="value = value.toUpperCase()"
+                                 requiredMessage="Informe o nome de insumo!" />
+
+                    <p:outputLabel value="Unidade:" />
+
+                    <p:selectOneMenu id="oneMenuUnidade" filter="true"
+                                     value="#{MBInsumo.insumo.unidade}"
+                                     required="true" requiredMessage="Selecione a Unidade.">
+                        <f:selectItem itemValue="" itemLabel="Selecione a Unidade"
+                                      noSelectionOption="true" />
+                        <f:selectItems value="#{MBInsumo.listaUnidade}" var="item"
+                                       itemValue="#{item.codigo}" itemLabel="#{item.unidade}" />
+
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Marca:" />
+                    <p:inputText id="txtModelo" size="20" maxlength="20" onblur="value = value.toUpperCase()"
+                                 value="#{MBInsumo.insumo.marca}" required="true"
+                                 requiredMessage="Informe o modelo do produto!" />
+
+                    <p:outputLabel value="Grupo:" />
+
+                    <p:selectOneMenu id="oneMenuGrupo" filter="true"
+                                     value="#{MBInsumo.insumo.grupo}"
+                                     required="true" requiredMessage="Selecione o Grupo.">
+                        <f:selectItem itemValue="" itemLabel="Selecione o Grupo"
+                                      noSelectionOption="true" />
+                        <f:selectItems value="#{MBInsumo.listaGrupo}" var="item"
+                                       itemValue="#{item.codigo}" itemLabel="#{item.grupo}" />
+
+                    </p:selectOneMenu>
+
+                
+                        <p:outputLabel value="Quantidade max. Alta:" />
+                        <p:inputText  
+                            value="#{MBInsumo.insumo.qtdMaxAltaTemp}" required="true" 
+                            requiredMessage="Informe a quantidade maxima pra alta temporada!">
+                            <f:convertNumber integerOnly="true" minIntegerDigits="1"   />
+                        </p:inputText>
+                         <p:outputLabel value="Quantidade min. Alta:" />
+                        <p:inputText  
+                            value="#{MBInsumo.insumo.qtdMinAltaTemp}" required="true" 
+                            requiredMessage="Informe a quantidade minima pra alta temporada!">
+                            <f:convertNumber integerOnly="true" minIntegerDigits="1"   />
+                        </p:inputText>
+
+                          <p:outputLabel value="Quantidade max. Baixa:" />
+                        <p:inputText  
+                            value="#{MBInsumo.insumo.qtdMaxBaixaTemp}" required="true" 
+                            requiredMessage="Informe a quantidade maxima pra Baíxa temporada!">
+                            <f:convertNumber integerOnly="true" minIntegerDigits="1"   />
+                        </p:inputText>
+                          
+                           <p:outputLabel value="Quantidade min. Baixa:" />
+                        <p:inputText  
+                            value="#{MBInsumo.insumo.qtdMinBaixaTemp}" required="true" 
+                            requiredMessage="Informe a quantidade minima para a baixa temporada!">
+                            <f:convertNumber integerOnly="true" minIntegerDigits="1"   />
+                        </p:inputText>
+                   
+                    
+                    <p:outputLabel value="OBS.:" />
+                    <p:inputText id="txtObs" size="45" maxlength="45"
+                                 value="#{MBInsumo.insumo.obs}" />
+                </h:panelGrid>
+                <!-- actionListener="" : serve para invocar metodos manageBean -->
+                <!-- update=":formTabela:tabela" :formulario e atualiza tabela  -->
+
+                <!-- PF('tabelaProduto').clearFilters() :limpa os filtros da tabela  -->
+                <h:panelGrid columns="2">
+
+                    <p:commandButton value="Gravar"
+                                     actionListener="#{MBProduto.salvar}"
+                                     oncomplete="verificar(xhr, status, args, 'dlgNovo', 'tabelaProduto');"
+                                     update=":formTabela:tabela :msgGlobal" />
+                    <p:commandButton value="Cancelar" onclick="PF('dlgNovo').hide();"
+                                     process="@this">
+                        <p:resetInput target="painelDlgNovo" />
+                    </p:commandButton>
+                    <!-- process=@this : submete um formulario -->
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+
+
+        <p:dialog widgetVar="dlgEditar" closable="false" draggable="false"
+                  resizable="false" appendTo="@(body)" header="Editar Insumo"
+                  modal="true">
+            <!-- header="" nomea o dialogo
+            
+            modal="true" appendTo="@(body)" : desabilita todo campo atras do dialogo-->
+            <h:form id="formEditar">
+                <h:panelGrid columns="2" id="painelEditar">
+
+                    <p:outputLabel value="Produto:" />
+                    <p:inputText id="txtProduto" size="45" maxlength="45"
+                                 value="#{MBProduto.produto.produto}" required="true" onblur="value = value.toUpperCase()"
+                                 requiredMessage="Informe o nome do Produto!" />
+
+                    <p:outputLabel value="Marca:" />
+                    <p:inputText id="txtModelo" size="20" maxlength="20" onblur="value = value.toUpperCase()"
+                                 value="#{MBProduto.produto.modelo}" required="true"
+                                 requiredMessage="Informe o modelo do produto!" />
+
+                    <p:outputLabel value="Categoria:" />
+
+                    <p:selectOneMenu id="oneMenuCategoria" filter="true"
+                                     value="#{MBProduto.produto.categoria.codigo}"
+                                     required="true" requiredMessage="Selecione a categoria.">
+                        <f:selectItem itemValue="" itemLabel="Selecione a categoria"
+                                      noSelectionOption="true" />
+                        <f:selectItems value="#{MBProduto.comboCategoria}" var="item"
+                                       itemValue="#{item.codigo}" itemLabel="#{item.categoria}" />
+
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="OBS.:" />
+                    <p:inputText id="txtObs" size="45" maxlength="45"
+                                 value="#{MBProduto.produto.obs}" />
+                </h:panelGrid>
+
+                <h:panelGrid columns="2">
+
+                    <p:commandButton value="Editar"
+                                     actionListener="#{MBProduto.editar}"
+                                     oncomplete="verificar(xhr, status, args, 'dlgEditar', 'tabelaProduto');"
+                                     update=":formTabela:tabela :msgGlobal" />
+                    <p:commandButton value="Cancelar" onclick="PF('dlgEditar').hide();"
+                                     process="@this">
+                        <p:resetInput target="painelEditar" />
+                    </p:commandButton>
+                    <!-- process=@this : submete um formulario -->
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog widgetVar="dlgExcluir" closable="false" draggable="false"
+                  resizable="false" modal="true" appendTo="@(body)"
+                  header="Excluir Produto">
+
+            <h:form id="formExcluir">
+                <h:panelGrid columns="2" id="painelExcluir">
+                    <p:outputLabel value="Codigo: " />
+                    <p:outputLabel value="#{MBProduto.produto.codigo}" />
+                    <p:outputLabel value="Produto: " />
+                    <p:outputLabel value="#{MBProduto.produto.produto}" />
+                    <p:outputLabel value="Modelo: " />
+                    <p:outputLabel value="#{MBProduto.produto.modelo}" />
+                    <p:outputLabel value="Fabricante:" />
+                    <p:outputLabel value="#{MBProduto.produto.fornecedor.razaoSocialNome}" />
+                    <p:outputLabel value="Categoria:" />
+                    <p:outputLabel value="#{MBProduto.produto.categoria.categoria}" />
+                    <p:outputLabel value="Observação: " />
+                    <p:outputLabel value="#{MBProduto.produto.obs}" />
+                </h:panelGrid>
+                <h:panelGrid columns="3">
+                    <p:commandButton value="Excluir"
+                                     actionListener="#{MBProduto.excluir}"
+                                     oncomplete="verificar(xhr, status, args, 'dlgExcluir', 'tabelaProduto');"
+                                     update=":formTabela:tabela :msgGlobal" />
+                    <!-- Atualiza tabela -->
+                    <p:commandButton value="Cancelar"
+                                     onclick="PF('dlgExcluir').hide();" />
+                </h:panelGrid>
+
+            </h:form>
+
+        </p:dialog>
+
+
+
+
+
+
+    </ui:define>
+
+</ui:composition>

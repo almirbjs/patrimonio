@@ -20,11 +20,11 @@
                 <p:separator />
                 <p:menuitem value="SAIR" icon="ui-icon-close"  >
 
-         
-                    
+
+
                 </p:menuitem>
 
-      
+
             </p:submenu>
 
             <p:submenu label="Cadastrar" icon="ui-icon-disk">
@@ -50,36 +50,40 @@
                 <p:menuitem value="Doc.fiscal/Outros" outcome="/pages/DocumentoFiscal.xhtml" />
             </p:submenu>
 
-                     
+            <p:submenu label="Compras" icon="fa fa-shopping-cart">
+                  <p:menuitem value="Marca" outcome="/pages/Marca.xhtml" />
+                  <p:menuitem value="Grupo" outcome="/pages/Grupo.xhtml" />
+                <p:menuitem value="Insumos" outcome="/pages/Insumo.xhtml" />
+                <p:menuitem value="Lista de compras"/>
+                <p:menuitem value="Cotação"/>
+                <p:menuitem value="Resultado"/>
+                <p:menuitem value="Requisição"/>
 
-            <p:submenu label="Relatorio" icon="ui-icon-document">
-                <p:menuitem value="Geral" outcome="/pages/Relatorio.xhtml" />
-                <p:menuitem value="Fornecedores" />
-                <p:menuitem value="Países" />
-                <p:menuitem value="Cidades" />
-                <p:menuitem value="Ruas" />
-                <p:menuitem value="Estados" />
-                <p:menuitem value="Patrimonio" />
-                <p:menuitem value="Tranferencias" />
+            </p:submenu>
 
+            <p:submenu label="Frota" icon="fa fa-automobile">
+                <p:menuitem value="Veículos" />
+                <p:menuitem value="Requisição" />
+                <p:menuitem value="Abatecimento" />
+                <p:menuitem value="Reparo" />
             </p:submenu>
 
             <p:submenu label="Configurações" icon="ui-icon-wrench">
-
                 <p:menuitem value="Mudar Tema" />
-
+                <p:menuitem value="Mudar Fonte" />
             </p:submenu>
 
 
-            <p:submenu label="Ajuda" icon="ui-icon-help" />
-
+            <p:submenu label="Ajuda" icon="ui-icon-help">
+                <p:menuitem value="Como cadastrar" />
+            </p:submenu>
         </p:menubar>
 
-         
-        
-        
+
+
+
     </h:form>
 
-    
-    
+
+
 </ui:composition>

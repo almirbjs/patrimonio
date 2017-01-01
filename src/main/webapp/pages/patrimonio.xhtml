@@ -58,8 +58,7 @@
 
 
 
-                                <!-- <f:setPropertyActionListener value="#{item}"
-                                                        target="#{MBPatrimonio.patrimonio}"></f:setPropertyActionListener> funciona como um prepara pesquisa para atualizar -->
+                               
                 <p:column headerText="Opções">
                     <p:commandButton icon="ui-icon-pencil"
                                      oncomplete="PF('dlgEditar').show();"
@@ -106,6 +105,7 @@
                 </f:facet>
 
             </p:dataTable>
+            <p:outputLabel value="Valor total de Bens:" />
         </h:form>
 
         <!-- Criando o Salvar  -->
@@ -555,7 +555,7 @@
 
 
                 <h:panelGrid columns="3">
-
+                    
 
                     <p:commandButton value="Sair"
                                      onclick="PF('dlgProduto').hide();" />

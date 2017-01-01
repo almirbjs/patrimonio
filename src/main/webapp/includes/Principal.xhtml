@@ -1,16 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
-                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                 template="/templates/modeloSistema.xhtml" >
-    
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/templates/modeloSistema.xhtml">
 
     <ui:define name="menu">
-        <ui:include src="/includes/menuPrincipal.xhtml" />
-        
+        <ui:include src="/includes/menuPrincipal.xhtml"></ui:include>
+    </ui:define>
+    <!-- conteudo da aplicacação aqui vai as tabelas, dialog e entre outros -->
+
+    <ui:define name="conteudo">
+
+
+
+
+
     </ui:define>
 
-    <ui:define name="Conteudo" >
+    <ui:define name="baixo" >
+
+        <div class="copyrights" >
+            <span> © Copyright 2017, RastroInfo System | Todos os direitos reservados</span>
+        </div>      
 
     </ui:define>
+
+
+
+
+
 </ui:composition>

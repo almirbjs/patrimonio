@@ -3,12 +3,10 @@ package br.com.patrimonio.bean;
 import br.com.patrimonio.dao.FornecedorDao;
 import br.com.patrimonio.dao.ManutencaoDao;
 import java.util.ArrayList;
-
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import br.com.patrimonio.dao.OrcamentoDao;
-import br.com.patrimonio.domain.DocumentoFiscal;
 import br.com.patrimonio.domain.Fornecedor;
 import br.com.patrimonio.domain.Manutencao;
 import br.com.patrimonio.domain.Orcamento;
@@ -24,7 +22,8 @@ public class OrcamentoBean {
     ArrayList<Orcamento> itens;
     ArrayList<Orcamento> itensFiltrados;// Vai armazenar os itens
     ArrayList<Fornecedor> itensFornecedores;// filtrados 
-    ArrayList<Fornecedor> itensManutencao;
+    
+    Manutencao manutencao = new Manutencao();
     OrcamentoDao dao = new OrcamentoDao();
     Orcamento orcamento = new Orcamento();
 
@@ -48,10 +47,11 @@ public class OrcamentoBean {
     
     public void prepararSalvar() {
         // metodo criado para resolver o problema do objeto= null
-        try {
-
-             FornecedorDao fornecedorDao = new FornecedorDao();
-         itensFornecedores = fornecedorDao.listar();
+        try { 
+            orcamento=new Orcamento();
+            manutencao = new Manutencao();
+            FornecedorDao fornecedorDao = new FornecedorDao();
+            itensFornecedores = fornecedorDao.listar();
         } catch (Exception ex) {
             ex.printStackTrace();
             JSFUtil.adicionaMensagemErro(ex.getMessage());
@@ -65,10 +65,10 @@ public class OrcamentoBean {
         try {
             
             OrcamentoDao dao = new OrcamentoDao();
-            Manutencao manutencao = new Manutencao();
-            ManutencaoDao manutencaoDao = new ManutencaoDao();
-            orcamento.setManutencao(manutencao);
             
+            ManutencaoDao manutencaoDao = new ManutencaoDao();
+            
+            orcamento.setManutencao(manutencao);
             dao.salvar(orcamento);
             
             JSFUtil.adicionaMensagemSucesso("Salvo com sucesso!");
@@ -138,7 +138,7 @@ public class OrcamentoBean {
     public void fornecedorSelecionado(SelectEvent event) {
         Fornecedor fornecedor = (Fornecedor) event.getObject();
         orcamento.setFornecedor(fornecedor);
-        
+        orcamento.setManutencao(manutencao);
         FornecedorDao fornecedorDao = new FornecedorDao();
         itensFornecedores = fornecedorDao.listar();
         
@@ -179,14 +179,13 @@ public class OrcamentoBean {
     public void setOrcamento(Orcamento orcamento) {
         this.orcamento = orcamento;
     }
-
-    public ArrayList<Fornecedor> getItensManutencao() {
-        return itensManutencao;
-    }
-
-    public void setItensManutencao(ArrayList<Fornecedor> itensManutencao) {
-        this.itensManutencao = itensManutencao;
+    
+    public Manutencao getManutencao() {
+        return manutencao;
     }
     
+    public void setManutencao(Manutencao manutencao) {
+        this.manutencao = manutencao;
+    }
     
 }

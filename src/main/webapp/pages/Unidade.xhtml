@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/templates/modeloSistema.xhtml">
+
+    <ui:define name="menu">
+        <ui:include src="/includes/menuPrincipal.xhtml"></ui:include>
+    </ui:define>
+    <!-- conteudo da aplicacação aqui vai as tabelas, dialog e entre outros -->
+
+    <ui:define name="conteudo">
+        <h:form id="formTabela">
+            <!-- criando uma tabela -->
+
+            <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
+                         widgetVar="tabelaUnidade" value="#{MBUnidade.itens}" var="item"
+                         paginator="true" rows="10"
+                         filteredValue="#{MBUnidade.itensFiltrados}">
+                <!-- rows="10"  me diz que o meu paginador deve ter 10 linhas-->
+
+                <f:facet name="header">
+                    Unidades
+                </f:facet>
+
+                <p:column headerText="Codigo" sortBy="#{item.codigo}"
+                          filterBy="#{item.codigo}">
+                    <h:outputText value="#{item.codigo}" />
+                </p:column>
+                <p:column headerText="Unidade" sortBy="#{item.unidade}"
+                          filterBy="#{item.unidade}">
+                    <h:outputText value="#{item.unidade}" />
+                </p:column>
+                <p:column headerText="Sigla" sortBy="#{item.sigla}"
+                          filterBy="#{item.sigla}">
+                    <h:outputText value="#{item.sigla}" />
+                </p:column>
+
+
+                <p:column headerText="Opções">
+                    <p:commandButton icon="ui-icon-pencil"
+                                     oncomplete="PF('dlgEditar').show();"
+                                     actionListener="#{MBUnidade.prepararEditar}"
+                                     update=":formEditar:painelEditar :msgGlobal" title="Editar">
+                        <f:setPropertyActionListener value="#{item}"
+                                                     target="#{MBUnidade.unidade}" />
+
+                    </p:commandButton>
+
+                    <p:commandButton icon="ui-icon-trash"
+                                     oncomplete="PF('dlgExcluir').show();"
+                                     update=":formExcluir:painelExcluir :msgGlobal" title="Excluir">
+                        <f:setPropertyActionListener value="#{item}"
+                                                     target="#{MBUnidade.unidade}" />
+                    </p:commandButton>
+
+                </p:column>
+
+                <!-- linha de baixo da tabela -->
+                <f:facet name="footer">
+                    <p:commandButton value="Novo" oncomplete="PF('dlgNovo').show()"
+                                     actionListener="#{MBUnidade.prepararSalvar}"
+                                     update=":formDlgNovo:painelDlgNovo" />
+                </f:facet>
+
+            </p:dataTable>
+        </h:form>
+
+        <!-- Criando o Salvar  -->
+
+
+        <!-- widgetVar=""> : utilizamos para buscar o nome da tabela 
+        draggable="false"> : A janela não pode ser movimentada 
+        resizable="false"> : não pode redimensionar-->
+        <p:dialog widgetVar="dlgNovo" closable="false" draggable="false"
+                  resizable="false" appendTo="@(body)" header="CADASTRO DE  UNIDADES"
+                  modal="true">
+            <!-- header="" nomea o dialogo
+            
+            modal="true" appendTo="@(body)" : desabilita todo campo atras do dialogo-->
+            <h:form id="formDlgNovo">
+                <h:panelGrid columns="2" id="painelDlgNovo">
+
+                    <p:outputLabel value="Unidade" />
+                    <p:inputText id="txtUnidade" size="45" maxlength="45"
+                                 value="#{MBUnidade.unidade.unidade}" required="true"
+                                 requiredMessage="Informe o nome do Unidade!" />
+
+                    <p:outputLabel value="Sigla" />
+                    <p:inputText id="txtSigla" size="45" maxlength="45"
+                                 value="#{MBUnidade.unidade.sigla}" required="true"
+                                 requiredMessage="Informe a sigla da unidade!" />
+                </h:panelGrid>
+
+
+                <h:panelGrid columns="2">
+
+                    <p:commandButton value="Gravar"
+                                     actionListener="#{MBUnidade.salvar}"
+                                     oncomplete="verificar(xhr, status, args, 'dlgNovo', 'tabelaUnidade');"
+                                     update=":formTabela:tabela :msgGlobal" />
+                    <p:commandButton value="Cancelar" onclick="PF('dlgNovo').hide();"
+                                     process="@this">
+                        <p:resetInput target="painelDlgNovo" />
+                    </p:commandButton>
+                    <!-- process=@this : submete um formulario -->
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog widgetVar="dlgExcluir" closable="false" draggable="false"
+                  resizable="false" modal="true" appendTo="@(body)"
+                  header="Excluir Unidade">
+
+            <h:form id="formExcluir">
+                <h:panelGrid columns="2" id="painelExcluir">
+                    <h:outputText value="Codigo: " />
+                    <h:outputText value="#{MBUnidade.unidade.codigo}" />
+                    <h:outputText value="Unidade: " />
+                    <h:outputText value="#{MBUnidade.unidade.unidade}" />
+                    <p:outputLabel value="Sigla:"/>
+                    <p:outputLabel value="#{MBUnidade.unidade.sigla}" />
+
+
+                </h:panelGrid>
+                <h:panelGrid columns="3">
+                    <p:commandButton value="Excluir"
+                                     actionListener="#{MBCategoria.excluir}"
+                                     oncomplete="verificar(xhr, status, args, 'dlgExcluir', 'tabelaUnidade');"
+                                     update=":formTabela:tabela :msgGlobal" />
+                    <!-- Atualiza tabela -->
+                    <p:commandButton value="Cancelar"
+                                     onclick="PF('dlgExcluir').hide();" />
+                </h:panelGrid>
+
+            </h:form>
+
+        </p:dialog>
+
+        <p:dialog widgetVar="dlgEditar" closable="false" draggable="false"
+                  resizable="false" appendTo="@(body)" header="Editar Unidade"
+                  modal="true">
+            <!-- header="" nomea o dialogo
+            
+            modal="true" appendTo="@(body)" : desabilita todo campo atras do dialogo-->
+            <h:form id="formEditar">
+                <h:panelGrid columns="2" id="painelEditar">
+
+                    <h:panelGrid columns="2" id="painelDlgNovo">
+
+                        <p:outputLabel value="Unidade" />
+                        <p:inputText id="txtUnidade" size="45" maxlength="45"
+                                     value="#{MBUnidade.unidade.unidade}" required="true"
+                                     requiredMessage="Informe o nome do Unidade!" />
+
+                        <p:outputLabel value="Sigla" />
+                        <p:inputText id="txtSigla" size="45" maxlength="45"
+                                     value="#{MBUnidade.unidade.sigla}" required="true"
+                                     requiredMessage="Informe a sigla da unidade!" />
+                    </h:panelGrid>
+
+                    <h:panelGrid columns="2">
+
+                        <p:commandButton value="Editar"
+                                         actionListener="#{MBUnidade.editar}"
+                                         oncomplete="verificar(xhr, status, args, 'dlgEditar', 'tabelaUnidade');"
+                                         update=":formTabela:tabela :msgGlobal" />
+                        <p:commandButton value="Cancelar" onclick="PF('dlgEditar').hide();"
+                                         process="@this">
+                            <p:resetInput target="painelEditar" />
+                        </p:commandButton>
+                        <!-- process=@this : submete um formulario -->
+                    </h:panelGrid>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+    </ui:define>
+
+</ui:composition>

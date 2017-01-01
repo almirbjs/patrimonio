@@ -26,10 +26,10 @@
         <!-- Criando o Layout da pagina -->
         <!-- fullPages:Ajusta o layout a qualquer maquina (Layout responsivo) -->
         <p:layout fullPage="true">
-             
+
             <!-- p:layoutUnit position="north" :Posição do layout no north (Aonde vai os menus) -->
             <p:layoutUnit position="north">
-                
+
                 <!-- futuramente vai ser colocado o menu (não vai ser preciso ficar digitado) -->
                 <ui:insert name="menu" />
             </p:layoutUnit>
@@ -37,11 +37,17 @@
             <!-- p:layoutUnit position="center" :Posição do layout no centro (Aonde vai o conteudo) -->
             <p:layoutUnit position="center">
                 <!-- futuramente vai ser colocado o conteudo aqui(não vai ser preciso ficar digitado) -->
-               
-                
+
+
                 <ui:insert name="conteudo" />
                 <p:graphicImage library="imagens" name="empresa.png" style="align-content: center" width="150"  />
-                
+
+            </p:layoutUnit>
+
+            <p:layoutUnit position="south" >
+
+                <ui:insert name="baixo"/>
+
             </p:layoutUnit>
 
         </p:layout>

@@ -390,7 +390,7 @@
 
                     <p:commandButton value="Sair"
                                      onclick="PF('dlgFornecedor').hide();" />
-                    
+
 
                 </h:panelGrid>
 
@@ -405,6 +405,7 @@
 
                 <h:panelGrid columns="2" id="painelOrcamento">
 
+
                     <p:outputLabel value="ID" />
                     <p:outputLabel value="#{MBManutencao.manutencao.patrimonio.codigo}"/>
                     <p:outputLabel value="Patrimonio:" />
@@ -417,7 +418,7 @@
                     <h:panelGrid columns="2">
 
                         <h:panelGroup>
-                            
+
                             <p:inputText id="fornecedor" value="#{MBOrcamento.orcamento.fornecedor.razaoSocialNome}"
                                          readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"
                                          required="true" requiredMessage="Selecione o Fornecedor!" >
@@ -461,22 +462,20 @@
 
                     <h:panelGrid columns="2">
 
-                    <p:commandButton value="Gravar"
-                                     actionListener="#{MBOrcamento.salvar}"
-                                     oncomplete="verificar(xhr, status, args, 'dlgOrcamento', 'tabelaManutencao');"
-                                     update=":formTabela:tabela :msgGlobal" />
-                    <p:commandButton value="Cancelar" onclick="PF('dlgOrcamento').hide();"
-                                     process="@this">
-                        <p:resetInput target="painelOrcamento"/>
-                    </p:commandButton>
-                    <!-- process=@this : submete um formulario -->
-                </h:panelGrid>
+                        <p:commandButton value="Gravar"
+                                         actionListener="#{MBOrcamento.salvar}"
+                                         oncomplete="verificar(xhr, status, args, 'dlgOrcamento', 'tabelaManutencao');"
+                                         update=":formTabela:tabela :msgGlobal" />
+                        <p:commandButton value="Cancelar" onclick="PF('dlgOrcamento').hide();"
+                                         process="@this">
+                            <p:resetInput target="painelOrcamento"/>
+                        </p:commandButton>
+                        <!-- process=@this : submete um formulario -->
+                    </h:panelGrid>
                 </h:panelGrid>
             </h:form>
 
         </p:dialog>
-
-
 
         <p:dialog widgetVar="dlgHistorico" closable="false" draggable="false" width="900" 
                   resizable="false" modal="true" appendTo="@(body)"
@@ -484,7 +483,6 @@
 
             <h:form id="formHistorico">
                 <h:panelGrid columns="2" id="painelHistorico">
-
 
                     <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."  rowKey="#{item.codigo}"  selection="#{item}"
                                  widgetVar="tabelaHistorico" value="#{MBManutencao.listaFuncionando()}"  filteredValue="#{MBPatrimonio.itensFiltrados}"
@@ -494,7 +492,6 @@
                         <p:column headerText="Patrimonio" style="width: 150px; text-align: center">
 
                         </p:column>
-
 
                         <p:column headerText="Assistência" style="width: 150px;"
                                   filterStyle="max-width: 200px; min-width: 200px;">
@@ -524,15 +521,14 @@
 
                 </h:panelGrid>
 
-
+                <p:spacer/>
+                <p:outputLabel value="Valor total gasto com reparo(s):R$" />
+                <p:outputLabel value="100,00"/>
+                
                 <h:panelGrid columns="4">
-
-
                     <p:commandButton value="Sair"
                                      onclick="PF('dlgHistorico').hide();" />
-                    <p:spacer/>
-                    <p:outputLabel value="Valor total gasto com reparo(s):R$" />
-                    <p:outputLabel value="100,00"/>
+
 
                 </h:panelGrid>
 
