@@ -51,6 +51,7 @@
         <mapping class="br.com.patrimonio.domain.Chave"/>
         <mapping class="br.com.patrimonio.domain.Unidade"/>
         <mapping class="br.com.patrimonio.domain.Marca"/>
+        <mapping class="br.com.patrimonio.domain.ItemMarca"/>
         <mapping class="br.com.patrimonio.domain.Grupo"/>
         <mapping class="br.com.patrimonio.domain.Insumo"/>
     </session-factory>

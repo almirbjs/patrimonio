@@ -1,12 +1,10 @@
 package br.com.patrimonio.bean;
 
-import br.com.patrimonio.dao.FornecedorDao;
 import java.util.ArrayList;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import br.com.patrimonio.dao.ManutencaoDao;
-import br.com.patrimonio.dao.OrcamentoDao;
 import br.com.patrimonio.dao.PatrimonioDao;
 import br.com.patrimonio.domain.Fornecedor;
 import br.com.patrimonio.domain.Manutencao;

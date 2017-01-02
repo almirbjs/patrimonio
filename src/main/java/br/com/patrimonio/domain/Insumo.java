@@ -34,9 +34,9 @@ public class Insumo implements Serializable {
     Integer qtdMaxAltaTemp;
     @Column(length = 45)
     String obs;
-    @JoinColumn(name = "fk_marca_idinsumo", referencedColumnName = "idmarca")
+    @JoinColumn(name = "fk_itemmarca_idinsumo", referencedColumnName = "iditemmarca")
     @ManyToOne(fetch = FetchType.EAGER)
-    Marca marca = new Marca();
+    ItemMarca itemMarca= new ItemMarca();
 
     @JoinColumn(name = "fk_grupo_idinsumo", referencedColumnName = "idgrupo")
     @ManyToOne(fetch = FetchType.EAGER)
@@ -102,15 +102,7 @@ public class Insumo implements Serializable {
         this.obs = obs;
     }
 
-    public Marca getMarca() {
-        return marca;
-    }
-
-    public void setMarca(Marca marca) {
-        this.marca = marca;
-    }
-
-    public Grupo getGrupo() {
+      public Grupo getGrupo() {
         return grupo;
     }
 
@@ -124,6 +116,14 @@ public class Insumo implements Serializable {
 
     public void setUnidade(Unidade unidade) {
         this.unidade = unidade;
+    }
+
+    public ItemMarca getItemMarca() {
+        return itemMarca;
+    }
+
+    public void setItemMarca(ItemMarca itemMarca) {
+        this.itemMarca = itemMarca;
     }
 
 }

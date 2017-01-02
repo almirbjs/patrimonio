@@ -39,8 +39,8 @@
                     <h:outputText value="#{item.insumo}" />
                 </p:column>
 
-                <p:column headerText="Marca" filterBy="#{item.marca}" style="width: 200px; text-align: center"> 
-                    <h:outputText value="#{item.marca}" />
+                <p:column headerText="Marca" filterBy="#{item.itemMarca}" style="width: 200px; text-align: center"> 
+                    <h:outputText value="#{item.itemMarca}" />
                 </p:column>
 
                 <p:column headerText="Outras" >
@@ -132,9 +132,21 @@
 
                     </p:selectOneMenu>
                     <p:outputLabel value="Marca:" />
-                    <p:inputText id="txtModelo" size="20" maxlength="20" onblur="value = value.toUpperCase()"
-                                 value="#{MBInsumo.insumo.marca}" required="true"
-                                 requiredMessage="Informe o modelo do produto!" />
+
+                    <h:panelGrid columns="2">
+
+                        <p:inputText id="txtMarca" 
+                                     value="#{MBInsumo.insumo.itemMarca.marca.marca}" required="true"
+                                     requiredMessage="Informe o modelo do produto!" />
+
+                        <p:commandButton icon="ui-icon-search" title="Pesquisa"
+                                         onclick="PF('dlgItemMarca').show();"
+                                         process="@this" update=":formTabela:tabela">
+
+                        </p:commandButton>
+
+
+                    </h:panelGrid>
 
                     <p:outputLabel value="Grupo:" />
 
@@ -148,35 +160,36 @@
 
                     </p:selectOneMenu>
 
-                
-                        <p:outputLabel value="Quantidade max. Alta:" />
-                        <p:inputText  
-                            value="#{MBInsumo.insumo.qtdMaxAltaTemp}" required="true" 
-                            requiredMessage="Informe a quantidade maxima pra alta temporada!">
-                            <f:convertNumber integerOnly="true" minIntegerDigits="1"   />
-                        </p:inputText>
-                         <p:outputLabel value="Quantidade min. Alta:" />
-                        <p:inputText  
-                            value="#{MBInsumo.insumo.qtdMinAltaTemp}" required="true" 
-                            requiredMessage="Informe a quantidade minima pra alta temporada!">
-                            <f:convertNumber integerOnly="true" minIntegerDigits="1"   />
-                        </p:inputText>
 
-                          <p:outputLabel value="Quantidade max. Baixa:" />
-                        <p:inputText  
-                            value="#{MBInsumo.insumo.qtdMaxBaixaTemp}" required="true" 
-                            requiredMessage="Informe a quantidade maxima pra Baíxa temporada!">
-                            <f:convertNumber integerOnly="true" minIntegerDigits="1"   />
-                        </p:inputText>
-                          
-                           <p:outputLabel value="Quantidade min. Baixa:" />
-                        <p:inputText  
-                            value="#{MBInsumo.insumo.qtdMinBaixaTemp}" required="true" 
-                            requiredMessage="Informe a quantidade minima para a baixa temporada!">
-                            <f:convertNumber integerOnly="true" minIntegerDigits="1"   />
-                        </p:inputText>
-                   
-                    
+                    <p:outputLabel value="Quantidade max. Alta:" />
+                    <p:inputText  
+                        value="#{MBInsumo.insumo.qtdMaxAltaTemp}" required="true" 
+                        requiredMessage="Informe a quantidade maxima pra alta temporada!">
+                        <f:convertNumber integerOnly="true" minIntegerDigits="1"   />
+
+                    </p:inputText>
+                    <p:outputLabel value="Quantidade min. Alta:" />
+                    <p:inputText  
+                        value="#{MBInsumo.insumo.qtdMinAltaTemp}" required="true" 
+                        requiredMessage="Informe a quantidade minima pra alta temporada!">
+                        <f:convertNumber integerOnly="true" minIntegerDigits="1"   />
+                    </p:inputText>
+
+                    <p:outputLabel value="Quantidade max. Baixa:" />
+                    <p:inputText  
+                        value="#{MBInsumo.insumo.qtdMaxBaixaTemp}" required="true" 
+                        requiredMessage="Informe a quantidade maxima pra Baíxa temporada!">
+                        <f:convertNumber integerOnly="true" minIntegerDigits="1"   />
+                    </p:inputText>
+
+                    <p:outputLabel value="Quantidade min. Baixa:" />
+                    <p:inputText  
+                        value="#{MBInsumo.insumo.qtdMinBaixaTemp}" required="true" 
+                        requiredMessage="Informe a quantidade minima para a baixa temporada!">
+                        <f:convertNumber integerOnly="true" minIntegerDigits="1"   />
+                    </p:inputText>
+
+
                     <p:outputLabel value="OBS.:" />
                     <p:inputText id="txtObs" size="45" maxlength="45"
                                  value="#{MBInsumo.insumo.obs}" />
@@ -283,6 +296,97 @@
                 </h:panelGrid>
 
             </h:form>
+
+        </p:dialog>
+
+        <p:dialog widgetVar="dlgItemMarca" closable="false" draggable="false" width="600" 
+                  resizable="false" modal="true" appendTo="@(body)"
+                  header="Vincular marca ao insumo">
+
+
+
+
+            <h:form id="formTabelaMarca">
+
+                <p:panel header="Marcas">
+
+                <p:dataTable id="tabelaMarca" emptyMessage="Nenhum registro encontrado." paginator="true" 
+                             widgetVar="tabelaMarca" value="#{MBMarca.itens}" var="item"
+                             rows="5"
+                             filteredValue="#{MBMarca.itensFiltrados}">
+                    <!-- rows="10"  me diz que o meu paginador deve ter 10 linhas-->
+
+
+                    <p:column headerText="Codigo" sortBy="#{item.codigo}" style="width: 70px; text-align: center"  filterStyle="max-width: 60px; min-width: 60px;"
+                              filterBy="#{item.codigo}">
+                        <h:outputText value="#{item.codigo}" />
+                    </p:column>
+                    <p:column headerText="Marca" sortBy="#{item.marca}" style="width: 300px;"
+                              filterBy="#{item.marca}">
+                        <h:outputText value="#{item.marca}" />
+                    </p:column>
+
+                    <p:column headerText="Ações">
+
+                        <p:commandButton icon="ui-icon-plus" actionListener="#{MBItemMarca.adicionarItemMarca}"
+                                         
+                                         update=":formItemMarca:tabelaItemMarca :msgGlobal">
+                            
+                            <f:attribute name="marcaSelecionada" value="#{item}"/>
+
+
+                        </p:commandButton>
+
+
+                    </p:column>
+
+                </p:dataTable>
+                </p:panel>
+            </h:form>
+                <h:form id="formItemMarca">
+                <p:panel header="Lista de marcas vinculadas ao insumo"  >
+
+                    <p:dataTable id="tabelaItemMarca" emptyMessage="Nenhum registro encontrado."     scrollable="true" scrollHeight="150"
+                                 widgetVar="tabelaProduto" value="#{MBItemMarca.itens}" var="item"
+
+                                 filteredValue="#{MBItemMarca.itensFiltrados}">
+                        <!-- rows="10"  me diz que o meu paginador deve ter 10 linhas-->
+
+
+                        <p:column headerText="Codigo" sortBy="#{item.codigo}" style="width: 70px; text-align: center"
+                                  filterStyle="max-width: 60px; min-width: 60px;" >
+                            <h:outputText value="#{item.codigo}" />
+                        </p:column>
+                        <p:column headerText="Marca" sortBy="#{item.marca.marca}" style="width: 300px;">
+
+                            <h:outputText value="#{item.marca.marca}" />
+                        </p:column>
+
+                        <p:column headerText="Ações">
+
+
+                            <p:commandButton icon="ui-icon-minus" actionListener="#{MBItemMarca.removeItemMarca}" update="formItemMarca:tabelaItemMarca"
+                                             
+                                           >
+                                <f:attribute name="ItemMarcaSelecionada" value="#{item}"/>
+                               
+                            </p:commandButton>
+
+                        </p:column>
+
+                    </p:dataTable>
+
+                    <h:panelGrid columns="4">
+                        <p:commandButton value="Sair"
+                                         onclick="PF('dlgItemMarca').hide();" />
+
+
+                    </h:panelGrid>
+                </p:panel>
+            </h:form>
+           
+
+
 
         </p:dialog>
 
