@@ -29,51 +29,54 @@ public class Patrimonio implements Serializable {
 
     @Id
     @Column(name = "idpatrimonio")
-    private int codigo;
+     int codigo;
     // @Temporal : � utilizado para marcar a data
     // (TemporalType.TIMESTAMP) � utilizado para marcar dia, mes, ano,
     // horas,minutos e segundos.
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "dtcadastro")
-    private Date dataCadastro;
+     Date dataCadastro;
     // Usa-se para valor o BigDecinal e as anota��es precision=7 quer dizer que
     // tera uma precis�o de 7 numero antes da virgula e scale=2 quer dizer que
     // tera dois numero apos a virgula.
     @Column(precision = 7, scale = 2, nullable = false)
-    private BigDecimal valor;
+     BigDecimal valor;
 
+    @Column(precision = 7, scale = 2)
+     BigDecimal valorTotal;
+    
     @Column(name = "numserie")
-    private long numeroSerie;
+     long numeroSerie;
     
     
 
       @Column(name = "garantia")
-    private short garantia;
+     short garantia;
 
     @Column(name = "obs", length = 45)
-    private String observacao;
+     String observacao;
     
     
     @Column(name = "funcionando")
-    private String funcionando;
+     String funcionando;
     
     
 
     @JoinColumn(name = "fk_patrimonio_idsetor", referencedColumnName = "idsetor", nullable = false)
     //Muitos setores tem um patrimonio
     @ManyToOne(fetch = FetchType.EAGER)
-    private Setor setor = new Setor();
+     Setor setor = new Setor();
 
     @JoinColumn(name = "fk_patrimonio_idproduto", referencedColumnName = "idproduto", nullable = false)
     // Muitos produtos tem um patrimonio.
     @ManyToOne(fetch = FetchType.EAGER)
-    private Produto produto = new Produto();
+     Produto produto = new Produto();
 
         
     @JoinColumn(name = "fk_patrimonio_idDocumentoFiscal", referencedColumnName = "idDocumentoFiscal")
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private DocumentoFiscal documentoFiscal = new DocumentoFiscal();
+     DocumentoFiscal documentoFiscal = new DocumentoFiscal();
 
     public int getCodigo() {
         return codigo;
@@ -155,6 +158,14 @@ public class Patrimonio implements Serializable {
 
     public void setFuncionando(String funcionando) {
         this.funcionando = funcionando;
+    }
+
+    public BigDecimal getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(BigDecimal valorTotal) {
+        this.valorTotal = valorTotal;
     }
 
    

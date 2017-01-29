@@ -36,20 +36,18 @@
                 </p:column>
 
                 <p:column headerText="Unidade"  style="width: 60px;">
-                    <h:outputText value="#{item.insumo}" />
+                    <h:outputText value="#{item.unidade.unidade}" />
                 </p:column>
 
-                <p:column headerText="Marca" filterBy="#{item.itemMarca}" style="width: 200px; text-align: center"> 
-                    <h:outputText value="#{item.itemMarca}" />
-                </p:column>
+
 
                 <p:column headerText="Outras" >
                     <h:outputText value="#{item.obs}" />
                 </p:column>
 
                 <p:column headerText="Grupo"
-                          sortBy="#{item.grupo}" filterBy="#{item.grupo}" style="width: 200px; text-align: center">
-                    <h:outputText value="#{item.grupo}" />
+                          sortBy="#{item.grupo.grupo}" filterBy="#{item.grupo}" style="width: 200px; text-align: center">
+                    <h:outputText value="#{item.grupo.grupo}" />
                 </p:column>
 
                 <p:column headerText="Quant.Max.Alta" >
@@ -85,7 +83,7 @@
                                      oncomplete="PF('dlgExcluir').show();"
                                      update=":formExcluir:painelExcluir :msgGlobal" title="Excluir">
                         <f:setPropertyActionListener value="#{item}"
-                                                     target="#{MBProduto.produto}" />
+                                                     target="#{MBInsumo.insumo}" />
                     </p:commandButton>
 
                 </p:column>
@@ -123,7 +121,7 @@
                     <p:outputLabel value="Unidade:" />
 
                     <p:selectOneMenu id="oneMenuUnidade" filter="true"
-                                     value="#{MBInsumo.insumo.unidade}"
+                                     value="#{MBInsumo.insumo.unidade.codigo}"
                                      required="true" requiredMessage="Selecione a Unidade.">
                         <f:selectItem itemValue="" itemLabel="Selecione a Unidade"
                                       noSelectionOption="true" />
@@ -131,14 +129,12 @@
                                        itemValue="#{item.codigo}" itemLabel="#{item.unidade}" />
 
                     </p:selectOneMenu>
-                    <p:outputLabel value="Marca:" />
+                    <p:outputLabel value="Marcas:" />
 
                     <h:panelGrid columns="2">
 
-                        <p:inputText id="txtMarca" 
-                                     value="#{MBInsumo.insumo.itemMarca.marca.marca}" required="true"
-                                     requiredMessage="Informe o modelo do produto!" />
 
+                        -->
                         <p:commandButton icon="ui-icon-search" title="Pesquisa"
                                          onclick="PF('dlgItemMarca').show();"
                                          process="@this" update=":formTabela:tabela">
@@ -151,7 +147,7 @@
                     <p:outputLabel value="Grupo:" />
 
                     <p:selectOneMenu id="oneMenuGrupo" filter="true"
-                                     value="#{MBInsumo.insumo.grupo}"
+                                     value="#{MBInsumo.insumo.grupo.codigo}"
                                      required="true" requiredMessage="Selecione o Grupo.">
                         <f:selectItem itemValue="" itemLabel="Selecione o Grupo"
                                       noSelectionOption="true" />
@@ -160,39 +156,6 @@
 
                     </p:selectOneMenu>
 
-
-                    <p:outputLabel value="Quantidade max. Alta:" />
-                    <p:inputText  
-                        value="#{MBInsumo.insumo.qtdMaxAltaTemp}" required="true" 
-                        requiredMessage="Informe a quantidade maxima pra alta temporada!">
-                        <f:convertNumber integerOnly="true" minIntegerDigits="1"   />
-
-                    </p:inputText>
-                    <p:outputLabel value="Quantidade min. Alta:" />
-                    <p:inputText  
-                        value="#{MBInsumo.insumo.qtdMinAltaTemp}" required="true" 
-                        requiredMessage="Informe a quantidade minima pra alta temporada!">
-                        <f:convertNumber integerOnly="true" minIntegerDigits="1"   />
-                    </p:inputText>
-
-                    <p:outputLabel value="Quantidade max. Baixa:" />
-                    <p:inputText  
-                        value="#{MBInsumo.insumo.qtdMaxBaixaTemp}" required="true" 
-                        requiredMessage="Informe a quantidade maxima pra Baíxa temporada!">
-                        <f:convertNumber integerOnly="true" minIntegerDigits="1"   />
-                    </p:inputText>
-
-                    <p:outputLabel value="Quantidade min. Baixa:" />
-                    <p:inputText  
-                        value="#{MBInsumo.insumo.qtdMinBaixaTemp}" required="true" 
-                        requiredMessage="Informe a quantidade minima para a baixa temporada!">
-                        <f:convertNumber integerOnly="true" minIntegerDigits="1"   />
-                    </p:inputText>
-
-
-                    <p:outputLabel value="OBS.:" />
-                    <p:inputText id="txtObs" size="45" maxlength="45"
-                                 value="#{MBInsumo.insumo.obs}" />
                 </h:panelGrid>
                 <!-- actionListener="" : serve para invocar metodos manageBean -->
                 <!-- update=":formTabela:tabela" :formulario e atualiza tabela  -->
@@ -201,9 +164,13 @@
                 <h:panelGrid columns="2">
 
                     <p:commandButton value="Gravar"
-                                     actionListener="#{MBProduto.salvar}"
+                                     actionListener="#{MBInsumo.salvar}"
                                      oncomplete="verificar(xhr, status, args, 'dlgNovo', 'tabelaProduto');"
-                                     update=":formTabela:tabela :msgGlobal" />
+                                     update=":formTabela:tabela :msgGlobal" 
+                                     >
+                        
+                    </p:commandButton>
+
                     <p:commandButton value="Cancelar" onclick="PF('dlgNovo').hide();"
                                      process="@this">
                         <p:resetInput target="painelDlgNovo" />
@@ -273,21 +240,18 @@
             <h:form id="formExcluir">
                 <h:panelGrid columns="2" id="painelExcluir">
                     <p:outputLabel value="Codigo: " />
-                    <p:outputLabel value="#{MBProduto.produto.codigo}" />
-                    <p:outputLabel value="Produto: " />
-                    <p:outputLabel value="#{MBProduto.produto.produto}" />
-                    <p:outputLabel value="Modelo: " />
-                    <p:outputLabel value="#{MBProduto.produto.modelo}" />
-                    <p:outputLabel value="Fabricante:" />
-                    <p:outputLabel value="#{MBProduto.produto.fornecedor.razaoSocialNome}" />
-                    <p:outputLabel value="Categoria:" />
-                    <p:outputLabel value="#{MBProduto.produto.categoria.categoria}" />
-                    <p:outputLabel value="Observação: " />
-                    <p:outputLabel value="#{MBProduto.produto.obs}" />
+                    <p:outputLabel value="#{MBInsumo.insumo.codigo}" />
+                    <p:outputLabel value="Insumo: " />
+                    <p:outputLabel value="#{MBInsumo.insumo.insumo}" />
+                    <p:outputLabel value="Grupo: " />
+                    <p:outputLabel value="#{MBInsumo.insumo.grupo.grupo}" />
+                    <p:outputLabel value="Observações:" />
+                    <p:outputLabel value="#{MBInsumo.insumo.obs}" />
+                    
                 </h:panelGrid>
                 <h:panelGrid columns="3">
                     <p:commandButton value="Excluir"
-                                     actionListener="#{MBProduto.excluir}"
+                                     actionListener="#{MBInsumo.excluir}"
                                      oncomplete="verificar(xhr, status, args, 'dlgExcluir', 'tabelaProduto');"
                                      update=":formTabela:tabela :msgGlobal" />
                     <!-- Atualiza tabela -->
@@ -310,40 +274,40 @@
 
                 <p:panel header="Marcas">
 
-                <p:dataTable id="tabelaMarca" emptyMessage="Nenhum registro encontrado." paginator="true" 
-                             widgetVar="tabelaMarca" value="#{MBMarca.itens}" var="item"
-                             rows="5"
-                             filteredValue="#{MBMarca.itensFiltrados}">
-                    <!-- rows="10"  me diz que o meu paginador deve ter 10 linhas-->
+                    <p:dataTable id="tabelaMarca" emptyMessage="Nenhum registro encontrado." paginator="true" 
+                                 widgetVar="tabelaMarca" value="#{MBMarca.itens}" var="item"
+                                 rows="5"
+                                 filteredValue="#{MBMarca.itensFiltrados}">
+                        <!-- rows="10"  me diz que o meu paginador deve ter 10 linhas-->
 
 
-                    <p:column headerText="Codigo" sortBy="#{item.codigo}" style="width: 70px; text-align: center"  filterStyle="max-width: 60px; min-width: 60px;"
-                              filterBy="#{item.codigo}">
-                        <h:outputText value="#{item.codigo}" />
-                    </p:column>
-                    <p:column headerText="Marca" sortBy="#{item.marca}" style="width: 300px;"
-                              filterBy="#{item.marca}">
-                        <h:outputText value="#{item.marca}" />
-                    </p:column>
+                        <p:column headerText="Codigo" sortBy="#{item.codigo}" style="width: 70px; text-align: center"  filterStyle="max-width: 60px; min-width: 60px;"
+                                  filterBy="#{item.codigo}">
+                            <h:outputText value="#{item.codigo}" />
+                        </p:column>
+                        <p:column headerText="Marca" sortBy="#{item.marca}" style="width: 300px;"
+                                  filterBy="#{item.marca}">
+                            <h:outputText value="#{item.marca}" />
+                        </p:column>
 
-                    <p:column headerText="Ações">
+                        <p:column headerText="Ações">
 
-                        <p:commandButton icon="ui-icon-plus" actionListener="#{MBItemMarca.adicionarItemMarca}"
-                                         
-                                         update=":formItemMarca:tabelaItemMarca :msgGlobal">
-                            
-                            <f:attribute name="marcaSelecionada" value="#{item}"/>
+                            <p:commandButton icon="ui-icon-plus" actionListener="#{MBItemMarca.adicionarItemMarca}"
 
+                                             update=":formItemMarca:tabelaItemMarca :msgGlobal">
 
-                        </p:commandButton>
+                                <f:attribute name="marcaSelecionada" value="#{item}"/>
 
 
-                    </p:column>
+                            </p:commandButton>
 
-                </p:dataTable>
+
+                        </p:column>
+
+                    </p:dataTable>
                 </p:panel>
             </h:form>
-                <h:form id="formItemMarca">
+            <h:form id="formItemMarca">
                 <p:panel header="Lista de marcas vinculadas ao insumo"  >
 
                     <p:dataTable id="tabelaItemMarca" emptyMessage="Nenhum registro encontrado."     scrollable="true" scrollHeight="150"
@@ -366,10 +330,10 @@
 
 
                             <p:commandButton icon="ui-icon-minus" actionListener="#{MBItemMarca.removeItemMarca}" update="formItemMarca:tabelaItemMarca"
-                                             
-                                           >
+
+                                             >
                                 <f:attribute name="ItemMarcaSelecionada" value="#{item}"/>
-                               
+
                             </p:commandButton>
 
                         </p:column>
@@ -384,7 +348,7 @@
                     </h:panelGrid>
                 </p:panel>
             </h:form>
-           
+
 
 
 

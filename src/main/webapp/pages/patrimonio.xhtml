@@ -54,10 +54,6 @@
                     <h:outputText value="#{item.setor.setor}" />
                 </p:column>
 
-
-
-
-
                                
                 <p:column headerText="Opções">
                     <p:commandButton icon="ui-icon-pencil"
@@ -105,7 +101,10 @@
                 </f:facet>
 
             </p:dataTable>
-            <p:outputLabel value="Valor total de Bens:" />
+            <p:outputLabel value="Valor total de Bens: R$ " />
+            <p:outputLabel value="#{MBPatrimonio.patrimonio.valorTotal}" id="outputValorTotal" >
+                <f:convertNumber locale="pt_BR" minFractionDigits="2"/>
+            </p:outputLabel>
         </h:form>
 
         <!-- Criando o Salvar  -->
@@ -214,7 +213,9 @@
                                      update=":formTabela:tabela :msgGlobal" />
                     <p:commandButton value="Cancelar" onclick="PF('dlgNovo').hide();"
                                      process="@this">
+                       
                         <p:resetInput target="painelDlgNovo" />
+                        <p:resetInput target="outputValorTotal" />
                     </p:commandButton>
                     <!-- process=@this : submete um formulario -->
                 </h:panelGrid>

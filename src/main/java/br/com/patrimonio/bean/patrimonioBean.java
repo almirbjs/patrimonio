@@ -16,6 +16,7 @@ import br.com.patrimonio.domain.Patrimonio;
 import br.com.patrimonio.domain.Produto;
 import br.com.patrimonio.domain.Setor;
 import br.com.patrimonio.util.JSFUtil;
+import java.math.BigDecimal;
 import org.primefaces.event.SelectEvent;
 
 //ele vai estar por tras de uma interface grafica
@@ -44,9 +45,10 @@ public class patrimonioBean {
     @PostConstruct
     public void prepararPesquisa() {
         try {
+
             PatrimonioDao dao = new PatrimonioDao();
             setItens(dao.listar());
-
+            calcularValorTotalPatrimonio();
         } catch (Exception e) {
             e.printStackTrace();
             JSFUtil.adicionaMensagemErro(e.getMessage());
@@ -56,6 +58,7 @@ public class patrimonioBean {
     public void prepararSalvar() {
         // metodo criado para resolver o problema do objeto= null
         try {
+
             setPatrimonio(new Patrimonio());
 
             SetorDao dao = new SetorDao();
@@ -91,6 +94,7 @@ public class patrimonioBean {
             dao.salvar(getPatrimonio());
 
             setItens(dao.listar());
+           
             JSFUtil.adicionaMensagemSucesso("Salvo com sucesso!");
 
             // Quando salvar um novo objeto ele vai atualizar a minha tabela
@@ -123,6 +127,7 @@ public class patrimonioBean {
             getDao().alterar(getPatrimonio());
 
             setItens(getDao().listar());
+            
             JSFUtil.adicionaMensagemSucesso("Alterado com sucesso!");
 
             // Quando salvar um novo objeto ele vai atualizar a minha tabela
@@ -141,7 +146,7 @@ public class patrimonioBean {
             PatrimonioDao dao = new PatrimonioDao();
             dao.excluir(getPatrimonio());
             setItens(dao.listar());
-
+           
             JSFUtil.adicionaMensagemSucesso("Excluido com Sucesso.");
 
         } catch (Exception e) {
@@ -176,7 +181,7 @@ public class patrimonioBean {
             manutencao.setObs(patrimonio.getObservacao());
             manutencao.setPatrimonio(patrimonio);
             Mdao.salvar(manutencao);
-           
+
             PatrimonioDao patrimonioDao = new PatrimonioDao();
             patrimonio.setFuncionando("N");
             patrimonio.setObservacao("");
@@ -189,6 +194,19 @@ public class patrimonioBean {
         } catch (Exception e) {
             e.printStackTrace();
             JSFUtil.adicionaMensagemErro(e.getMessage());
+        }
+
+    }
+
+    public void calcularValorTotalPatrimonio() {
+        
+        patrimonio.setValorTotal(new BigDecimal("0.00"));
+        for (int posicao = 0; posicao < itens.size(); posicao++) {
+
+            Patrimonio p = itens.get(posicao);
+
+            patrimonio.setValorTotal(patrimonio.getValorTotal().add(p.getValor()));
+
         }
 
     }

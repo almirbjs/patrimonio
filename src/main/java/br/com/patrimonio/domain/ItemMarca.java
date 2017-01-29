@@ -26,10 +26,14 @@ public class ItemMarca implements Serializable {
     @Column(name = "iditemmarca", length = 11)
     @GeneratedValue(strategy = GenerationType.AUTO)
     Integer codigo;
-       
-    @JoinColumn(name = "fk_marca_iditemmarca", referencedColumnName = "idmarca")
+
+    @JoinColumn(nullable = false)
     @ManyToOne(fetch = FetchType.EAGER)
     Marca marca = new Marca();
+
+    @JoinColumn(nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    Insumo insumo = new Insumo();
 
     public Integer getCodigo() {
         return codigo;
@@ -47,11 +51,12 @@ public class ItemMarca implements Serializable {
         this.marca = marca;
     }
 
-    
-    
-    
-    
-    
-    
-  
+    public Insumo getInsumo() {
+        return insumo;
+    }
+
+    public void setInsumo(Insumo insumo) {
+        this.insumo = insumo;
+    }
+
 }

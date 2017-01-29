@@ -6,40 +6,45 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import br.com.patrimonio.domain.Insumo;
+import br.com.patrimonio.domain.ItemMarca;
+import br.com.patrimonio.domain.Marca;
+
 import br.com.patrimonio.util.HibernateUtil;
+import java.util.List;
 
 public class InsumoDao {
 
     Session sessao = HibernateUtil.getSessionFactory().openSession();
     Transaction transacao = null;
 
-    public void salvar(Insumo c) throws Exception {
-
-        try {
-            // beginTransaction(): inicia a transa��o.
-            transacao = sessao.beginTransaction();
-            // save: Salva a opera��o.
-            sessao.save(c);
-            // comfimar � opera��o.
-            transacao.commit();
-
-        } catch (Exception e) {
-            // Mensagem de erro
-            if (transacao != null) {
-                // Se algo der errado eu utilizo rollback para disfazer a
-                // transa��o.
-                transacao.rollback();
-
-            }
-            throw e;// For�a o usuario escrever a mensagem de erro para ser
-            // exibida na tela.
-
-            // finally{} � o finalizador
-        } finally {
-            // Fecha sess�o.
-            sessao.close();
-        }
-
+    public void salvar(Insumo insumo, List<ItemMarca> itensMarca,Marca  marca ){
+		
+                   
+		try {
+			transacao = sessao.beginTransaction();
+		
+			sessao.save(insumo);
+			
+			for(int posicao = 0; posicao < itensMarca.size(); posicao++){
+				ItemMarca itemMarca  = itensMarca.get(posicao);
+                                itemMarca.setInsumo(insumo);
+                               itemMarca.setMarca(marca);
+				
+                                
+				sessao.save(itemMarca);
+			}
+			
+			
+			transacao.commit();
+		} catch (RuntimeException erro) {
+			if (transacao != null) {
+				transacao.rollback();
+			}
+			throw erro;
+		} finally {
+			sessao.close();
+		}
+	
     }
 
     public Insumo BuscaPorCodigo(int codigo) {
@@ -149,5 +154,7 @@ public class InsumoDao {
         return Insumo;
 
     }
+    
+    
 
 }

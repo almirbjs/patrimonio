@@ -23,9 +23,10 @@ import javax.persistence.Table;
 public class Insumo implements Serializable {
 
     @Id
-    @Column(name = "idinsumo", length = 11)
+    @Column(name = "idinsumo")
     @GeneratedValue(strategy = GenerationType.AUTO)
     Integer codigo;
+
     @Column(length = 45)
     String insumo;
     Integer qtdMinBaixaTemp;
@@ -34,9 +35,6 @@ public class Insumo implements Serializable {
     Integer qtdMaxAltaTemp;
     @Column(length = 45)
     String obs;
-    @JoinColumn(name = "fk_itemmarca_idinsumo", referencedColumnName = "iditemmarca")
-    @ManyToOne(fetch = FetchType.EAGER)
-    ItemMarca itemMarca= new ItemMarca();
 
     @JoinColumn(name = "fk_grupo_idinsumo", referencedColumnName = "idgrupo")
     @ManyToOne(fetch = FetchType.EAGER)
@@ -102,7 +100,7 @@ public class Insumo implements Serializable {
         this.obs = obs;
     }
 
-      public Grupo getGrupo() {
+    public Grupo getGrupo() {
         return grupo;
     }
 
@@ -118,12 +116,6 @@ public class Insumo implements Serializable {
         this.unidade = unidade;
     }
 
-    public ItemMarca getItemMarca() {
-        return itemMarca;
-    }
-
-    public void setItemMarca(ItemMarca itemMarca) {
-        this.itemMarca = itemMarca;
-    }
-
+    
+    
 }

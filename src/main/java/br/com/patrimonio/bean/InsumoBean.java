@@ -6,12 +6,15 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import br.com.patrimonio.dao.InsumoDao;
+import br.com.patrimonio.dao.ItemMarcaDao;
 import br.com.patrimonio.dao.UnidadeDao;
 import br.com.patrimonio.domain.Grupo;
 import br.com.patrimonio.domain.Insumo;
+import br.com.patrimonio.domain.ItemMarca;
 import br.com.patrimonio.domain.Marca;
 import br.com.patrimonio.domain.Unidade;
 import br.com.patrimonio.util.JSFUtil;
+import java.util.List;
 
 //ele vai estar por tras de uma interface grafica
 // tipos de escopo request:(mais leve) a cada click ele e gerado (instanciado); 
@@ -30,10 +33,11 @@ public class InsumoBean {
     ArrayList<Grupo> listaGrupo;
     ArrayList<Unidade> listaUnidade;
     ArrayList<Marca> listaMarca;
+    private List<ItemMarca> itensMarca= new ArrayList<>();
     InsumoDao dao = new InsumoDao();
     Insumo insumo = new Insumo();
     Grupo grupo = new Grupo();
-    Marca marca = new Marca();
+
     Unidade unidade = new Unidade();
 
     // @PostConstruct :esse metodo vai ser desenhado antes da pagina ser
@@ -54,12 +58,14 @@ public class InsumoBean {
     public void prepararSalvar() {
         // metodo criado para resolver o problema do objeto= null
         try {
+            ItemMarca itemMarca=new ItemMarca();
+             itensMarca = new ArrayList<>();
             insumo = new Insumo();
-            GrupoDao grupoDao=new GrupoDao();
-            listaGrupo=grupoDao.listar();
-            UnidadeDao unidadeDao =new  UnidadeDao();
-            listaUnidade=unidadeDao.listar();
-            
+            GrupoDao grupoDao = new GrupoDao();
+            listaGrupo = grupoDao.listar();
+            UnidadeDao unidadeDao = new UnidadeDao();
+            listaUnidade = unidadeDao.listar();
+
         } catch (Exception ex) {
             ex.printStackTrace();
             JSFUtil.adicionaMensagemErro(ex.getMessage());
@@ -68,11 +74,12 @@ public class InsumoBean {
     }
 
     public void salvar() {
-
+Marca marca=new Marca();
         try {
-            InsumoDao dao = new InsumoDao();
-            dao.salvar(insumo);
-            itens = dao.listar();
+            InsumoDao insumoDao = new InsumoDao();
+            insumoDao.salvar(insumo, itensMarca,marca);
+
+            itens = insumoDao.listar();
             JSFUtil.adicionaMensagemSucesso("Salvo com sucesso!");
 
             // Quando salvar um novo objeto ele vai atualizar a minha tabela
@@ -148,22 +155,6 @@ public class InsumoBean {
         this.itensFiltrados = itensFiltrados;
     }
 
-    public InsumoDao getDao() {
-        return dao;
-    }
-
-    public void setDao(InsumoDao dao) {
-        this.dao = dao;
-    }
-
-    public Insumo getInsumo() {
-        return insumo;
-    }
-
-    public void setInsumo(Insumo insumo) {
-        this.insumo = insumo;
-    }
-
     public ArrayList<Grupo> getListaGrupo() {
         return listaGrupo;
     }
@@ -186,6 +177,46 @@ public class InsumoBean {
 
     public void setListaMarca(ArrayList<Marca> listaMarca) {
         this.listaMarca = listaMarca;
+    }
+
+    public List<ItemMarca> getItensMarca() {
+        return itensMarca;
+    }
+
+    public void setItensMarca(List<ItemMarca> itensMarca) {
+        this.itensMarca = itensMarca;
+    }
+
+    public InsumoDao getDao() {
+        return dao;
+    }
+
+    public void setDao(InsumoDao dao) {
+        this.dao = dao;
+    }
+
+    public Insumo getInsumo() {
+        return insumo;
+    }
+
+    public void setInsumo(Insumo insumo) {
+        this.insumo = insumo;
+    }
+
+    public Grupo getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(Grupo grupo) {
+        this.grupo = grupo;
+    }
+
+    public Unidade getUnidade() {
+        return unidade;
+    }
+
+    public void setUnidade(Unidade unidade) {
+        this.unidade = unidade;
     }
 
 }
