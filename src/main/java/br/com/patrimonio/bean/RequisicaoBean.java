@@ -1,5 +1,6 @@
 package br.com.patrimonio.bean;
 
+import antlr.debug.Event;
 import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
@@ -16,7 +17,9 @@ import br.com.patrimonio.domain.ItemInsumo;
 import br.com.patrimonio.domain.Requisicao;
 import br.com.patrimonio.domain.Setor;
 import br.com.patrimonio.util.JSFUtil;
+import java.awt.Desktop;
 import java.util.List;
+import javax.faces.event.ActionEvent;
 import org.primefaces.event.SelectEvent;
 
 @ManagedBean(name = "MBRequisicao")
@@ -59,12 +62,21 @@ public class RequisicaoBean {
             }
             ListaSetores = setorDao.listar();
 
+            
         } catch (Exception ex) {
             ex.printStackTrace();
             JSFUtil.adicionaMensagemErro(ex.getMessage());
         }
 
     }
+    
+   public void prepararAdicionar(){
+    requisicao=new Requisicao();
+    
+    itemInsumo=new ItemInsumo();
+    
+               
+   }
 
     public void salvar() {
 
@@ -155,13 +167,51 @@ public class RequisicaoBean {
 
     }
 
-    public void adicionarItemInsumo(Insumo insumo) {
+    public void adicionarItemInsumo(ActionEvent evento) {
+        Insumo insumo = (Insumo) evento.getComponent().getAttributes().get("insumoItemSelecionado");
+        int achou = -1;
 
-        itemInsumo.setInsumo(insumo);
-        itemInsumo.setRequisicao(requisicao);
-        itensInsumo.add(itemInsumo);
-        requisicao = new Requisicao();
+        for (int posicao = 0; posicao < itens.size(); posicao++) {
+            if (itens.get(posicao).getInsumo().equals(insumo)) {
+                achou = posicao;
+            }
+        }
+        if (achou < 0) {
+
+            itemInsumo.setInsumo(insumo);
+            itemInsumo.setRequisicao(requisicao);
+            itensInsumo.add(itemInsumo);
+
+            itemInsumo = new ItemInsumo();
+            requisicao = new Requisicao();
+            
+            JSFUtil.adicionaMensagemSucesso("Adicionado com sucesso :)");
+
+        }
+    }
+
+    public void removeItemInsumo(ActionEvent evento) {
+
+        itemInsumo = (ItemInsumo) evento.getComponent().getAttributes().get("ItemInsumoRemoveSelecionado");
+
         itemInsumo = new ItemInsumo();
+        int achou = -1;
+
+        for (int posicao = 0; posicao < itens.size(); posicao++) {
+            if (itens.get(posicao).getInsumo().equals(itemInsumo.getInsumo())) {
+                achou = posicao;
+
+            }
+        }
+        if (achou > -1) {
+            requisicao = new Requisicao();
+
+            JSFUtil.adicionaMensagemSucesso("achou");
+
+            itensInsumo.remove(achou);
+
+        } else {
+        }
 
     }
 
