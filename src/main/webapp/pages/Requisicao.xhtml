@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/templates/modeloSistema.xhtml">
+
+    <ui:define name="menu">
+        <ui:include src="/includes/menuPrincipal.xhtml"></ui:include>
+    </ui:define>
+    <!-- conteudo da aplicacação aqui vai as tabelas, dialog e entre outros -->
+
+    <ui:define name="conteudo">
+        <h:form id="formTabela">
+            <!-- criando uma tabela -->
+
+            <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
+                         widgetVar="tabelaRequisicao" value="#{MBRequisicao.itens}" var="item"
+                         paginator="true" rows="10"
+                         filteredValue="#{MBRequisicao.itensFiltrados}">
+                <!-- rows="10"  me diz que o meu paginador deve ter 10 linhas-->
+
+                <f:facet name="header">
+                    Requisições
+                </f:facet>
+
+                <p:column headerText="Codigo" sortBy="#{item.codigo}"
+                          filterBy="#{item.codigo}">
+                    <h:outputText value="#{item.codigo}" />
+                </p:column>
+
+                <p:column headerText="Quantidade" sortBy="#{item.quantidade}">
+                    <h:outputText value="#{item.quantidade}" />
+                </p:column>
+                <p:column headerText="Unidade"  filterBy="#{item.insumo.unidade}">
+                    <h:outputText value="#{item.insumo.unidade}" />
+                </p:column>
+                <p:column headerText="descrição dos Itens" sortBy="#{item.insumo}"
+                          filterBy="#{item.insumo}">
+                    <h:outputText value="#{item.insumo}" />
+                </p:column>
+
+                <p:column headerText="Emissão" sortBy="#{item.dataEmissao}"
+                          filterBy="#{item.dataEmissao}">
+                    <h:outputText value="#{item.dataEmissao}" />
+                </p:column>
+                <p:column headerText="Solicitante" sortBy="#{item.solicitante}"
+                          filterBy="#{item.solicitante}">
+                    <h:outputText value="#{item.solicitante}" />
+                </p:column>
+
+                <p:column headerText="Situação" sortBy="#{item.situacao}"
+                          filterBy="#{item.situacao}">
+                    <h:outputText value="#{item.situacao}" />
+                </p:column>
+
+                <p:column headerText="Opções">
+                    <p:commandButton icon="ui-icon-pencil"
+                                     oncomplete="PF('dlgEditar').show();"
+                                     actionListener="#{MBRequisicao.prepararEditar}"
+                                     update=":formEditar:painelEditar :msgGlobal" title="Editar">
+                        <f:setPropertyActionListener value="#{item}"
+                                                     target="#{MBRequisicao.requisicao}" />
+
+                    </p:commandButton>
+
+                    <p:commandButton icon="ui-icon-trash"
+                                     oncomplete="PF('dlgExcluir').show();"
+                                     update=":formExcluir:painelExcluir :msgGlobal" title="Excluir">
+                        <f:setPropertyActionListener value="#{item}"
+                                                     target="#{MBRequisicao.requisicao}" />
+                    </p:commandButton>
+
+                </p:column>
+
+                <!-- linha de baixo da tabela -->
+                <f:facet name="footer">
+                    <p:commandButton value="Novo" oncomplete="PF('dlgNovo').show()"
+                                     actionListener="#{MBRequisicao.prepararSalvar}"
+                                     update=":formDlgNovo:painelDlgNovo" />
+                </f:facet>
+
+            </p:dataTable>
+        </h:form>
+
+
+        <p:dialog widgetVar="dlgNovo" closable="false" draggable="false" width="600"
+                  resizable="false" appendTo="@(body)" header=" CADASTRO DE REQUISIÇÕES"
+                  modal="true">
+            <!-- header="" nomea o dialogo
+            
+            modal="true" appendTo="@(body)" : desabilita todo campo atras do dialogo-->
+            <h:form id="formDlgNovo">
+
+                <h:panelGrid columns="2" id="painelDlgNovo">
+
+                    <p:outputLabel value="Setor"/>
+
+                    <p:selectOneMenu id="oneMenuSetor" filter="true"
+                                     value="#{MBRequisicao.requisicao.setor.codigo}" required="true"
+                                     requiredMessage="Selecione o setor solicitante.">
+                        <f:selectItem itemValue="" itemLabel="Selecione o Setor"
+                                      noSelectionOption="true" />
+                        <f:selectItems value="#{MBRequisicao.listaSetores}" var="item"
+                                       itemValue="#{item.codigo}" itemLabel="#{item.setor}" />
+
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Solicitante:"/>
+                    <p:inputText value="#{MBRequisicao.requisicao.solicitante}" />
+
+                    <p:outputLabel value="Fornecedor" for="fornecedor" />
+                    <h:panelGrid columns="2">
+
+                        <p:inputText id="fornecedor" value="#{MBRequisicao.requisicao.fornecedor.razaoSocialNome}"
+                                     readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"
+                                     required="true" requiredMessage="Selecione o Fornecedor!" />
+                        <p:commandButton icon="ui-icon-search" title="Pesquisa"
+                                         onclick="PF('dlgFornecedor').show();"
+                                         process="@this" update=":formFornecedor:tabelaFornecedor">
+                            <p:ajax event="dialogReturn" listener="#{MBRequisicao.fornecedorSelecionado}"
+                                    process="@this" update="fornecedor" />
+                            <p:resetInput target="fornecedor" />
+                        </p:commandButton>
+                    </h:panelGrid>
+
+
+                </h:panelGrid>
+
+                <p:commandButton value="Adicionar" onclick="PF('dlgInsumo').show();"   update=":formItensInsumo:painelItensInsumo" >
+                    <p:resetInput target="FormInsumo" />
+                </p:commandButton>
+                <p:spacer/>
+
+                <p:dataTable id="tabelaItemInsumo" emptyMessage="Nenhum registro encontrado."  
+                             widgetVar="tabelaItemInsumo" value="#{MBRequisicao.itensInsumo}"  
+                             var="item"    scrollable="true" scrollHeight="150" rows="10"
+                             >
+
+
+                    <p:column headerText="Codigo" width="3"  >
+                        <p:outputLabel value="#{item.requisicao.insumo.codigo}"/>
+                    </p:column>
+                    <p:column headerText="Quant." width="5"  >
+                        <p:outputLabel value="#{item.requisicao.quantidade}"/>
+                    </p:column>
+                    <p:column headerText="Uni." width="5">
+                        <p:outputLabel value="#{item.requisicao.insumo.unidade.sigla}"/>
+                    </p:column>
+                    <p:column headerText="Descrição dos itens" width="60">
+                        <p:outputLabel value="#{item.requisicao.insumo.insumo}"/>
+                    </p:column>
+
+                    <p:column headerText="Ações" width="5">
+
+                        <p:commandButton icon="ui-icon-minus" />
+
+                    </p:column>
+
+
+
+                </p:dataTable>
+
+                <h:panelGrid columns="2">
+
+                    <p:commandButton value="Gravar"
+                                     actionListener="#{MBRequisicao.salvar}"
+                                     oncomplete="verificar(xhr, status, args, 'dlgNovo', 'tabelaRequisicao');"
+                                     update=":formTabela:tabela :msgGlobal" />
+                    <p:commandButton value="Cancelar" onclick="PF('dlgNovo').hide();"
+                                     process="@this">
+                        <p:resetInput target="painelDlgNovo" />
+                    </p:commandButton>
+                    <!-- process=@this : submete um formulario -->
+
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog widgetVar="dlgExcluir" closable="false" draggable="false"
+                  resizable="false" modal="true" appendTo="@(body)"
+                  header="Excluir Requisição">
+
+            <h:form id="formExcluir">
+                <h:panelGrid columns="2" id="painelExcluir">
+                    <h:outputText value="Codigo: " />
+                    <h:outputText value="#{MBRequisicao.requisicao.codigo}" />
+                    <h:outputText value="Quantidade: " />
+                    <h:outputText value="#{MBRequisicao.requisicao.quantidade}" />
+                    <h:outputText value="Uni.: " />
+                    <h:outputText value="#{MBRequisicao.requisicao.insumo.unidade}" />
+                    <h:outputText value="Solicitante: " />
+                    <h:outputText value="#{MBRequisicao.requisicao.solicitante}" />
+
+
+
+                </h:panelGrid>
+                <h:panelGrid columns="3">
+                    <p:commandButton value="Excluir"
+                                     actionListener="#{MBCategoria.excluir}"
+                                     oncomplete="verificar(xhr, status, args, 'dlgExcluir', 'tabelaRequisicao');"
+                                     update=":formTabela:tabela :msgGlobal" />
+                    <!-- Atualiza tabela -->
+                    <p:commandButton value="Cancelar"
+                                     onclick="PF('dlgExcluir').hide();" />
+                </h:panelGrid>
+
+            </h:form>
+
+        </p:dialog>
+
+        <p:dialog widgetVar="dlgEditar" closable="false" draggable="false"
+                  resizable="false" appendTo="@(body)" header="Editar Categoria"
+                  modal="true">
+            <!-- header="" nomea o dialogo
+            
+            modal="true" appendTo="@(body)" : desabilita todo campo atras do dialogo-->
+            <h:form id="formEditar">
+                <h:panelGrid columns="2" id="painelEditar">
+
+                    <p:outputLabel value="Categoria" />
+                    <p:inputText id="txtCategoria" size="45" maxlength="45"
+                                 value="#{MBCategoria.categoria.categoria}" required="true"
+                                 requiredMessage="Informe o nome do Categoria!" />
+
+                </h:panelGrid>
+
+                <h:panelGrid columns="2">
+
+                    <p:commandButton value="Editar"
+                                     actionListener="#{MBCategoria.editar}"
+                                     oncomplete="verificar(xhr, status, args, 'dlgEditar', 'tabelaCategoria');"
+                                     update=":formTabela:tabela :msgGlobal" />
+                    <p:commandButton value="Cancelar" onclick="PF('dlgEditar').hide();"
+                                     process="@this">
+                        <p:resetInput target="painelEditar" />
+                    </p:commandButton>
+                    <!-- process=@this : submete um formulario -->
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+        <p:dialog widgetVar="dlgFornecedor" closable="false" draggable="false" width="700" 
+                  resizable="false" modal="true" appendTo="@(body)"
+                  header="Selecione o Fornecedor">
+
+            <h:form id="formFornecedor">
+                <h:panelGrid columns="2" id="painelFornecedor">
+
+
+                    <p:dataTable id="tabelaFornecedor" emptyMessage="Nenhum registro encontrado."  rowKey="#{item.codigo}" selectionMode="single" selection="#{item}"
+                                 widgetVar="tabelaFornecedor" value="#{MBFornecedor.itens}"  filteredValue="#{MBFornecedor.itensFiltrados}"
+                                 var="item"  rows="10" 
+                                 >
+                        <p:ajax event="rowSelect" listener="#{MBRequisicao.fornecedorSelecionado}" update=":formDlgNovo:fornecedor"  onsuccess="PF('dlgFornecedor').hide()"
+                                />
+
+
+
+                        <p:column headerText="Codigo" style="width: 30px; text-align: center"  filterStyle="max-width: 40px; min-width: 40px;"
+                                  filterBy="#{item.codigo}">
+                            <h:outputText value="#{item.codigo}"   />
+                        </p:column>
+                        <p:column headerText="Fornecedor" width="150"
+                                  filterBy="#{item.razaoSocialNome}">
+                            <h:outputText value="#{item.razaoSocialNome}" />
+                        </p:column>
+                        <p:column headerText="CNPJ/CPF" sortBy="#{item.cnpjCpf}" width="130" style="width: 30px; text-align: center"
+                                  filterBy="#{item.cnpjCpf}">
+                            <h:outputText value="#{item.cnpjCpf}" />
+                        </p:column>
+
+                        <p:column headerText="Contato" width="100" style="width: 30px; text-align: center">
+                            <h:outputText value="#{item.contato}" />
+                        </p:column>
+
+                    </p:dataTable>
+
+
+                </h:panelGrid>
+
+
+                <h:panelGrid columns="3">
+
+
+                    <p:commandButton value="Sair"
+                                     onclick="PF('dlgFornecedor').hide();" />
+
+                </h:panelGrid>
+
+            </h:form>
+        </p:dialog>
+
+
+        <p:dialog widgetVar="dlgInsumo" closable="false" draggable="false" width="400" 
+                  resizable="false" modal="true" appendTo="@(body)"
+                  header="Adicionar itens a lista de compra">
+
+
+
+
+            <h:form id="formInsumo">
+                <h:panelGrid columns="2" id="painelInsumo">
+
+                    <p:outputLabel value="Insumo" for="insumo" />
+                    <h:panelGrid columns="2">
+
+
+                        <p:inputText id="insumo" value="#{MBRequisicao.requisicao.insumo.insumo}"
+                                     readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"
+                                     required="true" requiredMessage="Selecione o insumo!" />
+                        <p:commandButton icon="ui-icon-search" title="Pesquisa"
+                                         onclick="PF('dlgItensInsumo').show();"
+                                         process="@this" update=":formItensInsumo:tabelaItemInsumo">
+                            <p:ajax event="dialogReturn" listener="#{MBRequisicao.insumoSelecionado}"
+                                    process="@this" update="insumo" />
+                            <p:resetInput target="insumo" />
+                        </p:commandButton>
+                    </h:panelGrid>
+
+                    <p:outputLabel value="Quantidade:"/>
+                    <p:inputText value="#{MBRequisicao.requisicao.quantidade}" required="true" requiredMessage="Informe á quantidade"/>
+
+                    <p:outputLabel value="Uni.:"/>
+                    <p:outputLabel value="#{MBRequisicao.requisicao.insumo.unidade.unidade}" />
+
+
+
+                </h:panelGrid>
+
+
+                <h:panelGrid columns="3">
+
+
+                    <p:commandButton icon="ui-icon-plus" actionListener="#{MBRequisicao.adicionarItemInsumo(insumo)}"
+                                     
+                                      update=":formDlgNovo:tabelaItemInsumo :msgGlobal" >
+
+                        <f:attribute name="insumoItemSelecionado" value="#{item}"/>
+
+                    <f:ajax render="@form" execute="@form" />
+
+                    </p:commandButton>
+
+                    <p:commandButton value="Sair"
+                                     onclick="PF('dlgInsumo').hide();" />
+                </h:panelGrid>
+
+            </h:form>
+        </p:dialog>
+
+        <p:dialog widgetVar="dlgItensInsumo" closable="false" draggable="false" width="700" 
+                  resizable="false" modal="true" appendTo="@(body)"
+                  header="Selecione o Insumo">
+
+            <h:form id="formItensInsumo">
+                <h:panelGrid columns="2" id="painelItensInsumo">
+
+
+                    <p:dataTable id="tabelaItemInsumo" emptyMessage="Nenhum registro encontrado."  rowKey="#{item.codigo}" selectionMode="single" selection="#{item}"
+                                 widgetVar="tabelaItemInsumo" value="#{MBInsumo.itens}"  filteredValue="#{MBInsumo.itensFiltrados}"
+                                 var="item"  rows="10" 
+                                 >
+                        <p:ajax event="rowSelect" listener="#{MBRequisicao.insumoSelecionado}" update=":formInsumo:insumo"  onsuccess="PF('dlgItensInsumo').hide()"
+                                />
+
+
+
+                        <p:column headerText="Codigo" style="width: 30px; text-align: center"  filterStyle="max-width: 40px; min-width: 40px;"
+                                  filterBy="#{item.codigo}">
+                            <h:outputText value="#{item.codigo}"   />
+                        </p:column>
+                        <p:column headerText="Insumo" width="150"
+                                  filterBy="#{item.insumo}">
+                            <h:outputText value="#{item.insumo}" />
+                        </p:column>
+
+
+                    </p:dataTable>
+
+
+                </h:panelGrid>
+
+
+                <h:panelGrid columns="3">
+
+
+                    <p:commandButton value="Sair"
+                                     onclick="PF('dlgItensInsumo').hide();" />
+
+                </h:panelGrid>
+
+            </h:form>
+        </p:dialog>
+
+
+    </ui:define>
+
+</ui:composition>

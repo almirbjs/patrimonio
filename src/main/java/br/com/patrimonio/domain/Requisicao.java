@@ -28,33 +28,33 @@ public class Requisicao implements Serializable {
     @Column(name = "idrequisicao")
     @GeneratedValue(strategy = GenerationType.AUTO)
     long codigo;
-    String requisicao;
+    String Solicitante;
     String situacao;
     Date dataEmissao;
     Date dataComfirmacao;
+    double quantidade;
 
     @JoinColumn(nullable = false)
     @ManyToOne(fetch = FetchType.EAGER)
     Insumo insumo = new Insumo();
-
+    
     @JoinColumn(nullable = false)
     @ManyToOne(fetch = FetchType.EAGER)
-    Usuario usuario = new Usuario();
+    Fornecedor fornecedor = new Fornecedor();
+    
+    @JoinColumn(nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    Setor setor = new Setor();
 
+    /*@JoinColumn(nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    Usuario usuario = new Usuario();*/
     public long getCodigo() {
         return codigo;
     }
 
     public void setCodigo(long codigo) {
         this.codigo = codigo;
-    }
-
-    public String getRequisicao() {
-        return requisicao;
-    }
-
-    public void setRequisicao(String requisicao) {
-        this.requisicao = requisicao;
     }
 
     public String getSituacao() {
@@ -89,12 +89,36 @@ public class Requisicao implements Serializable {
         this.insumo = insumo;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public void setQuantidade(double quantidade) {
+        this.quantidade = quantidade;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public String getSolicitante() {
+        return Solicitante;
+    }
+
+    public void setSolicitante(String Solicitante) {
+        this.Solicitante = Solicitante;
+    }
+
+    public double getQuantidade() {
+        return quantidade;
+    }
+
+    public Fornecedor getFornecedor() {
+        return fornecedor;
+    }
+
+    public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
+    }
+
+    public Setor getSetor() {
+        return setor;
+    }
+
+    public void setSetor(Setor setor) {
+        this.setor = setor;
     }
 
 }

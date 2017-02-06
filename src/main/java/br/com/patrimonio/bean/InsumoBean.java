@@ -33,7 +33,7 @@ public class InsumoBean {
     ArrayList<Grupo> listaGrupo;
     ArrayList<Unidade> listaUnidade;
     ArrayList<Marca> listaMarca;
-    private List<ItemMarca> itensMarca= new ArrayList<>();
+    ArrayList<ItemMarca> itensMarca;
     InsumoDao dao = new InsumoDao();
     Insumo insumo = new Insumo();
     Grupo grupo = new Grupo();
@@ -58,8 +58,7 @@ public class InsumoBean {
     public void prepararSalvar() {
         // metodo criado para resolver o problema do objeto= null
         try {
-            ItemMarca itemMarca=new ItemMarca();
-             itensMarca = new ArrayList<>();
+
             insumo = new Insumo();
             GrupoDao grupoDao = new GrupoDao();
             listaGrupo = grupoDao.listar();
@@ -74,10 +73,12 @@ public class InsumoBean {
     }
 
     public void salvar() {
-Marca marca=new Marca();
+        Marca marca = new Marca();
+        itensMarca=new ArrayList<>();
+   
         try {
             InsumoDao insumoDao = new InsumoDao();
-            insumoDao.salvar(insumo, itensMarca,marca);
+            insumoDao.salvar(insumo, itensMarca, marca);
 
             itens = insumoDao.listar();
             JSFUtil.adicionaMensagemSucesso("Salvo com sucesso!");
@@ -179,14 +180,6 @@ Marca marca=new Marca();
         this.listaMarca = listaMarca;
     }
 
-    public List<ItemMarca> getItensMarca() {
-        return itensMarca;
-    }
-
-    public void setItensMarca(List<ItemMarca> itensMarca) {
-        this.itensMarca = itensMarca;
-    }
-
     public InsumoDao getDao() {
         return dao;
     }
@@ -217,6 +210,14 @@ Marca marca=new Marca();
 
     public void setUnidade(Unidade unidade) {
         this.unidade = unidade;
+    }
+
+    public ArrayList<ItemMarca> getItensMarca() {
+        return itensMarca;
+    }
+
+    public void setItensMarca(ArrayList<ItemMarca> itensMarca) {
+        this.itensMarca = itensMarca;
     }
 
 }

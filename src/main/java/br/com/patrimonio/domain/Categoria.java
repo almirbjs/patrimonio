@@ -1,5 +1,6 @@
 package br.com.patrimonio.domain;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,7 +16,12 @@ import javax.persistence.Table;
 		@NamedQuery(name = "Categoria.buscarPorCodigo", query = "SELECT c FROM Categoria c WHERE c.codigo = :codigo")})
 @Entity
 @Table(name = "categoria")
-public class Categoria {
+
+public class Categoria implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    
 
     @Id
     @Column(name = "idcategoria")

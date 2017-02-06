@@ -31,6 +31,7 @@ import javax.persistence.Transient;
 // se o nome da minha tabela fosse diferente da classe java precisaria utilizar
 // (name="usuario")
 @Table(name = "DocumentoFiscal")
+@SuppressWarnings("serial")
 public class DocumentoFiscal implements Serializable {
     //   usado para indentificar a chave primaria, se o nome da minha varialve
     // fosse diferente do banco deve se nomear: @Column(name = "usuario")
