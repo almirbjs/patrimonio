@@ -19,9 +19,10 @@ import javax.persistence.Table;
     @NamedQuery(name = "ItemInsumo.buscarPorCodigo", query = "SELECT p FROM ItemInsumo p WHERE p.codigo = :codigo")})
 @Entity
 @Table(name = "itemInsumo")
+@SuppressWarnings("serial")
 public class ItemInsumo implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    
 
     @Id
     @Column(name = "iditeminsumo", length = 11)

@@ -17,35 +17,31 @@ public class InsumoDao {
     Session sessao = HibernateUtil.getSessionFactory().openSession();
     Transaction transacao = null;
 
-    public void salvar(Insumo insumo, List<ItemMarca> itensMarca ){
-		
-                   Marca marca=new Marca();
-		try {
-			transacao = sessao.beginTransaction();
-		
+    public void salvar(Insumo insumo, List<ItemMarca> itensMarca) {
+
+        try {
+            transacao = sessao.beginTransaction();
+
+  
 			sessao.save(insumo);
 			
 			for(int posicao = 0; posicao < itensMarca.size(); posicao++){
-				ItemMarca itemMarca  = itensMarca.get(posicao);
-                                itemMarca.setInsumo(insumo);
-                                itemMarca.setMarca(marca);
-                                itensMarca.add(itemMarca);
+				ItemMarca itemMarca = itensMarca.get(posicao);
+				itemMarca.setInsumo(insumo);
 				
-                                
 				sessao.save(itemMarca);
 			}
-			
-			
-			transacao.commit();
-		} catch (RuntimeException erro) {
-			if (transacao != null) {
-				transacao.rollback();
-			}
-			throw erro;
-		} finally {
-			sessao.close();
-		}
-	
+
+            transacao.commit();
+        } catch (RuntimeException erro) {
+            if (transacao != null) {
+                transacao.rollback();
+            }
+            throw erro;
+        } finally {
+            sessao.close();
+        }
+
     }
 
     public Insumo BuscaPorCodigo(int codigo) {
@@ -155,7 +151,5 @@ public class InsumoDao {
         return Insumo;
 
     }
-    
-    
 
 }

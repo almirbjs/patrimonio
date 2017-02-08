@@ -29,10 +29,7 @@ public class Insumo implements Serializable {
 
     @Column(length = 45)
     String insumo;
-    Integer qtdMinBaixaTemp;
-    Integer qtdMaxBaixaTemp;
-    Integer qtdMinAltaTemp;
-    Integer qtdMaxAltaTemp;
+   
     @Column(length = 45)
     String obs;
 
@@ -60,38 +57,8 @@ public class Insumo implements Serializable {
         this.insumo = insumo;
     }
 
-    public Integer getQtdMinBaixaTemp() {
-        return qtdMinBaixaTemp;
-    }
-
-    public void setQtdMinBaixaTemp(Integer qtdMinBaixaTemp) {
-        this.qtdMinBaixaTemp = qtdMinBaixaTemp;
-    }
-
-    public Integer getQtdMaxBaixaTemp() {
-        return qtdMaxBaixaTemp;
-    }
-
-    public void setQtdMaxBaixaTemp(Integer qtdMaxBaixaTemp) {
-        this.qtdMaxBaixaTemp = qtdMaxBaixaTemp;
-    }
-
-    public Integer getQtdMinAltaTemp() {
-        return qtdMinAltaTemp;
-    }
-
-    public void setQtdMinAltaTemp(Integer qtdMinAltaTemp) {
-        this.qtdMinAltaTemp = qtdMinAltaTemp;
-    }
-
-    public Integer getQtdMaxAltaTemp() {
-        return qtdMaxAltaTemp;
-    }
-
-    public void setQtdMaxAltaTemp(Integer qtdMaxAltaTemp) {
-        this.qtdMaxAltaTemp = qtdMaxAltaTemp;
-    }
-
+    
+  
     public String getObs() {
         return obs;
     }

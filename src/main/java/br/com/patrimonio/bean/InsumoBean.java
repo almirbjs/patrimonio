@@ -6,7 +6,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import br.com.patrimonio.dao.InsumoDao;
-import br.com.patrimonio.dao.ItemMarcaDao;
 import br.com.patrimonio.dao.UnidadeDao;
 import br.com.patrimonio.domain.Grupo;
 import br.com.patrimonio.domain.Insumo;
@@ -14,22 +13,14 @@ import br.com.patrimonio.domain.ItemMarca;
 import br.com.patrimonio.domain.Marca;
 import br.com.patrimonio.domain.Unidade;
 import br.com.patrimonio.util.JSFUtil;
-import java.util.List;
+import javax.faces.event.ActionEvent;
 
-//ele vai estar por tras de uma interface grafica
-// tipos de escopo request:(mais leve) a cada click ele e gerado (instanciado); 
-//viewscope(� recomendado pelo prime faces):so existe enquanto a tela estiver aberta ex.: tela do fabricante aberta.
-//SessionScope : Ele � criando quando o servidor for iniciado e finalizado quando o servidor e desligado.
-@ManagedBean(name = "MBInsumo") // Nome do meu managedBean ele � usado para
-// procurar o xhtml.
-// Se der esse erro no console :java.lang.IllegalStateException: Cannot create a
-// session after the response has been committed baixe o cdi-api-1.0.jar
+@ManagedBean(name = "MBInsumo")
 @ViewScoped
 public class InsumoBean {
-    // variavel que guarda o resultado de consulta (variavel de tela)
 
     ArrayList<Insumo> itens;
-    ArrayList<Insumo> itensFiltrados;// Vai armazenar os itens
+    ArrayList<Insumo> itensFiltrados;
     ArrayList<Grupo> listaGrupo;
     ArrayList<Unidade> listaUnidade;
     ArrayList<Marca> listaMarca;
@@ -37,12 +28,8 @@ public class InsumoBean {
     InsumoDao dao = new InsumoDao();
     Insumo insumo = new Insumo();
     Grupo grupo = new Grupo();
-
     Unidade unidade = new Unidade();
 
-    // @PostConstruct :esse metodo vai ser desenhado antes da pagina ser
-    // desenhada
-    @PostConstruct
     public void prepararPesquisa() {
         try {
 
@@ -50,23 +37,25 @@ public class InsumoBean {
             itens = dao.listar();
 
         } catch (Exception e) {
-            e.printStackTrace();
+
             JSFUtil.adicionaMensagemErro(e.getMessage());
         }
     }
 
+    @PostConstruct
     public void prepararSalvar() {
-        // metodo criado para resolver o problema do objeto= null
-        try {
 
-            insumo = new Insumo();
+        try {
+           insumo=new Insumo();
             GrupoDao grupoDao = new GrupoDao();
             listaGrupo = grupoDao.listar();
+
             UnidadeDao unidadeDao = new UnidadeDao();
             listaUnidade = unidadeDao.listar();
-            if (itensMarca==null) {
-                itensMarca=new ArrayList<>();
-                
+
+            if (itensMarca == null) {
+                itensMarca = new ArrayList<>();
+
             }
 
         } catch (Exception ex) {
@@ -77,12 +66,12 @@ public class InsumoBean {
     }
 
     public void salvar() {
-           
+
         try {
             InsumoDao insumoDao = new InsumoDao();
             insumoDao.salvar(insumo, itensMarca);
             itens = insumoDao.listar();
-            
+
             JSFUtil.adicionaMensagemSucesso("Salvo com sucesso!");
 
             // Quando salvar um novo objeto ele vai atualizar a minha tabela
@@ -142,6 +131,75 @@ public class InsumoBean {
 
     }
 
+    public void adicionarItemMarca(ActionEvent evento) {
+        Marca marca = (Marca) evento.getComponent().getAttributes().get("marcaSelecionada");
+
+        int achou = -1;
+
+        for (int posicao = 0; posicao < itensMarca.size(); posicao++) {
+            if (itensMarca.get(posicao).getMarca().equals(marca)) {
+                achou = posicao;
+
+            }
+        }
+
+        if (achou < 0) {
+            ItemMarca itemMarca = new ItemMarca();
+            
+            itemMarca.setInsumo(insumo);
+            itemMarca.setMarca(marca);
+            itensMarca.add(itemMarca);
+        } else {
+
+            JSFUtil.adicionaMensagemErro("Marca já adicionada!");
+
+        }
+
+    }
+
+    public void removeItemMarca(ActionEvent evento) {
+
+        ItemMarca itemMarca = (ItemMarca) evento.getComponent().getAttributes().get("ItemMarcaSelecionada");
+
+        int achou = -1;
+
+        for (int posicao = 0; posicao < itensMarca.size(); posicao++) {
+            if (itensMarca.get(posicao).getMarca().equals(itemMarca.getMarca())) {
+                achou = posicao;
+            }
+        }
+        if (achou > -1) {
+
+            itensMarca.remove(achou);
+
+        }
+    }
+
+    /*   public void adicionarItemMarca(ActionEvent evento) {
+
+    Marca marca = (Marca) evento.getComponent().getAttributes().get("marcaSelecionada");
+
+    int achou = -1;
+
+    for (int posicao = 0; posicao < itens.size(); posicao++) {
+    if (itens.get(posicao).getMarca().equals(marca)) {
+    achou = posicao;
+    }
+    }
+    if (achou < 0) {
+    Insumo insumo = new Insumo();
+    itemMarca.setInsumo(insumo);
+    itemMarca = new ItemMarca();
+    itemMarca.setCodigo(marca.getCodigo());
+    itemMarca.setMarca(marca);
+    itens.add(itemMarca);
+
+
+    } else {
+
+    JSFUtil.adicionaMensagemErro("Marca já adicionada!");
+    }
+    }*/
     public ArrayList<Insumo> getItens() {
         return itens;
     }

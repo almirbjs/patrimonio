@@ -257,8 +257,6 @@
                   header="Vincular marca ao insumo">
 
 
-
-
             <h:form id="formTabelaMarca">
 
                 <p:panel header="Marcas">
@@ -281,7 +279,7 @@
 
                         <p:column headerText="Ações">
 
-                            <p:commandButton icon="ui-icon-plus" actionListener="#{MBItemMarca.adicionarItemMarca}"
+                            <p:commandButton icon="ui-icon-plus" actionListener="#{MBInsumo.adicionarItemMarca}"
 
                                              update=":formItemMarca:tabelaItemMarca :msgGlobal">
 
@@ -300,15 +298,15 @@
                 <p:panel header="Marcas sugeridas"  >
 
                     <p:dataTable id="tabelaItemMarca" emptyMessage="Nenhum registro encontrado."     scrollable="true" scrollHeight="150"
-                                 widgetVar="tabelaProduto" value="#{MBItemMarca.itens}" var="item"
+                                 widgetVar="tabelaProduto" value="#{MBInsumo.itensMarca}" var="item"
 
-                                 filteredValue="#{MBItemMarca.itensFiltrados}">
+                                 filteredValue="#{MBInsumo.itensMarca}">
                         <!-- rows="10"  me diz que o meu paginador deve ter 10 linhas-->
 
 
-                        <p:column headerText="Codigo" sortBy="#{item.codigo}" style="width: 70px; text-align: center"
+                        <p:column headerText="Codigo" sortBy="#{item.marca.codigo}" style="width: 70px; text-align: center"
                                   filterStyle="max-width: 60px; min-width: 60px;" >
-                            <h:outputText value="#{item.codigo}" />
+                            <h:outputText value="#{item.marca.codigo}" />
                         </p:column>
                         <p:column headerText="Marca" sortBy="#{item.marca.marca}" style="width: 300px;">
 
@@ -318,7 +316,7 @@
                         <p:column headerText="Ações">
 
 
-                            <p:commandButton icon="ui-icon-minus" actionListener="#{MBItemMarca.removeItemMarca}" update="formItemMarca:tabelaItemMarca"
+                            <p:commandButton icon="ui-icon-minus" actionListener="#{MBInsumo.removeItemMarca}" update="formItemMarca:tabelaItemMarca"
 
                                              >
                                 <f:attribute name="ItemMarcaSelecionada" value="#{item}"/>
