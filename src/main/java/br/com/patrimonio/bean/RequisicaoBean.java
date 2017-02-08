@@ -55,13 +55,15 @@ public class RequisicaoBean {
     public void prepararSalvar() {
         // metodo criado para resolver o problema do objeto= null
         try {
+             requisicao=new Requisicao();
             SetorDao setorDao = new SetorDao();
-
+ListaSetores = setorDao.listar();
             if (itensInsumo == null) {
                 itensInsumo = new ArrayList<>();
             }
-            ListaSetores = setorDao.listar();
-
+            
+          
+            
             
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -192,25 +194,26 @@ public class RequisicaoBean {
 
     public void removeItemInsumo(ActionEvent evento) {
 
-        itemInsumo = (ItemInsumo) evento.getComponent().getAttributes().get("ItemInsumoRemoveSelecionado");
+         ItemInsumo itemInsumo = (ItemInsumo) evento.getComponent().getAttributes().get("ItemInsumoRemoveSelecionado");
 
-        itemInsumo = new ItemInsumo();
+       
         int achou = -1;
 
-        for (int posicao = 0; posicao < itens.size(); posicao++) {
-            if (itens.get(posicao).getInsumo().equals(itemInsumo.getInsumo())) {
+        for (int posicao = 0; posicao < itensInsumo.size(); posicao++) {
+            if (itensInsumo.get(posicao).getInsumo().equals(itemInsumo.getInsumo())) {
                 achou = posicao;
 
             }
         }
         if (achou > -1) {
-            requisicao = new Requisicao();
-
-            JSFUtil.adicionaMensagemSucesso("achou");
-
+           
+           
             itensInsumo.remove(achou);
+             JSFUtil.adicionaMensagemSucesso("achou");
 
         } else {
+             itensInsumo.remove(achou);
+             JSFUtil.adicionaMensagemSucesso("else");
         }
 
     }

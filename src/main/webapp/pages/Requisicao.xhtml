@@ -156,9 +156,9 @@
                     <p:column headerText="Ações" width="5">
 
                         <p:commandButton icon="ui-icon-minus" actionListener="#{MBRequisicao.removeItemInsumo}" update=":formDlgNovo:tabelaItemInsumo" >
-                                <f:attribute name="ItemInsumoSelecionado" value="#{item}"/>
+                            <f:attribute name="ItemInsumoSelecionado" value="#{item}"/>
 
-                            </p:commandButton>
+                        </p:commandButton>
 
                     </p:column>
 
@@ -338,18 +338,21 @@
 
 
                     <p:commandButton icon="ui-icon-plus" actionListener="#{MBRequisicao.adicionarItemInsumo}"
-                                     
-                                      update=":formDlgNovo:tabelaItemInsumo :msgGlobal" >
+
+                                     update=":formDlgNovo:tabelaItemInsumo :msgGlobal" >
 
                         <f:attribute name="insumoItemSelecionado" value="#{item}"/>
 
-                    <f:ajax render="@form" execute="@form" />
-                    
+                        <f:ajax render="@form" execute="@form" />
+
 
                     </p:commandButton>
 
                     <p:commandButton value="Sair"
-                                     onclick="PF('dlgInsumo').hide();"/>
+                                     onclick="PF('dlgInsumo').hide();"
+                                     >
+
+                    </p:commandButton>
                 </h:panelGrid>
 
             </h:form>

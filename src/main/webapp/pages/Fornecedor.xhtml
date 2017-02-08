@@ -26,36 +26,36 @@
                     Fornecedores
                 </f:facet>
 
-                <p:column headerText="Codigo" sortBy="#{item.codigo}"
+                <p:column headerText="Codigo" sortBy="#{item.codigo}" style="width: 70px; text-align: center"  filterStyle="max-width: 60px; min-width: 60px;"
                           filterBy="#{item.codigo}">
                     <h:outputText value="#{item.codigo}" />
                 </p:column>
-                <p:column headerText="Fornecedor" sortBy="#{item.razaoSocialNome}"
+                <p:column headerText="Fornecedor" sortBy="#{item.razaoSocialNome}" style="width: 270px;"
                           filterBy="#{item.razaoSocialNome}">
                     <h:outputText value="#{item.razaoSocialNome}" />
                 </p:column>
-                <p:column headerText="CNPJ/CPF" sortBy="#{item.cnpjCpf}"
+                <p:column headerText="CNPJ/CPF" sortBy="#{item.cnpjCpf}" style="width: 140px;"
                           filterBy="#{item.cnpjCpf}">
                     <h:outputText value="#{item.cnpjCpf}" />
                 </p:column>
 
-                <p:column headerText="Representante" sortBy="#{item.contato}"
+                <p:column headerText="Representante" sortBy="#{item.contato}" style="width: 160px;"
                           filterBy="#{item.contato}">
                     <h:outputText value="#{item.contato}" />
                 </p:column>
 
 
-                <p:column headerText="E-mail" sortBy="#{item.email}"
+                <p:column headerText="E-mail" sortBy="#{item.email}" style="width: 260px;"
                           filterBy="#{item.email}">
                     <h:outputText value="#{item.email}" />
                 </p:column>
 
-                <p:column headerText="Telefone" sortBy="#{item.telefone}"
+                <p:column headerText="Telefone" sortBy="#{item.telefone}" style="width: 110px;"
                           filterBy="#{item.telefone}">
                     <h:outputText value="#{item.telefone}" />
                 </p:column>
 
-                <p:column headerText="Celular" sortBy="#{item.celular}"
+                <p:column headerText="Celular" sortBy="#{item.celular}" style="width: 110px;"
                           filterBy="#{item.celular}">
                     <h:outputText value="#{item.celular}" />
                 </p:column>
@@ -173,7 +173,7 @@
                     </p:inputMask>
 
                     <p:outputLabel value="Celular:" />
-                    <p:inputMask mask="(99)9999-9999" id="txtCelular" size="20"
+                    <p:inputMask mask="(99)99999-9999" id="txtCelular" size="20"
                                  maxlength="20" value="#{MBFornecedor.fornecedor.celular}">
                     </p:inputMask>
 

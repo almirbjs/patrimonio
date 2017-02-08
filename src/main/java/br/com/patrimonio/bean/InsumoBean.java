@@ -64,6 +64,10 @@ public class InsumoBean {
             listaGrupo = grupoDao.listar();
             UnidadeDao unidadeDao = new UnidadeDao();
             listaUnidade = unidadeDao.listar();
+            if (itensMarca==null) {
+                itensMarca=new ArrayList<>();
+                
+            }
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -73,14 +77,12 @@ public class InsumoBean {
     }
 
     public void salvar() {
-        Marca marca = new Marca();
-        itensMarca=new ArrayList<>();
-   
+           
         try {
             InsumoDao insumoDao = new InsumoDao();
-            insumoDao.salvar(insumo, itensMarca, marca);
-
+            insumoDao.salvar(insumo, itensMarca);
             itens = insumoDao.listar();
+            
             JSFUtil.adicionaMensagemSucesso("Salvo com sucesso!");
 
             // Quando salvar um novo objeto ele vai atualizar a minha tabela

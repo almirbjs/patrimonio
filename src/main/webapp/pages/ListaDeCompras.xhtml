@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/templates/modeloSistema.xhtml">
+
+    <ui:define name="menu">
+        <ui:include src="/includes/menuPrincipal.xhtml"></ui:include>
+    </ui:define>
+    <!-- conteudo da aplicacação aqui vai as tabelas, dialog e entre outros -->
+
+    <ui:define name="conteudo">
+        <h:form id="formTabela">
+            <!-- criando uma tabela -->
+
+            <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
+                         widgetVar="tabelaCategoria" value="#{MBCategoria.itens}" var="item"
+                         paginator="true" rows="10"
+                         filteredValue="#{MBCategoria.itensFiltrados}">
+                <!-- rows="10"  me diz que o meu paginador deve ter 10 linhas-->
+
+                <f:facet name="header">
+                    Lista de Compras Predefinida
+                </f:facet>
+
+                <p:column headerText="Codigo" sortBy="#{item.codigo}"
+                          filterBy="#{item.codigo}">
+                    <h:outputText value="#{item.codigo}" />
+                </p:column>
+
+                <p:column headerText="Descrição">
+
+                </p:column>
+                <p:column headerText="Setor">
+
+                </p:column>
+
+
+                                <!-- <f:setPropertyActionListener value="#{item}"
+                                                        target="#{MBCategoria.categoria}"></f:setPropertyActionListener> funciona como um prepara pesquisa para atualizar -->
+                <p:column headerText="Opções">
+                    <p:commandButton icon="fa fa-print"  >
+
+                    </p:commandButton>
+
+
+                    <p:commandButton icon="ui-icon-pencil"
+                                     oncomplete="PF('dlgEditar').show();"
+                                     actionListener="#{MBCategoria.prepararEditar}"
+                                     update=":formEditar:painelEditar :msgGlobal" title="Editar">
+                        <f:setPropertyActionListener value="#{item}"
+                                                     target="#{MBCategoria.categoria}" />
+
+                    </p:commandButton>
+
+                    <p:commandButton icon="ui-icon-trash"
+                                     oncomplete="PF('dlgExcluir').show();"
+                                     update=":formExcluir:painelExcluir :msgGlobal" title="Excluir">
+                        <f:setPropertyActionListener value="#{item}"
+                                                     target="#{MBCategoria.categoria}" />
+                    </p:commandButton>
+
+                </p:column>
+
+                <!-- linha de baixo da tabela -->
+                <f:facet name="footer">
+                    <p:commandButton value="Novo" oncomplete="PF('dlgNovo').show()"
+                                     actionListener="#{MBCategoria.prepararSalvar}"
+                                     update=":formDlgNovo:painelDlgNovo" />
+                </f:facet>
+
+            </p:dataTable>
+        </h:form>
+
+        <p:dialog widgetVar="dlgNovo" closable="false" draggable="false" width="600"
+                  resizable="false" appendTo="@(body)" header=" INCLUIR ITENS Á SUA LISTA DE COMPRAS"
+                  modal="true">
+            <!-- header="" nomea o dialogo
+            
+            modal="true" appendTo="@(body)" : desabilita todo campo atras do dialogo-->
+            <h:form id="formDlgNovo">
+
+                <h:panelGrid columns="2" id="painelDlgNovo">
+
+                    <p:outputLabel value="Descrição:"/>
+                    <p:inputText  onblur="value = value.toUpperCase()"/>
+                    <p:outputLabel value="Setor"/>
+
+                    <p:selectOneMenu id="oneMenuSetor" filter="true"
+                                     value="#{MBRequisicao.requisicao.setor.codigo}" required="true"
+                                     requiredMessage="Selecione o setor solicitante.">
+                        <f:selectItem itemValue="" itemLabel="Selecione o Setor"
+                                      noSelectionOption="true" />
+                        <f:selectItems value="#{MBRequisicao.listaSetores}" var="item"
+                                       itemValue="#{item.codigo}" itemLabel="#{item.setor}" />
+
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Fornecedores"/>
+
+                    <p:commandButton icon="fa fa-plus-square"  onclick="PF('dlgItemFornecedor').show();"
+                                         process="@this" update=":formTabela:tabela">
+
+                    </p:commandButton>
+
+                    <p:outputLabel value="Observação:"/>
+                    <p:inputText/>
+
+                    <p:commandButton value="Adicionar"/>
+                    <p:spacer width="2"/>
+                </h:panelGrid>
+
+                <p:dataTable id="tabelaItemInsumo" emptyMessage="Nenhum registro encontrado."  
+                             widgetVar="tabelaItemInsumo" value="#{MBRequisicao.itensInsumo}"  
+                             var="item"    scrollable="true" scrollHeight="150" rows="10"
+                             >
+
+
+                    <p:column headerText="Codigo" width="3"  >
+                        <p:outputLabel value="#{item.requisicao.insumo.codigo}"/>
+                    </p:column>
+                    <p:column headerText="Quant." width="5"  >
+                        <p:outputLabel value="#{item.requisicao.quantidade}"/>
+                    </p:column>
+                    <p:column headerText="Uni." width="5">
+                        <p:outputLabel value="#{item.requisicao.insumo.unidade.sigla}"/>
+                    </p:column>
+                    <p:column headerText="Descrição dos itens" width="60">
+                        <p:outputLabel value="#{item.requisicao.insumo.insumo}"/>
+                    </p:column>
+
+                    <p:column headerText="Ações" width="5">
+
+                        <p:commandButton icon="ui-icon-minus" actionListener="#{MBRequisicao.removeItemInsumo}" update=":formDlgNovo:tabelaItemInsumo" >
+                            <f:attribute name="ItemInsumoSelecionado" value="#{item}"/>
+
+                        </p:commandButton>
+
+                    </p:column>
+
+
+
+                </p:dataTable>
+
+                <h:panelGrid columns="2">
+
+                    <p:commandButton value="Gravar"
+                                     actionListener="#{MBRequisicao.salvar}"
+                                     oncomplete="verificar(xhr, status, args, 'dlgNovo', 'tabelaRequisicao');"
+                                     update=":formTabela:tabela :msgGlobal" />
+                    <p:commandButton value="Cancelar" onclick="PF('dlgNovo').hide();"
+                                     process="@this">
+                        <p:resetInput target="painelDlgNovo" />
+                    </p:commandButton>
+                    <!-- process=@this : submete um formulario -->
+
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+
+
+        <p:dialog widgetVar="dlgExcluir" closable="false" draggable="false"
+                  resizable="false" modal="true" appendTo="@(body)"
+                  header="Excluir Categoria">
+
+            <h:form id="formExcluir">
+                <h:panelGrid columns="2" id="painelExcluir">
+                    <h:outputText value="Codigo: " />
+                    <h:outputText value="#{MBCategoria.categoria.codigo}" />
+                    <h:outputText value="Categoria: " />
+                    <h:outputText value="#{MBCategoria.categoria.categoria}" />
+
+
+
+                </h:panelGrid>
+                <h:panelGrid columns="3">
+                    <p:commandButton value="Excluir"
+                                     actionListener="#{MBCategoria.excluir}"
+                                     oncomplete="verificar(xhr, status, args, 'dlgExcluir', 'tabelaCategoria');"
+                                     update=":formTabela:tabela :msgGlobal" />
+                    <!-- Atualiza tabela -->
+                    <p:commandButton value="Cancelar"
+                                     onclick="PF('dlgExcluir').hide();" />
+                </h:panelGrid>
+
+            </h:form>
+
+        </p:dialog>
+
+        <p:dialog widgetVar="dlgEditar" closable="false" draggable="false"
+                  resizable="false" appendTo="@(body)" header="Editar Categoria"
+                  modal="true">
+            <!-- header="" nomea o dialogo
+            
+            modal="true" appendTo="@(body)" : desabilita todo campo atras do dialogo-->
+            <h:form id="formEditar">
+                <h:panelGrid columns="2" id="painelEditar">
+
+                    <p:outputLabel value="Categoria" />
+                    <p:inputText id="txtCategoria" size="45" maxlength="45"
+                                 value="#{MBCategoria.categoria.categoria}" required="true"
+                                 requiredMessage="Informe o nome do Categoria!" />
+
+                </h:panelGrid>
+
+                <h:panelGrid columns="2">
+
+                    <p:commandButton value="Editar"
+                                     actionListener="#{MBCategoria.editar}"
+                                     oncomplete="verificar(xhr, status, args, 'dlgEditar', 'tabelaCategoria');"
+                                     update=":formTabela:tabela :msgGlobal" />
+                    <p:commandButton value="Cancelar" onclick="PF('dlgEditar').hide();"
+                                     process="@this">
+                        <p:resetInput target="painelEditar" />
+                    </p:commandButton>
+                    <!-- process=@this : submete um formulario -->
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+    </ui:define>
+
+
+
+    <p:dialog widgetVar="dlgItemFornecedor" closable="false" draggable="false" width="600"
+              resizable="false" appendTo="@(body)" header=" INCLUIR PARCEIROS Á SUA LISTA DE COMPRAS"
+              modal="true">
+
+        <h:form id="formFornecedor">
+
+            <h:panelGrid columns="2" id="painelFornecedor">
+
+   <p:panel header="Fornecedores">
+
+                    <p:dataTable id="tabelaFornecedor" emptyMessage="Nenhum registro encontrado." paginator="true" 
+                                 widgetVar="tabelaFornecedor" value="#{MBMarca.itens}" var="item"
+                                 rows="5"
+                                 filteredValue="#{MBMarca.itensFiltrados}">
+                        <!-- rows="10"  me diz que o meu paginador deve ter 10 linhas-->
+
+
+                        <p:column headerText="Codigo" sortBy="#{item.codigo}" style="width: 70px; text-align: center"  filterStyle="max-width: 60px; min-width: 60px;"
+                                  filterBy="#{item.codigo}">
+                            <h:outputText value="#{item.codigo}" />
+                        </p:column>
+                        <p:column headerText="Marca" sortBy="#{item.marca}" style="width: 300px;"
+                                  filterBy="#{item.marca}">
+                            <h:outputText value="#{item.marca}" />
+                        </p:column>
+
+                        <p:column headerText="Ações">
+
+                            <p:commandButton icon="ui-icon-plus" actionListener="#{MBItemMarca.adicionarItemMarca}"
+
+                                             update=":formItemFornecedor:tabelaItemFornecedor :msgGlobal">
+
+                                <f:attribute name="fornecedorSelecionado" value="#{item}"/>
+
+
+                            </p:commandButton>
+
+
+                        </p:column>
+
+                    </p:dataTable>
+                </p:panel>
+            </h:panelGrid>
+            </h:form>
+            <h:form id="formItemFornecedor">
+                <p:panel header="Fornecedores vinculados ao insumo"  >
+
+                    <p:dataTable id="tabelaItemFornecedor" emptyMessage="Nenhum registro encontrado."     scrollable="true" scrollHeight="150"
+                                 widgetVar="tabelaItemFornecedor" value="#{MBItemMarca.itens}" var="item"
+
+                                 filteredValue="#{MBItemMarca.itensFiltrados}">
+                        <!-- rows="10"  me diz que o meu paginador deve ter 10 linhas-->
+
+
+                        <p:column headerText="Codigo" sortBy="#{item.codigo}" style="width: 70px; text-align: center"
+                                  filterStyle="max-width: 60px; min-width: 60px;" >
+                            <h:outputText value="#{item.codigo}" />
+                        </p:column>
+                        <p:column headerText="Marca" sortBy="#{item.marca.marca}" style="width: 300px;">
+
+                            <h:outputText value="#{item.marca.marca}" />
+                        </p:column>
+
+                        <p:column headerText="Ações">
+
+
+                            <p:commandButton icon="ui-icon-minus" actionListener="#{MBItemMarca.removeItemMarca}" update="formItemFornecedor:tabelaItemFornecedor"
+
+                                             >
+                                <f:attribute name="ItemFornecedorSelecionado" value="#{item}"/>
+
+                            </p:commandButton>
+
+                        </p:column>
+
+                    </p:dataTable>
+
+                    <h:panelGrid columns="4">
+                        <p:commandButton value="Sair"
+                                         onclick="PF('dlgItemFornecedor').hide();" />
+
+                    </h:panelGrid>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+
+
+</ui:composition>

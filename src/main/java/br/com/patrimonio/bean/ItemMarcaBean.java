@@ -1,6 +1,7 @@
 package br.com.patrimonio.bean;
 
 import br.com.patrimonio.dao.ItemMarcaDao;
+import br.com.patrimonio.domain.Insumo;
 import java.util.ArrayList;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -45,6 +46,7 @@ public class ItemMarcaBean {
 
         try {
             ItemMarcaDao dao = new ItemMarcaDao();
+            
             dao.salvar(itemMarca);
             itens = dao.listar();
             JSFUtil.adicionaMensagemSucesso("Salvo com sucesso!");
@@ -74,7 +76,7 @@ public class ItemMarcaBean {
         // metodo criado para resolver o problema do objeto= null
         try {
             itemMarca = new ItemMarca();
-
+            
         } catch (Exception ex) {
             ex.printStackTrace();
             JSFUtil.adicionaMensagemErro(ex.getMessage());
@@ -130,11 +132,13 @@ public class ItemMarcaBean {
             }
         }
         if (achou < 0) {
-            
+            Insumo insumo = new Insumo();
+            itemMarca.setInsumo(insumo);
             itemMarca = new ItemMarca();
             itemMarca.setCodigo(marca.getCodigo());
             itemMarca.setMarca(marca);
             itens.add(itemMarca);
+            
 
         } else {
             

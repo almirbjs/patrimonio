@@ -17,9 +17,9 @@ public class InsumoDao {
     Session sessao = HibernateUtil.getSessionFactory().openSession();
     Transaction transacao = null;
 
-    public void salvar(Insumo insumo, List<ItemMarca> itensMarca,Marca  marca ){
+    public void salvar(Insumo insumo, List<ItemMarca> itensMarca ){
 		
-                   
+                   Marca marca=new Marca();
 		try {
 			transacao = sessao.beginTransaction();
 		
@@ -28,7 +28,8 @@ public class InsumoDao {
 			for(int posicao = 0; posicao < itensMarca.size(); posicao++){
 				ItemMarca itemMarca  = itensMarca.get(posicao);
                                 itemMarca.setInsumo(insumo);
-                               itemMarca.setMarca(marca);
+                                itemMarca.setMarca(marca);
+                                itensMarca.add(itemMarca);
 				
                                 
 				sessao.save(itemMarca);
