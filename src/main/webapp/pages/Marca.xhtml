@@ -23,7 +23,7 @@
                 <!-- rows="10"  me diz que o meu paginador deve ter 10 linhas-->
 
                 <f:facet name="header">
-                  Marcas dos insumos
+                    Marcas dos insumos
                 </f:facet>
 
                 <p:column headerText="Codigo" sortBy="#{item.codigo}"
@@ -86,14 +86,14 @@
                                  requiredMessage="Informe o nome da Marca!" />
 
                 </h:panelGrid>
-                
+
                 <h:panelGrid columns="2">
 
                     <p:commandButton value="Gravar"
                                      actionListener="#{MBMarca.salvar}"
                                      oncomplete="verificar(xhr, status, args, 'dlgNovo','tabelaMarca');"
                                      update="formTabela:tabela :msgGlobal"/>
-                                                         
+
                     <p:commandButton value="Cancelar" onclick="PF('dlgNovo').hide();"
                                      process="@this">
                         <p:resetInput target="painelDlgNovo" />

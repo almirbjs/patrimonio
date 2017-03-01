@@ -16,7 +16,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
 
-
 @Entity
 // diz que a minha unidade de persistencia esta ligada a minha tabela
 // se o nome da minha tabela fosse diferente da classe java precisaria utilizar
@@ -24,21 +23,20 @@ import javax.persistence.Transient;
 public class Relatorio {
 
     @Id
-   
-     Long ID;
+
+    Long ID;
     //   usado para indentificar a chave primaria, se o nome da minha varialve
     // fosse diferente do banco deve se nomear: @Column(name = "usuario")
 
     // @Id indentifica que o codigo   uma coluna. (length =10)   o tamanho do
     // campo
     // @GeneratedValue(strategy = GenerationType.AUTO) gera um codigo automatico
-   
     @Transient
-     String tipo;
+    String tipo;
 
     @Transient
     @Temporal(javax.persistence.TemporalType.DATE)
-     Date data;
+    Date data;
 
     public Long getID() {
         return ID;
@@ -64,5 +62,4 @@ public class Relatorio {
         this.data = data;
     }
 
-    
 }

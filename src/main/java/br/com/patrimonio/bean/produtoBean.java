@@ -73,8 +73,6 @@ public class produtoBean {
 
     public void salvar() {
 
-            
-        
         try {
 
             ProdutoDao dao = new ProdutoDao();
@@ -178,7 +176,7 @@ public class produtoBean {
         }
 
     }
-    
+
     public void produtoSelecionado(SelectEvent event) {
         Fornecedor fornecedor = (Fornecedor) event.getObject();
         produto.setFornecedor(fornecedor);
@@ -186,7 +184,6 @@ public class produtoBean {
         itensFornecedores = fornecedorDao.listar();
 
     }
-
 
     public ArrayList<Produto> getItens() {
         return itens;

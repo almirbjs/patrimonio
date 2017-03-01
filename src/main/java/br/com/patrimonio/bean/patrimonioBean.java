@@ -94,7 +94,7 @@ public class patrimonioBean {
             dao.salvar(getPatrimonio());
 
             setItens(dao.listar());
-           
+
             JSFUtil.adicionaMensagemSucesso("Salvo com sucesso!");
 
             // Quando salvar um novo objeto ele vai atualizar a minha tabela
@@ -127,7 +127,7 @@ public class patrimonioBean {
             getDao().alterar(getPatrimonio());
 
             setItens(getDao().listar());
-            
+
             JSFUtil.adicionaMensagemSucesso("Alterado com sucesso!");
 
             // Quando salvar um novo objeto ele vai atualizar a minha tabela
@@ -146,7 +146,7 @@ public class patrimonioBean {
             PatrimonioDao dao = new PatrimonioDao();
             dao.excluir(getPatrimonio());
             setItens(dao.listar());
-           
+
             JSFUtil.adicionaMensagemSucesso("Excluido com Sucesso.");
 
         } catch (Exception e) {
@@ -199,7 +199,7 @@ public class patrimonioBean {
     }
 
     public void calcularValorTotalPatrimonio() {
-        
+
         patrimonio.setValorTotal(new BigDecimal("0.00"));
         for (int posicao = 0; posicao < itens.size(); posicao++) {
 

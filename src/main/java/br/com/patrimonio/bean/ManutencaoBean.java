@@ -60,8 +60,6 @@ public class ManutencaoBean {
         }
 
     }
-    
-     
 
     public void salvar() {
 

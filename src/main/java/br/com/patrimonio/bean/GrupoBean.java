@@ -48,7 +48,7 @@ public class GrupoBean {
     public void prepararSalvar() {
         // metodo criado para resolver o problema do objeto= null
         try {
-            grupo= new Grupo();
+            grupo = new Grupo();
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -152,6 +152,5 @@ public class GrupoBean {
     public void setGrupo(Grupo grupo) {
         this.grupo = grupo;
     }
-    
-    
+
 }

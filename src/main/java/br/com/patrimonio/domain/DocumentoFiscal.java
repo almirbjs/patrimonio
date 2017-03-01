@@ -59,7 +59,7 @@ public class DocumentoFiscal implements Serializable {
 
     @Column(name = "tipoDocFiscal")
     private String tipoDocFiscal;
-   
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_documentoFiscal_idfornecedor", referencedColumnName = "idfornecedor", nullable = false)
     private Fornecedor fornecedor = new Fornecedor();
@@ -118,5 +118,5 @@ public class DocumentoFiscal implements Serializable {
 
     public void setFornecedor(Fornecedor fornecedor) {
         this.fornecedor = fornecedor;
-    } 
+    }
 }

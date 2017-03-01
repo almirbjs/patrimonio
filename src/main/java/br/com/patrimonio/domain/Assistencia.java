@@ -40,11 +40,11 @@ public class Assistencia implements Serializable {
 
     @Column(name = "obs", length = 45)
     private String observacao;
-       
+
     @JoinColumn(name = "fk_assistencia_idorcamento", referencedColumnName = "idorcamento", nullable = false)
     @ManyToOne(fetch = FetchType.EAGER)
     private Orcamento orcamento = new Orcamento();
-    
+
     @JoinColumn(name = "fk_assistencia_iddocumento", referencedColumnName = "iddocumentofiscal", nullable = false)
     @ManyToOne(fetch = FetchType.EAGER)
     private DocumentoFiscal documentoFiscal = new DocumentoFiscal();
@@ -97,5 +97,4 @@ public class Assistencia implements Serializable {
         this.documentoFiscal = documentoFiscal;
     }
 
-    
 }

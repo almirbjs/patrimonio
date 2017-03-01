@@ -13,9 +13,9 @@
     <!-- conteudo da aplicacação aqui vai as tabelas, dialog e entre outros -->
 
     <ui:define name="conteudo">
-       
 
-        
+
+
         <!-- widgetVar=""> : utilizamos para buscar o nome da tabela 
         draggable="false"> : A janela não pode ser movimentada 
         resizable="false"> : não pode redimensionar-->
@@ -33,7 +33,7 @@
                         <f:selectItem itemLabel="Conferencia" itemValue="Conferencia" />
                         <f:selectItem itemLabel="Outros" itemValue="Outros" />
                     </p:selectOneMenu>
-                    
+
                     <p:outputLabel value="Grupos" />
                     <p:selectOneMenu id="oneMenuTipo" 
                                      required="true" 
@@ -46,33 +46,33 @@
                         <f:selectItem itemValue="País" itemLabel="País" />
                         <f:selectItem itemValue="Estado" itemLabel="Estado" />
                         <f:selectItem itemValue="Cidade" itemLabel="Cidade" />
-                        
+
 
                     </p:selectOneMenu>
-                    
-                   
+
+
 
                 </h:panelGrid>
-             
-                 <h:panelGrid columns="2">
 
-                        <p:commandButton value="Gerar"
-                                         
-                                        
-                                         update=":msgGlobal" />
-                        <p:commandButton value="Cancelar" onclick="PF('dlgNovo').hide();"
-                                         process="@this" >
-                            <p:resetInput target="painelDlgNovo" />
+                <h:panelGrid columns="2">
 
-                        </p:commandButton>
-                        <!-- process=@this : submete um formulario -->
-                    </h:panelGrid>
-                
+                    <p:commandButton value="Gerar"
+
+
+                                     update=":msgGlobal" />
+                    <p:commandButton value="Cancelar" onclick="PF('dlgNovo').hide();"
+                                     process="@this" >
+                        <p:resetInput target="painelDlgNovo" />
+
+                    </p:commandButton>
+                    <!-- process=@this : submete um formulario -->
+                </h:panelGrid>
+
             </h:form>
         </p:dialog>
 
 
-        
+
     </ui:define>
 
 </ui:composition>

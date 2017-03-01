@@ -153,7 +153,7 @@ public class ManutencaoDao {
         return Manutencao;
 
     }
-    
+
     // Lista de entidades
     @SuppressWarnings("unchecked")
     public ArrayList<Patrimonio> listarFuncionando() {

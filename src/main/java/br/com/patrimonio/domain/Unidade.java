@@ -18,13 +18,11 @@ import javax.persistence.Table;
 @Table(name = "unidade")
 public class Unidade implements Serializable {
 
-  
-
     @Id
     @Column(name = "idunidade")
     @GeneratedValue(strategy = GenerationType.AUTO)
-     Integer codigo;
-    
+    Integer codigo;
+
     String unidade;
     String sigla;
 
@@ -50,6 +48,6 @@ public class Unidade implements Serializable {
 
     public void setSigla(String sigla) {
         this.sigla = sigla;
-    }   
-    
+    }
+
 }

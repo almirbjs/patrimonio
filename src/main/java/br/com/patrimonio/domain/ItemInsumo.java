@@ -22,8 +22,6 @@ import javax.persistence.Table;
 @SuppressWarnings("serial")
 public class ItemInsumo implements Serializable {
 
-    
-
     @Id
     @Column(name = "iditeminsumo", length = 11)
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -60,8 +58,5 @@ public class ItemInsumo implements Serializable {
     public void setRequisicao(Requisicao requisicao) {
         this.requisicao = requisicao;
     }
-    
-    
-    
 
 }

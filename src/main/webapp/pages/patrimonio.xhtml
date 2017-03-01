@@ -54,7 +54,7 @@
                     <h:outputText value="#{item.setor.setor}" />
                 </p:column>
 
-                               
+
                 <p:column headerText="Opções">
                     <p:commandButton icon="ui-icon-pencil"
                                      oncomplete="PF('dlgEditar').show();"
@@ -213,7 +213,7 @@
                                      update=":formTabela:tabela :msgGlobal" />
                     <p:commandButton value="Cancelar" onclick="PF('dlgNovo').hide();"
                                      process="@this">
-                       
+
                         <p:resetInput target="painelDlgNovo" />
                         <p:resetInput target="outputValorTotal" />
                     </p:commandButton>
@@ -556,7 +556,7 @@
 
 
                 <h:panelGrid columns="3">
-                    
+
 
                     <p:commandButton value="Sair"
                                      onclick="PF('dlgProduto').hide();" />

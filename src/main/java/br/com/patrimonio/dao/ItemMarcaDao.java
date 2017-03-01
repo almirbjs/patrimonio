@@ -142,7 +142,7 @@ public class ItemMarcaDao {
         try {
 
             Query consulta = sessao.getNamedQuery("ItemMarca.listar");
-           ItemMarca= (ArrayList<br.com.patrimonio.domain.ItemMarca>) consulta.list();
+            ItemMarca = (ArrayList<br.com.patrimonio.domain.ItemMarca>) consulta.list();
 
         } catch (Exception e) {
             e.printStackTrace();

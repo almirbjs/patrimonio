@@ -154,6 +154,7 @@ public class PatrimonioDao {
 
     }
 // Lista de entidades
+
     @SuppressWarnings("unchecked")
     public ArrayList<Patrimonio> listarFuncionando() {
 
@@ -174,8 +175,5 @@ public class PatrimonioDao {
         return Patrimonio;
 
     }
-   
-    
-    
-    
+
 }

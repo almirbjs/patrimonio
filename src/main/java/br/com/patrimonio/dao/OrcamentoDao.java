@@ -9,7 +9,6 @@ import org.hibernate.Transaction;
 
 import br.com.patrimonio.util.HibernateUtil;
 
-
 public class OrcamentoDao {
 
     Session sessao = HibernateUtil.getSessionFactory().openSession();
@@ -57,7 +56,7 @@ public class OrcamentoDao {
             // @NamedQuery ou segundo � o da entidade.
             consulta.setInteger("codigo", codigo);
             // uniqueResult() busca apenas um resultado
-            o= (ArrayList<br.com.patrimonio.domain.Orcamento>) consulta.list();
+            o = (ArrayList<br.com.patrimonio.domain.Orcamento>) consulta.list();
 
         } catch (RuntimeException ex) {
             throw ex;
@@ -144,7 +143,7 @@ public class OrcamentoDao {
         try {
 
             Query consulta = sessao.getNamedQuery("Orcamento.listar");
-            Orcamento= (ArrayList<br.com.patrimonio.domain.Orcamento>) consulta.list();
+            Orcamento = (ArrayList<br.com.patrimonio.domain.Orcamento>) consulta.list();
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -154,6 +153,7 @@ public class OrcamentoDao {
 
     }
 // Lista de entidades
+
     @SuppressWarnings("unchecked")
     public ArrayList<Orcamento> listarOrcamento() {
 
@@ -174,8 +174,5 @@ public class OrcamentoDao {
         return Orcamento;
 
     }
-   
-    
-    
-    
+
 }

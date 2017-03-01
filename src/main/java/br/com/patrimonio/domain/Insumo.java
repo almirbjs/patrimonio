@@ -19,8 +19,10 @@ import javax.persistence.Table;
     @NamedQuery(name = "Insumo.buscarPorCodigo", query = "SELECT p FROM Insumo p WHERE p.codigo = :codigo")})
 @Entity
 @Table(name = "insumo")
+
 @SuppressWarnings("serial")
 public class Insumo implements Serializable {
+
 
     @Id
     @Column(name = "idinsumo")
@@ -29,9 +31,6 @@ public class Insumo implements Serializable {
 
     @Column(length = 45)
     String insumo;
-   
-    @Column(length = 45)
-    String obs;
 
     @JoinColumn(name = "fk_grupo_idinsumo", referencedColumnName = "idgrupo")
     @ManyToOne(fetch = FetchType.EAGER)
@@ -57,16 +56,6 @@ public class Insumo implements Serializable {
         this.insumo = insumo;
     }
 
-    
-  
-    public String getObs() {
-        return obs;
-    }
-
-    public void setObs(String obs) {
-        this.obs = obs;
-    }
-
     public Grupo getGrupo() {
         return grupo;
     }
@@ -83,6 +72,4 @@ public class Insumo implements Serializable {
         this.unidade = unidade;
     }
 
-    
-    
 }

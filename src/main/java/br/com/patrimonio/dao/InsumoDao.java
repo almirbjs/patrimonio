@@ -1,51 +1,46 @@
 package br.com.patrimonio.dao;
 
 import java.util.ArrayList;
-
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import br.com.patrimonio.domain.Insumo;
-import br.com.patrimonio.domain.ItemMarca;
-import br.com.patrimonio.domain.Marca;
-
 import br.com.patrimonio.util.HibernateUtil;
-import java.util.List;
 
 public class InsumoDao {
 
     Session sessao = HibernateUtil.getSessionFactory().openSession();
     Transaction transacao = null;
 
-    public void salvar(Insumo insumo, List<ItemMarca> itensMarca) {
+    public void salvar(Insumo insumo) {
 
         try {
+
             transacao = sessao.beginTransaction();
 
-  
-			sessao.save(insumo);
-			
-			for(int posicao = 0; posicao < itensMarca.size(); posicao++){
-				ItemMarca itemMarca = itensMarca.get(posicao);
-				itemMarca.setInsumo(insumo);
-				
-				sessao.save(itemMarca);
-			}
+            sessao.save(insumo);
 
             transacao.commit();
+
         } catch (RuntimeException erro) {
+
             if (transacao != null) {
+
                 transacao.rollback();
             }
+
             throw erro;
+
         } finally {
+
             sessao.close();
         }
 
     }
 
     public Insumo BuscaPorCodigo(int codigo) {
-        Session sessao = HibernateUtil.getSessionFactory().openSession();
+        
+        sessao = HibernateUtil.getSessionFactory().openSession();
 
         Insumo c = null;
         try {
@@ -68,40 +63,46 @@ public class InsumoDao {
 
     }
 
-    public void excluir(Insumo c) throws Exception {
-        Session sessao = HibernateUtil.getSessionFactory().openSession();
-        Transaction transacao = null;
+    public void excluir(Insumo insumo) throws Exception {
 
         try {
-            // beginTransaction(): inicia a transa��o.
+
             transacao = sessao.beginTransaction();
-            // delete: deleta a opera��o.
-            sessao.delete(c);
-            // comfimar � opera��o.
+
+            sessao.delete(insumo);
+
             transacao.commit();
 
+            try {
+                /*
+                Query consulta = sessao.getNamedQuery("ItemMarca.buscarPorCodigoInsumo");
+                insumo = (ArrayList<br.com.patrimonio.domain.Insumo>) consulta.list();*/
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         } catch (Exception e) {
-            // Mensagem de erro
+
             if (transacao != null) {
-                // Se algo der errado eu utilizo rollback para disfazer a
-                // transa��o.
+
                 transacao.rollback();
 
             }
-            throw e;// For�a o usuario escrever a mensagem de erro para ser
-            // exibida na tela.
+            throw e;
 
-            // finally{} � o finalizador
         } finally {
-            // Fecha sess�o.
+
             sessao.close();
         }
 
     }
 
     public void alterar(Insumo c) throws Exception {
-        Session sessao = HibernateUtil.getSessionFactory().openSession();
-        Transaction transacao = null;
+        
+        sessao = HibernateUtil.getSessionFactory().openSession();
+        
+        transacao = null;
 
         try {
             // beginTransaction(): inicia a transa��o.
@@ -134,7 +135,7 @@ public class InsumoDao {
     @SuppressWarnings("unchecked")
     public ArrayList<Insumo> listar() {
 
-        Session sessao = HibernateUtil.getSessionFactory().openSession();
+        sessao = HibernateUtil.getSessionFactory().openSession();
 
         // iniciamos a lista nula porque n�o tenhos entidades ainda listada
         ArrayList<Insumo> Insumo = null;

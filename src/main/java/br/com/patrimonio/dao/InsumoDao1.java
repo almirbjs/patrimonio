@@ -1,58 +1,58 @@
 package br.com.patrimonio.dao;
 
-import br.com.patrimonio.domain.Assistencia;
 import java.util.ArrayList;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import br.com.patrimonio.domain.Insumo;
+import br.com.patrimonio.domain.ItemMarca;
 import br.com.patrimonio.util.HibernateUtil;
+import java.io.File;
+import java.util.List;
 
-public class AssistenciaDao {
+public class InsumoDao1 {
 
-    private Session sessao = HibernateUtil.getSessionFactory().openSession();
-    private Transaction transacao = null;
+    Session sessao = HibernateUtil.getSessionFactory().openSession();
+    Transaction transacao = null;
 
-    public void salvar(Assistencia c) throws Exception {
+    public void salvar(Insumo insumo, List<ItemMarca> itensMarca) {
 
         try {
-            // beginTransaction(): inicia a transa��o.
             transacao = sessao.beginTransaction();
-            // save: Salva a opera��o.
-            sessao.save(c);
-            // comfimar � opera��o.
+
+            sessao.save(insumo);
+
             transacao.commit();
 
-        } catch (Exception e) {
-            // Mensagem de erro
+        } catch (RuntimeException erro) {
+
             if (transacao != null) {
-                // Se algo der errado eu utilizo rollback para disfazer a
-                // transa��o.
+
                 transacao.rollback();
-
             }
-            throw e;// For�a o usuario escrever a mensagem de erro para ser
-            // exibida na tela.
 
-            // finally{} � o finalizador
+            throw erro;
+
         } finally {
-            // Fecha sess�o.
+
             sessao.close();
         }
 
     }
 
-    public Assistencia BuscaPorCodigo(int codigo) {
+    public Insumo BuscaPorCodigo(int codigo) {
         Session sessao = HibernateUtil.getSessionFactory().openSession();
 
-        Assistencia c = null;
+        Insumo c = null;
         try {
             //
-            org.hibernate.Query consulta = sessao.getNamedQuery("Assistencia.buscarPorCodigo");
+            org.hibernate.Query consulta = sessao.getNamedQuery("Insumo.buscarPorCodigo");
             // consulta.setInteger("codigo", codigo);o primeiro codigo � o da
             // @NamedQuery ou segundo � o da entidade.
             consulta.setInteger("codigo", codigo);
             // uniqueResult() busca apenas um resultado
-            c = (Assistencia) consulta.uniqueResult();
+            c = (Insumo) consulta.uniqueResult();
 
         } catch (RuntimeException ex) {
             throw ex;
@@ -65,38 +65,42 @@ public class AssistenciaDao {
 
     }
 
-    public void excluir(Assistencia c) throws Exception {
-        Session sessao = HibernateUtil.getSessionFactory().openSession();
-        Transaction transacao = null;
+    public void excluir(Insumo insumo) throws Exception {
 
         try {
-            // beginTransaction(): inicia a transa��o.
+
             transacao = sessao.beginTransaction();
-            // delete: deleta a opera��o.
-            sessao.delete(c);
-            // comfimar � opera��o.
+
+            sessao.delete(insumo);
+
             transacao.commit();
 
+            try {
+                /*
+                Query consulta = sessao.getNamedQuery("ItemMarca.buscarPorCodigoInsumo");
+                insumo = (ArrayList<br.com.patrimonio.domain.Insumo>) consulta.list();*/
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         } catch (Exception e) {
-            // Mensagem de erro
+
             if (transacao != null) {
-                // Se algo der errado eu utilizo rollback para disfazer a
-                // transa��o.
+
                 transacao.rollback();
 
             }
-            throw e;// For�a o usuario escrever a mensagem de erro para ser
-            // exibida na tela.
+            throw e;
 
-            // finally{} � o finalizador
         } finally {
-            // Fecha sess�o.
+
             sessao.close();
         }
 
     }
 
-    public void alterar(Assistencia c) throws Exception {
+    public void alterar(Insumo c) throws Exception {
         Session sessao = HibernateUtil.getSessionFactory().openSession();
         Transaction transacao = null;
 
@@ -129,22 +133,23 @@ public class AssistenciaDao {
 
     // Lista de entidades
     @SuppressWarnings("unchecked")
-    public ArrayList<Assistencia> listar() {
+    public ArrayList<Insumo> listar() {
 
         Session sessao = HibernateUtil.getSessionFactory().openSession();
 
         // iniciamos a lista nula porque n�o tenhos entidades ainda listada
-        ArrayList<Assistencia> Assistencia = null;
+        ArrayList<Insumo> Insumo = null;
 
         try {
 
-            Query consulta = sessao.getNamedQuery("Assistencia.listar");
-            Assistencia = (ArrayList<br.com.patrimonio.domain.Assistencia>) consulta.list();
+            Query consulta = sessao.getNamedQuery("Insumo.listar");
+            Insumo = (ArrayList<br.com.patrimonio.domain.Insumo>) consulta.list();
 
         } catch (Exception e) {
+            e.printStackTrace();
         }
         // retorna entidades
-        return Assistencia;
+        return Insumo;
 
     }
 

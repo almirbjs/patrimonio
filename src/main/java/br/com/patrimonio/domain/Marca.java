@@ -21,8 +21,8 @@ public class Marca implements Serializable {
     @Id
     @Column(name = "idmarca")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    
-     int codigo;
+
+    int codigo;
     String marca;
 
     public int getCodigo() {
@@ -40,7 +40,5 @@ public class Marca implements Serializable {
     public void setMarca(String marca) {
         this.marca = marca;
     }
-
-   
 
 }

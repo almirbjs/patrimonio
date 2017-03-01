@@ -37,10 +37,10 @@ public class Manutencao implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "dtcadastro")
     private Date dataCadastro;
-    
+
     @Column(name = "Status", length = 45)
     private String status;
-    
+
     @Column(name = "observacao", length = 45)
     private String obs;
 
@@ -64,7 +64,6 @@ public class Manutencao implements Serializable {
     public void setDataCadastro(Date dataCadastro) {
         this.dataCadastro = dataCadastro;
     }
-
 
     public String getStatus() {
         return status;
@@ -90,6 +89,4 @@ public class Manutencao implements Serializable {
         this.patrimonio = patrimonio;
     }
 
-    
-    
 }

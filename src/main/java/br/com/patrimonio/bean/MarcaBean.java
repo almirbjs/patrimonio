@@ -67,7 +67,8 @@ public class MarcaBean {
         }
 
     }
-       public void prepararSalvar() {
+
+    public void prepararSalvar() {
         // metodo criado para resolver o problema do objeto= null
         try {
             marca = new Marca();;
@@ -146,6 +147,5 @@ public class MarcaBean {
     public void setMarca(Marca marca) {
         this.marca = marca;
     }
-    
-    
+
 }

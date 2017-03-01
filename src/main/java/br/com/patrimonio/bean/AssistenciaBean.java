@@ -43,7 +43,7 @@ public class AssistenciaBean {
     public void prepararSalvar() {
         // metodo criado para resolver o problema do objeto= null
         try {
-            assistencia= new Assistencia();
+            assistencia = new Assistencia();
 
         } catch (Exception ex) {
             ex.printStackTrace();

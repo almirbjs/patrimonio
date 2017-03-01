@@ -55,30 +55,26 @@ public class RequisicaoBean {
     public void prepararSalvar() {
         // metodo criado para resolver o problema do objeto= null
         try {
-             requisicao=new Requisicao();
+            requisicao = new Requisicao();
             SetorDao setorDao = new SetorDao();
-ListaSetores = setorDao.listar();
+            ListaSetores = setorDao.listar();
             if (itensInsumo == null) {
                 itensInsumo = new ArrayList<>();
             }
-            
-          
-            
-            
+
         } catch (Exception ex) {
             ex.printStackTrace();
             JSFUtil.adicionaMensagemErro(ex.getMessage());
         }
 
     }
-    
-   public void prepararAdicionar(){
-    requisicao=new Requisicao();
-    
-    itemInsumo=new ItemInsumo();
-    
-               
-   }
+
+    public void prepararAdicionar() {
+        requisicao = new Requisicao();
+
+        itemInsumo = new ItemInsumo();
+
+    }
 
     public void salvar() {
 
@@ -186,7 +182,7 @@ ListaSetores = setorDao.listar();
 
             itemInsumo = new ItemInsumo();
             requisicao = new Requisicao();
-            
+
             JSFUtil.adicionaMensagemSucesso("Adicionado com sucesso :)");
 
         }
@@ -194,9 +190,8 @@ ListaSetores = setorDao.listar();
 
     public void removeItemInsumo(ActionEvent evento) {
 
-         ItemInsumo itemInsumo = (ItemInsumo) evento.getComponent().getAttributes().get("ItemInsumoRemoveSelecionado");
+        ItemInsumo itemInsumo = (ItemInsumo) evento.getComponent().getAttributes().get("ItemInsumoRemoveSelecionado");
 
-       
         int achou = -1;
 
         for (int posicao = 0; posicao < itensInsumo.size(); posicao++) {
@@ -206,14 +201,13 @@ ListaSetores = setorDao.listar();
             }
         }
         if (achou > -1) {
-           
-           
+
             itensInsumo.remove(achou);
-             JSFUtil.adicionaMensagemSucesso("achou");
+            JSFUtil.adicionaMensagemSucesso("achou");
 
         } else {
-             itensInsumo.remove(achou);
-             JSFUtil.adicionaMensagemSucesso("else");
+            itensInsumo.remove(achou);
+            JSFUtil.adicionaMensagemSucesso("else");
         }
 
     }

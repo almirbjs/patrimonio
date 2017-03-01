@@ -64,12 +64,11 @@ public class DocumentoFiscalBean {
     }
 
     public void salvar() {
-       
 
         try {
 
             DocumentoFiscalDao dao = new DocumentoFiscalDao();
-         DocumentoFiscal documentoFiscalRetorno = dao.salvar(documentoFiscal);
+            DocumentoFiscal documentoFiscalRetorno = dao.salvar(documentoFiscal);
 
             if (!"Danfe".equals(documentoFiscal.getTipoDocFiscal())) {
 
@@ -80,7 +79,7 @@ public class DocumentoFiscalBean {
                 }
                 Path origem = Paths.get(documentoFiscal.getCaminhoTemporario());
                 Path destino = Paths.get("C:/Users/AlmirRicardo/Documents/Uploads/"
-                        + documentoFiscal.getNumeroDocumentoFiscal() + documentoFiscal.getFornecedor().getCodigo()+ ".png");
+                        + documentoFiscal.getNumeroDocumentoFiscal() + documentoFiscal.getFornecedor().getCodigo() + ".png");
                 Files.copy(origem, destino, StandardCopyOption.REPLACE_EXISTING);
 
             }
@@ -115,19 +114,18 @@ public class DocumentoFiscalBean {
 
             DocumentoFiscalDao dao = new DocumentoFiscalDao();
 
-           
-                Path origem = Paths.get(documentoFiscal.getCaminhoTemporario());
-                Path destino = Paths.get("C:/Users/AlmirRicardo/Documents/Uploads/"
-                        + documentoFiscal.getNumeroDocumentoFiscal() + documentoFiscal.getFornecedor().getCodigo() + ".png");
-                Files.copy(origem, destino, StandardCopyOption.REPLACE_EXISTING);
- if (!"Danfe".equals(documentoFiscal.getTipoDocFiscal())) {
+            Path origem = Paths.get(documentoFiscal.getCaminhoTemporario());
+            Path destino = Paths.get("C:/Users/AlmirRicardo/Documents/Uploads/"
+                    + documentoFiscal.getNumeroDocumentoFiscal() + documentoFiscal.getFornecedor().getCodigo() + ".png");
+            Files.copy(origem, destino, StandardCopyOption.REPLACE_EXISTING);
+            if (!"Danfe".equals(documentoFiscal.getTipoDocFiscal())) {
 
                 if (documentoFiscal.getCaminhoTemporario() == null) {
                     JSFUtil.adicionaMensagemErro("É obrigatório adicionar um documento fiscal!");
 
                     return;
                 }
-                
+
             }
 
             JSFUtil.adicionaMensagemSucesso("Alterado com sucesso!");

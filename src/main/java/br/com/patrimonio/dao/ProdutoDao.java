@@ -111,7 +111,7 @@ public class ProdutoDao {
         try {
             // beginTransaction(): inicia a transa��o.
             transacao = sessao.beginTransaction();
- if (u.getCaminhoTemporarioProduto() != null) {
+            if (u.getCaminhoTemporarioProduto() != null) {
                 u.setExisteImagem("sim");
             }
 
@@ -119,7 +119,7 @@ public class ProdutoDao {
             sessao.update(u);
             // comfimar a operação.
             transacao.commit();
-            
+
         } catch (RuntimeException e) {
             // Mensagem de erro
             if (transacao != null) {
@@ -132,7 +132,7 @@ public class ProdutoDao {
             // Fecha sess�o.
             sessao.close();
         }
-    
+
     }
 
     // Lista de entidades

@@ -22,7 +22,7 @@ public class OrcamentoBean {
     ArrayList<Orcamento> itens;
     ArrayList<Orcamento> itensFiltrados;// Vai armazenar os itens
     ArrayList<Fornecedor> itensFornecedores;// filtrados 
-    
+
     Manutencao manutencao = new Manutencao();
     OrcamentoDao dao = new OrcamentoDao();
     Orcamento orcamento = new Orcamento();
@@ -34,21 +34,21 @@ public class OrcamentoBean {
         try {
             OrcamentoDao dao = new OrcamentoDao();
             itens = dao.listar();
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             JSFUtil.adicionaMensagemErro(e.getMessage());
         }
     }
-    
+
     public ArrayList<Orcamento> getItens() {
         return itens;
     }
-    
+
     public void prepararSalvar() {
         // metodo criado para resolver o problema do objeto= null
-        try { 
-            orcamento=new Orcamento();
+        try {
+            orcamento = new Orcamento();
             manutencao = new Manutencao();
             FornecedorDao fornecedorDao = new FornecedorDao();
             itensFornecedores = fornecedorDao.listar();
@@ -56,23 +56,23 @@ public class OrcamentoBean {
             ex.printStackTrace();
             JSFUtil.adicionaMensagemErro(ex.getMessage());
         }
-        
+
     }
-    
+
     public void salvar() {
-        
+
         FornecedorDao fornecedorDao = new FornecedorDao();
         try {
-            
+
             OrcamentoDao dao = new OrcamentoDao();
-            
+
             ManutencaoDao manutencaoDao = new ManutencaoDao();
-            
+
             orcamento.setManutencao(manutencao);
             dao.salvar(orcamento);
-            
+
             JSFUtil.adicionaMensagemSucesso("Salvo com sucesso!");
-            
+
             manutencao.setStatus("Aguardando Orcamento");
             manutencaoDao.alterar(manutencao);
             itens = dao.listar();
@@ -84,9 +84,9 @@ public class OrcamentoBean {
             e.printStackTrace();
             JSFUtil.adicionaMensagemErro(e.getMessage());
         }
-        
+
     }
-    
+
     public void prepararEditar() {
         // metodo criado para resolver o problema do objeto= null
         try {
@@ -96,16 +96,16 @@ public class OrcamentoBean {
             ex.printStackTrace();
             JSFUtil.adicionaMensagemErro(ex.getMessage());
         }
-        
+
     }
-    
+
     public void editar() {
-        
+
         try {
-            
+
             dao = new OrcamentoDao();
             dao.alterar(orcamento);
-            
+
             itens = dao.listar();
             JSFUtil.adicionaMensagemSucesso("Alterado com sucesso!");
 
@@ -115,77 +115,77 @@ public class OrcamentoBean {
             e.printStackTrace();
             JSFUtil.adicionaMensagemErro(e.getMessage());
         }
-        
+
     }
-    
+
     public void excluir() {
-        
+
         try {
-            
+
             OrcamentoDao dao = new OrcamentoDao();
             dao.excluir(orcamento);
             itens = dao.listar();
-            
+
             JSFUtil.adicionaMensagemSucesso("Excluido com Sucesso.");
-            
+
         } catch (Exception e) {
             JSFUtil.adicionaMensagemErro(e.getMessage());
             JSFUtil.adicionaMensagemSucesso("Erro ao tentar excluir ");
         }
-        
+
     }
-    
+
     public void fornecedorSelecionado(SelectEvent event) {
         Fornecedor fornecedor = (Fornecedor) event.getObject();
         orcamento.setFornecedor(fornecedor);
         orcamento.setManutencao(manutencao);
         FornecedorDao fornecedorDao = new FornecedorDao();
         itensFornecedores = fornecedorDao.listar();
-        
+
     }
-    
+
     public void setItens(ArrayList<Orcamento> itens) {
         this.itens = itens;
     }
-    
+
     public ArrayList<Orcamento> getItensFiltrados() {
         return itensFiltrados;
     }
-    
+
     public void setItensFiltrados(ArrayList<Orcamento> itensFiltrados) {
         this.itensFiltrados = itensFiltrados;
     }
-    
+
     public ArrayList<Fornecedor> getItensFornecedores() {
         return itensFornecedores;
     }
-    
+
     public void setItensFornecedores(ArrayList<Fornecedor> itensFornecedores) {
         this.itensFornecedores = itensFornecedores;
     }
-    
+
     public OrcamentoDao getDao() {
         return dao;
     }
-    
+
     public void setDao(OrcamentoDao dao) {
         this.dao = dao;
     }
-    
+
     public Orcamento getOrcamento() {
         return orcamento;
     }
-    
+
     public void setOrcamento(Orcamento orcamento) {
         this.orcamento = orcamento;
     }
-    
+
     public Manutencao getManutencao() {
         return manutencao;
     }
-    
+
     public void setManutencao(Manutencao manutencao) {
         this.manutencao = manutencao;
     }
-    
+
 }

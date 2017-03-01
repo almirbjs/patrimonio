@@ -15,33 +15,30 @@ public class RequisicaoDao {
     Session sessao = HibernateUtil.getSessionFactory().openSession();
     Transaction transacao = null;
 
-   
+    public void salvar(Requisicao requisicao, List<ItemInsumo> itensInsumo) {
 
-      public void salvar(Requisicao requisicao, List<ItemInsumo> itensInsumo){
-		
+        try {
+            transacao = sessao.beginTransaction();
 
-		try {
-			transacao = sessao.beginTransaction();
-		
-			sessao.save(requisicao);
-			
-			for(int posicao = 0; posicao < itensInsumo.size(); posicao++){
-				ItemInsumo itemInsumo = itensInsumo.get(posicao);
-				itemInsumo.setRequisicao(requisicao);
-				
-				sessao.save(itemInsumo);
-			}
-			
-			transacao.commit();
-		} catch (RuntimeException erro) {
-			if (transacao != null) {
-				transacao.rollback();
-			}
-			throw erro;
-		} finally {
-			sessao.close();
-		}
-	}
+            sessao.save(requisicao);
+
+            for (int posicao = 0; posicao < itensInsumo.size(); posicao++) {
+                ItemInsumo itemInsumo = itensInsumo.get(posicao);
+                itemInsumo.setRequisicao(requisicao);
+
+                sessao.save(itemInsumo);
+            }
+
+            transacao.commit();
+        } catch (RuntimeException erro) {
+            if (transacao != null) {
+                transacao.rollback();
+            }
+            throw erro;
+        } finally {
+            sessao.close();
+        }
+    }
 
     public Requisicao BuscaPorCodigo(int codigo) {
         Session sessao = HibernateUtil.getSessionFactory().openSession();

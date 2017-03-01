@@ -15,7 +15,6 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
-
 //ele vai estar por tras de uma interface grafica
 // tipos de escopo request:(mais leve) a cada click ele e gerado (instanciado); 
 //viewscope(� recomendado pelo prime faces):so existe enquanto a tela estiver aberta ex.: tela do fabricante aberta.
@@ -29,8 +28,7 @@ public class Relatorio {
     // variavel que guarda o resultado de consulta (variavel de tela)
 
     ArrayList<Relatorio> itens;
-    Relatorio relatorio=new Relatorio();
-    
+    Relatorio relatorio = new Relatorio();
 
     public ArrayList<Relatorio> getItens() {
         return itens;
@@ -47,7 +45,5 @@ public class Relatorio {
     public void setRelatorio(Relatorio relatorio) {
         this.relatorio = relatorio;
     }
-    
-    
-    
+
 }

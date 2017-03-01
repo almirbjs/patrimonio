@@ -1,43 +1,30 @@
 package br.com.patrimonio.bean;
 
 import java.util.ArrayList;
-
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-
-
 import br.com.patrimonio.dao.UnidadeDao;
-
 import br.com.patrimonio.domain.Unidade;
 import br.com.patrimonio.util.JSFUtil;
 
-//ele vai estar por tras de uma interface grafica
-// tipos de escopo request:(mais leve) a cada click ele e gerado (instanciado); 
-//viewscope(� recomendado pelo prime faces):so existe enquanto a tela estiver aberta ex.: tela do fabricante aberta.
-//SessionScope : Ele � criando quando o servidor for iniciado e finalizado quando o servidor e desligado.
-@ManagedBean(name = "MBUnidade") // Nome do meu managedBean ele � usado para
-// procurar o xhtml.
-// Se der esse erro no console :java.lang.IllegalStateException: Cannot create a
-// session after the response has been committed baixe o cdi-api-1.0.jar
+@ManagedBean(name = "MBUnidade")
+
 @ViewScoped
+
 public class UnidadeBean {
-    // variavel que guarda o resultado de consulta (variavel de tela)
 
     ArrayList<Unidade> itens;
-    ArrayList<Unidade> itensFiltrados;// Vai armazenar os itens
-    // filtrados
+    ArrayList<Unidade> itensFiltrados;
 
     UnidadeDao dao = new UnidadeDao();
     Unidade unidade = new Unidade();
 
-    // @PostConstruct :esse metodo vai ser desenhado antes da pagina ser
-    // desenhada
     @PostConstruct
     public void prepararPesquisa() {
         try {
-            UnidadeDao dao = new UnidadeDao();
-            itens = dao.listar();
+            UnidadeDao unidadeDao = new UnidadeDao();
+            itens = unidadeDao.listar();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -46,7 +33,7 @@ public class UnidadeBean {
     }
 
     public void prepararSalvar() {
-        // metodo criado para resolver o problema do objeto= null
+
         try {
             unidade = new Unidade();
 
@@ -65,8 +52,6 @@ public class UnidadeBean {
             itens = dao.listar();
             JSFUtil.adicionaMensagemSucesso("Salvo com sucesso!");
 
-            // Quando salvar um novo objeto ele vai atualizar a minha tabela
-            // automaticamente
         } catch (Exception e) {
             e.printStackTrace();
             JSFUtil.adicionaMensagemErro(e.getMessage());
@@ -75,9 +60,8 @@ public class UnidadeBean {
     }
 
     public void prepararEditar() {
- 
+
         try {
-           
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -152,5 +136,5 @@ public class UnidadeBean {
     public void setUnidade(Unidade unidade) {
         this.unidade = unidade;
     }
-    
+
 }

@@ -157,7 +157,7 @@
                         </h:panelGroup>                        
 
                     </h:panelGrid>
-                    
+
                     <p:outputLabel value="Documento Fiscal:" rendered="#{MBDocumentoFiscal.documentoFiscal.tipoDocFiscal !='Danfe'}"  />
                     <h:form enctype="multipart/form-data"  >
                         <p:fileUpload fileUploadListener="#{MBDocumentoFiscal.UploadFileDocumento}"  id="fileUpload"
@@ -266,14 +266,14 @@
                             <p:inputText id="fornecedor" value="#{MBDocumentoFiscal.documentoFiscal.fornecedor.razaoSocialNome}"
                                          readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"
                                          required="true" requiredMessage="Selecione o Fornecedor!" />
-                           
+
                         </h:panelGroup>                        
 
 
                     </h:panelGrid>
-                    
-                    
-                    
+
+
+
 
                 </h:panelGrid>
 
@@ -391,7 +391,7 @@
 
             </h:form>
         </p:dialog>
-        
- 
+
+
     </ui:define>    
 </ui:composition>

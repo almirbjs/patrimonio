@@ -37,11 +37,11 @@ public class Requisicao implements Serializable {
     @JoinColumn(nullable = false)
     @ManyToOne(fetch = FetchType.EAGER)
     Insumo insumo = new Insumo();
-    
+
     @JoinColumn(nullable = false)
     @ManyToOne(fetch = FetchType.EAGER)
     Fornecedor fornecedor = new Fornecedor();
-    
+
     @JoinColumn(nullable = false)
     @ManyToOne(fetch = FetchType.EAGER)
     Setor setor = new Setor();

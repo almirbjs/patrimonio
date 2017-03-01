@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(name = "ItemMarca.listar", query = "SELECT p FROM ItemMarca p")
     ,
-    @NamedQuery(name = "ItemMarca.buscarPorCodigo", query = "SELECT p FROM ItemMarca p WHERE p.codigo = :codigo")})
+    @NamedQuery(name = "ItemMarca.buscarPorCodigoInsumo", query = "  SELECT i FROM ItemMarca i WHERE i.insumo= :codigo")})
 @Entity
 @Table(name = "itemmarca")
 @SuppressWarnings("serial")

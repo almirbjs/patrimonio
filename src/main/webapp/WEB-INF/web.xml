@@ -5,7 +5,7 @@
         <param-value>Development</param-value>
     </context-param>
     
-    <!-- pagina principal da aplicação -->
+    <!-- Pagina principal da aplicação -->
     <welcome-file-list>
         <welcome-file>faces/includes/Principal.xhtml</welcome-file>
 				
@@ -43,7 +43,4 @@
         <param-value>true</param-value>  
     </context-param>  
 
-  
-
-    
-</web-app>
+  </web-app>

@@ -102,7 +102,7 @@
                     <p:outputLabel value="Fornecedores"/>
 
                     <p:commandButton icon="fa fa-plus-square"  onclick="PF('dlgItemFornecedor').show();"
-                                         process="@this" update=":formTabela:tabela">
+                                     process="@this" update=":formTabela:tabela">
 
                     </p:commandButton>
 
@@ -234,7 +234,7 @@
 
             <h:panelGrid columns="2" id="painelFornecedor">
 
-   <p:panel header="Fornecedores">
+                <p:panel header="Fornecedores">
 
                     <p:dataTable id="tabelaFornecedor" emptyMessage="Nenhum registro encontrado." paginator="true" 
                                  widgetVar="tabelaFornecedor" value="#{MBMarca.itens}" var="item"
@@ -269,48 +269,48 @@
                     </p:dataTable>
                 </p:panel>
             </h:panelGrid>
-            </h:form>
-            <h:form id="formItemFornecedor">
-                <p:panel header="Fornecedores vinculados ao insumo"  >
+        </h:form>
+        <h:form id="formItemFornecedor">
+            <p:panel header="Fornecedores vinculados ao insumo"  >
 
-                    <p:dataTable id="tabelaItemFornecedor" emptyMessage="Nenhum registro encontrado."     scrollable="true" scrollHeight="150"
-                                 widgetVar="tabelaItemFornecedor" value="#{MBItemMarca.itens}" var="item"
+                <p:dataTable id="tabelaItemFornecedor" emptyMessage="Nenhum registro encontrado."     scrollable="true" scrollHeight="150"
+                             widgetVar="tabelaItemFornecedor" value="#{MBItemMarca.itens}" var="item"
 
-                                 filteredValue="#{MBItemMarca.itensFiltrados}">
-                        <!-- rows="10"  me diz que o meu paginador deve ter 10 linhas-->
-
-
-                        <p:column headerText="Codigo" sortBy="#{item.codigo}" style="width: 70px; text-align: center"
-                                  filterStyle="max-width: 60px; min-width: 60px;" >
-                            <h:outputText value="#{item.codigo}" />
-                        </p:column>
-                        <p:column headerText="Marca" sortBy="#{item.marca.marca}" style="width: 300px;">
-
-                            <h:outputText value="#{item.marca.marca}" />
-                        </p:column>
-
-                        <p:column headerText="Ações">
+                             filteredValue="#{MBItemMarca.itensFiltrados}">
+                    <!-- rows="10"  me diz que o meu paginador deve ter 10 linhas-->
 
 
-                            <p:commandButton icon="ui-icon-minus" actionListener="#{MBItemMarca.removeItemMarca}" update="formItemFornecedor:tabelaItemFornecedor"
+                    <p:column headerText="Codigo" sortBy="#{item.codigo}" style="width: 70px; text-align: center"
+                              filterStyle="max-width: 60px; min-width: 60px;" >
+                        <h:outputText value="#{item.codigo}" />
+                    </p:column>
+                    <p:column headerText="Marca" sortBy="#{item.marca.marca}" style="width: 300px;">
 
-                                             >
-                                <f:attribute name="ItemFornecedorSelecionado" value="#{item}"/>
+                        <h:outputText value="#{item.marca.marca}" />
+                    </p:column>
 
-                            </p:commandButton>
+                    <p:column headerText="Ações">
 
-                        </p:column>
 
-                    </p:dataTable>
+                        <p:commandButton icon="ui-icon-minus" actionListener="#{MBItemMarca.removeItemMarca}" update="formItemFornecedor:tabelaItemFornecedor"
 
-                    <h:panelGrid columns="4">
-                        <p:commandButton value="Sair"
-                                         onclick="PF('dlgItemFornecedor').hide();" />
+                                         >
+                            <f:attribute name="ItemFornecedorSelecionado" value="#{item}"/>
 
-                    </h:panelGrid>
-                </p:panel>
-            </h:form>
-        </p:dialog>
+                        </p:commandButton>
+
+                    </p:column>
+
+                </p:dataTable>
+
+                <h:panelGrid columns="4">
+                    <p:commandButton value="Sair"
+                                     onclick="PF('dlgItemFornecedor').hide();" />
+
+                </h:panelGrid>
+            </p:panel>
+        </h:form>
+    </p:dialog>
 
 
 </ui:composition>

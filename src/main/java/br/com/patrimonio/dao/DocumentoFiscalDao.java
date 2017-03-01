@@ -20,8 +20,6 @@ public class DocumentoFiscalDao {
     public DocumentoFiscal salvar(DocumentoFiscal u) {
         try {
 
-            
-           
             // beginTransaction(): inicia a transa��o.
             transacao = sessao.beginTransaction();
             // save: Salva a operação.
@@ -105,7 +103,7 @@ public class DocumentoFiscalDao {
     }
 
     public void alterar(DocumentoFiscal u) {
-       
+
     }
 
     // Lista de entidades
