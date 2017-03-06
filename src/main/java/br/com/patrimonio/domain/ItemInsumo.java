@@ -30,10 +30,17 @@ public class ItemInsumo implements Serializable {
     @JoinColumn(nullable = false)
     @ManyToOne(fetch = FetchType.EAGER)
     Insumo insumo = new Insumo();
+    
+    @JoinColumn(nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    ItemMarca itemMarca=new ItemMarca();
+    
 
+    /*Eliminar Requisicao */
     @JoinColumn(nullable = false)
     @ManyToOne(fetch = FetchType.EAGER)
     Requisicao requisicao = new Requisicao();
+    
 
     public Integer getCodigo() {
         return codigo;
@@ -53,7 +60,7 @@ public class ItemInsumo implements Serializable {
 
     public Requisicao getRequisicao() {
         return requisicao;
-    }
+   }
 
     public void setRequisicao(Requisicao requisicao) {
         this.requisicao = requisicao;

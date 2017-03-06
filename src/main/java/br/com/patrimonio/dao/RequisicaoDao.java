@@ -24,7 +24,7 @@ public class RequisicaoDao {
 
             for (int posicao = 0; posicao < itensInsumo.size(); posicao++) {
                 ItemInsumo itemInsumo = itensInsumo.get(posicao);
-                itemInsumo.setRequisicao(requisicao);
+                /*.setRequisicao(requisicao);*/
 
                 sessao.save(itemInsumo);
             }

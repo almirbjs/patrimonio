@@ -52,7 +52,7 @@ public class InsumoBean {
             listaUnidade = unidadeDao.listar();
 
         } catch (Exception ex) {
-            ex.printStackTrace();
+            
             JSFUtil.adicionaMensagemErro(ex.getMessage());
         }
 
@@ -71,7 +71,7 @@ public class InsumoBean {
             JSFUtil.adicionaMensagemSucesso("Salvo com sucesso!");
 
         } catch (Exception e) {
-            e.printStackTrace();
+            
             JSFUtil.adicionaMensagemErro(e.getMessage());
         }
 
@@ -90,9 +90,7 @@ public class InsumoBean {
             listaUnidade = unidadeDao.listar();
 
         } catch (Exception ex) {
-            
-            ex.printStackTrace();
-            
+                       
             JSFUtil.adicionaMensagemErro(ex.getMessage());
             
         }
@@ -112,8 +110,9 @@ public class InsumoBean {
             // Quando salvar um novo objeto ele vai atualizar a minha tabela
             // automaticamente
         } catch (Exception e) {
-            e.printStackTrace();
+
             JSFUtil.adicionaMensagemErro(e.getMessage());
+            
         }
 
     }
@@ -122,10 +121,10 @@ public class InsumoBean {
 
         try {
 
-            InsumoDao dao = new InsumoDao();
+            InsumoDao insumoDao = new InsumoDao();
 
-            dao.excluir(insumo);
-            itens = dao.listar();
+            insumoDao.excluir(insumo);
+            itens = insumoDao.listar();
 
             JSFUtil.adicionaMensagemSucesso("Excluido com Sucesso.");
 

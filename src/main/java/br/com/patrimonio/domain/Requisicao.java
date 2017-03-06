@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
+
 
 @NamedQueries({
     @NamedQuery(name = "Requisicao.listar", query = "SELECT c FROM Requisicao c")
@@ -65,18 +65,22 @@ public class Requisicao implements Serializable {
         this.situacao = situacao;
     }
 
+    @SuppressWarnings("ReturnOfDateField")
     public Date getDataEmissao() {
         return dataEmissao;
     }
 
+    @SuppressWarnings("AssignmentToDateFieldFromParameter")
     public void setDataEmissao(Date dataEmissao) {
         this.dataEmissao = dataEmissao;
     }
 
+    @SuppressWarnings("ReturnOfDateField")
     public Date getDataComfirmacao() {
         return dataComfirmacao;
     }
 
+    @SuppressWarnings("AssignmentToDateFieldFromParameter")
     public void setDataComfirmacao(Date dataComfirmacao) {
         this.dataComfirmacao = dataComfirmacao;
     }

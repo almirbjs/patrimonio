@@ -133,7 +133,7 @@ public class FornecedorDao {
     @SuppressWarnings("unchecked")
     public ArrayList<Fornecedor> listar() {
 
-        Session sessao = HibernateUtil.getSessionFactory().openSession();
+        sessao = HibernateUtil.getSessionFactory().openSession();
 
         // iniciamos a lista nula porque n�o tenhos entidades ainda listada
         ArrayList<Fornecedor> Fornecedor = null;

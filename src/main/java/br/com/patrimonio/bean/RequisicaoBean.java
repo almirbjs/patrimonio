@@ -177,7 +177,7 @@ public class RequisicaoBean {
         if (achou < 0) {
 
             itemInsumo.setInsumo(insumo);
-            itemInsumo.setRequisicao(requisicao);
+            /* itemInsumo.setRequisicao(requisicao);*/
             itensInsumo.add(itemInsumo);
 
             itemInsumo = new ItemInsumo();

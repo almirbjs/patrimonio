@@ -366,11 +366,20 @@
                 <h:panelGrid columns="2" id="painelItensInsumo">
 
 
-                    <p:dataTable id="tabelaItemInsumo" emptyMessage="Nenhum registro encontrado."  rowKey="#{item.codigo}" selectionMode="single" selection="#{item}"
-                                 widgetVar="tabelaItemInsumo" value="#{MBInsumo.itens}"  filteredValue="#{MBInsumo.itensFiltrados}"
-                                 var="item"  rows="10" 
+                    <p:dataTable id="tabelaItemInsumo" 
+                                 emptyMessage="Nenhum registro encontrado."  
+                                 rowKey="#{item.codigo}" 
+                                 selectionMode="single"
+                                 selection="#{item}"
+                                 widgetVar="tabelaItemInsumo" 
+                                 value="#{MBInsumo.itens}" 
+                                 filteredValue="#{MBInsumo.itensFiltrados}"
+                                 var="item" 
+                                 rows="10" 
                                  >
-                        <p:ajax event="rowSelect" listener="#{MBRequisicao.insumoSelecionado}" update=":formInsumo:insumo"  onsuccess="PF('dlgItensInsumo').hide()"
+                        <p:ajax event="rowSelect" listener="#{MBRequisicao.insumoSelecionado}" 
+                                update=":formInsumo:insumo"  
+                                onsuccess="PF('dlgItensInsumo').hide()"
                                 />
 
 

@@ -17,11 +17,13 @@
 
         <h:form id="formTabela">
 
-
-
-            <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
-                         widgetVar="tabela" value="#{MBInsumo.itens}" var="item"
-                         paginator="true" rows="10"
+            <p:dataTable id="tabela" 
+                         emptyMessage="Nenhum registro encontrado."
+                         widgetVar="tabela" 
+                         value="#{MBInsumo.itens}" 
+                         var="item"
+                         paginator="true" 
+                         rows="10"
                          filteredValue="#{MBInsumo.itensFiltrados}">
 
 
@@ -29,14 +31,18 @@
                     Insumos
                 </f:facet>
 
-                <p:column headerText="Codigo" sortBy="#{item.codigo}" style="text-align: center"  filterStyle="max-width: 60px; min-width: 60px;"
+                <p:column headerText="Codigo" 
+                          sortBy="#{item.codigo}" 
+                          style="text-align: center"  
+                          filterStyle="max-width: 60px; min-width: 60px;"
                           filterBy="#{item.codigo}">
 
                     <h:outputText value="#{item.codigo}" />
 
                 </p:column>
 
-                <p:column headerText="Produto" sortBy="#{item.insumo}" 
+                <p:column headerText="Produto" 
+                          sortBy="#{item.insumo}" 
                           filterBy="#{item.insumo}">
 
                     <h:outputText value="#{item.insumo}" />
@@ -50,20 +56,23 @@
                 </p:column>
 
                 <p:column headerText="Grupo"
-
-                          sortBy="#{item.grupo.grupo}" filterBy="#{item.grupo}" style="text-align: center">
+                          sortBy="#{item.grupo.grupo}"
+                          filterBy="#{item.grupo.grupo}"
+                          style="text-align: center">
 
                     <h:outputText value="#{item.grupo.grupo}" />
-                </p:column>
 
+                </p:column>
 
                 <p:column headerText="Opções">
 
 
                     <p:commandButton icon="ui-icon-pencil"
                                      oncomplete="PF('dlgEditar').show();"
-                                     actionListener="#{MBInsumo.prepararEditar() }"
-                                     update=":formEditar:painelEditar :msgGlobal" title="Editar">
+                                     actionListener="#{MBInsumo.prepararEditar()}"
+                                     update=":formEditar:painelEditar :msgGlobal" 
+                                     title="Editar">
+
                         <f:setPropertyActionListener value="#{item}"
                                                      target="#{MBInsumo.insumo}" />
 
@@ -71,61 +80,87 @@
 
                     <p:commandButton icon="ui-icon-trash"
                                      oncomplete="PF('dlgExcluir').show();"
-                                     update=":formExcluir:painelExcluir :msgGlobal" title="Excluir">
+                                     update=":formExcluir:painelExcluir :msgGlobal"
+                                     title="Excluir">
+
                         <f:setPropertyActionListener value="#{item}"
                                                      target="#{MBInsumo.insumo}" />
+
                     </p:commandButton>
 
                 </p:column>
 
 
                 <f:facet name="footer">
-                    <p:commandButton value="Novo" oncomplete="PF('dlgNovo').show()"
+
+                    <p:commandButton value="Novo" 
+                                     oncomplete="PF('dlgNovo').show()"
                                      actionListener="#{MBInsumo.prepararSalvar}"
                                      update=":formDlgNovo:painelDlgNovo" />
+
                 </f:facet>
 
             </p:dataTable>
+            
         </h:form>
 
-
-        <p:dialog widgetVar="dlgNovo" closable="false" draggable="false"
-                  resizable="false" appendTo="@(body)" header="CADASTRO DE INSUMOS"
+        <p:dialog widgetVar="dlgNovo" 
+                  closable="false" 
+                  draggable="false"
+                  resizable="false" 
+                  appendTo="@(body)" 
+                  header="CADASTRO DE INSUMOS"
                   modal="true">
-            <!-- header="" nomea o dialogo
 
-            modal="true" appendTo="@(body)" : desabilita todo campo atras do dialogo-->
             <h:form id="formDlgNovo">
+                
                 <h:panelGrid columns="2" id="painelDlgNovo">
 
                     <p:outputLabel value="Insumo:" />
-                    <p:inputText id="txtInsumo" size="45" maxlength="45"
-                                 value="#{MBInsumo.insumo.insumo}" required="true" onblur="value = value.toUpperCase()"
+
+                    <p:inputText id="txtInsumo" 
+                                 size="45" 
+                                 maxlength="45"
+                                 value="#{MBInsumo.insumo.insumo}" 
+                                 required="true" 
+                                 onblur="value = value.toUpperCase()"
                                  requiredMessage="Informe o nome de insumo!" />
 
                     <p:outputLabel value="Unidade:" />
 
-                    <p:selectOneMenu id="oneMenuUnidade" filter="true"
+                    <p:selectOneMenu id="oneMenuUnidade" 
+                                     filter="true"
                                      value="#{MBInsumo.insumo.unidade.codigo}"
-                                     required="true" requiredMessage="Selecione a Unidade.">
-                        <f:selectItem itemValue="" itemLabel="Selecione a Unidade"
+                                     required="true" 
+                                     requiredMessage="Selecione a Unidade.">
+
+                        <f:selectItem itemValue="" 
+                                      itemLabel="Selecione a Unidade"
                                       noSelectionOption="true" />
-                        <f:selectItems value="#{MBInsumo.listaUnidade}" var="item"
-                                       itemValue="#{item.codigo}" itemLabel="#{item.unidade}" />
+
+                        <f:selectItems value="#{MBInsumo.listaUnidade}" 
+                                       var="item"
+                                       itemValue="#{item.codigo}" 
+                                       itemLabel="#{item.unidade}" />
 
                     </p:selectOneMenu>
 
-
-
                     <p:outputLabel value="Grupo:" />
 
-                    <p:selectOneMenu id="oneMenuGrupo" filter="true"
+                    <p:selectOneMenu id="oneMenuGrupo" 
+                                     filter="true"
                                      value="#{MBInsumo.insumo.grupo.codigo}"
-                                     required="true" requiredMessage="Selecione o Grupo.">
-                        <f:selectItem itemValue="" itemLabel="Selecione o Grupo"
+                                     required="true" 
+                                     requiredMessage="Selecione o Grupo.">
+
+                        <f:selectItem itemValue="" 
+                                      itemLabel="Selecione o Grupo"
                                       noSelectionOption="true" />
-                        <f:selectItems value="#{MBInsumo.listaGrupo}" var="item"
-                                       itemValue="#{item.codigo}" itemLabel="#{item.grupo}" />
+
+                        <f:selectItems value="#{MBInsumo.listaGrupo}" 
+                                       var="item"
+                                       itemValue="#{item.codigo}" 
+                                       itemLabel="#{item.grupo}" />
 
                     </p:selectOneMenu>
 
@@ -136,63 +171,86 @@
                     <p:commandButton value="Gravar"
                                      actionListener="#{MBInsumo.salvar}"
                                      oncomplete="verificar(xhr, status, args, 'dlgNovo','tabela');"
-                                      update=":formTabela:tabela :msgGlobal"
+                                     update=":formTabela:tabela :msgGlobal"
                                      >
 
                     </p:commandButton>
 
-                    <p:commandButton value="Cancelar" onclick="PF('dlgNovo').hide();"
+                    <p:commandButton value="Cancelar" 
+                                     onclick="PF('dlgNovo').hide();"
                                      process="@this">
+
                         <p:resetInput target="painelDlgNovo" />
+
                     </p:commandButton>
-                    <!-- process=@this : submete um formulario -->
+
                 </h:panelGrid>
             </h:form>
         </p:dialog>
 
 
-
-        <p:dialog widgetVar="dlgEditar" closable="false" draggable="false"
-                  resizable="false" appendTo="@(body)" header="Editar Insumo"
+        <p:dialog widgetVar="dlgEditar" 
+                  closable="false" 
+                  draggable="false"
+                  resizable="false" 
+                  appendTo="@(body)" 
+                  header="Editar Insumo"
                   modal="true">
-            <!-- header="" nomea o dialogo
 
-            modal="true" appendTo="@(body)" : desabilita todo campo atras do dialogo-->
             <h:form id="formEditar">
+
                 <h:panelGrid columns="2" id="painelEditar">
+
                     <p:outputLabel value="Insumo:" />
-                    <p:inputText id="txtInsumo" size="45" maxlength="45"
-                                 value="#{MBInsumo.insumo.insumo}" required="true" onblur="value = value.toUpperCase()"
+
+                    <p:inputText id="txtInsumo" 
+                                 size="45" 
+                                 maxlength="45"
+                                 value="#{MBInsumo.insumo.insumo}" 
+                                 required="true"
+                                 onblur="value = value.toUpperCase()"
                                  requiredMessage="Informe o nome de insumo!" />
 
                     <p:outputLabel value="Unidade:" />
 
-                    <p:selectOneMenu id="oneMenuUnidade" filter="true"
+                    <p:selectOneMenu id="oneMenuUnidade" 
+                                     filter="true"
                                      value="#{MBInsumo.insumo.unidade.codigo}"
-                                     required="true" requiredMessage="Selecione a Unidade.">
-                        <f:selectItem itemValue="" itemLabel="Selecione a Unidade"
+                                     required="true" 
+                                     requiredMessage="Selecione a Unidade.">
+
+                        <f:selectItem itemValue="" 
+                                      itemLabel="Selecione a Unidade"
                                       noSelectionOption="true" />
-                        <f:selectItems value="#{MBInsumo.listaUnidade}" var="item"
-                                       itemValue="#{item.codigo}" itemLabel="#{item.unidade}" />
+
+                        <f:selectItems value="#{MBInsumo.listaUnidade}" 
+                                       var="item"
+                                       itemValue="#{item.codigo}" 
+                                       itemLabel="#{item.unidade.unidade}" />
 
                     </p:selectOneMenu>
-
 
 
                     <p:outputLabel value="Grupo:" />
 
-                    <p:selectOneMenu id="oneMenuGrupo" filter="true"
+                    <p:selectOneMenu id="oneMenuGrupo" 
+                                     filter="true"
                                      value="#{MBInsumo.insumo.grupo.codigo}"
-                                     required="true" requiredMessage="Selecione o Grupo.">
-                        <f:selectItem itemValue="" itemLabel="Selecione o Grupo"
+                                     required="true" 
+                                     requiredMessage="Selecione o Grupo.">
+
+                        <f:selectItem itemValue="" 
+                                      itemLabel="Selecione o Grupo"
                                       noSelectionOption="true" />
-                        <f:selectItems value="#{MBInsumo.listaGrupo}" var="item"
-                                       itemValue="#{item.codigo}" itemLabel="#{item.grupo}" />
+
+                        <f:selectItems value="#{MBInsumo.listaGrupo}" 
+                                       var="item"
+                                       itemValue="#{item.codigo}" 
+                                       itemLabel="#{item.grupo}" />
 
                     </p:selectOneMenu>
 
                 </h:panelGrid>
-
 
                 <h:panelGrid columns="2">
 
@@ -200,45 +258,57 @@
                                      actionListener="#{MBInsumo.editar}"
                                      oncomplete="verificar(xhr, status, args, 'dlgEditar','tabela');"
                                      update=":formTabela:tabela :msgGlobal" />
-                    <p:commandButton value="Cancelar" onclick="PF('dlgEditar').hide();"
+
+                    <p:commandButton value="Cancelar" 
+                                     onclick="PF('dlgEditar').hide();"
                                      process="@this">
+
                         <p:resetInput target="painelEditar" />
+
                     </p:commandButton>
-                    <!-- process=@this : submete um formulario -->
+
                 </h:panelGrid>
+                
             </h:form>
+            
         </p:dialog>
 
-        <p:dialog widgetVar="dlgExcluir" closable="false" draggable="false"
-                  resizable="false" modal="true" appendTo="@(body)"
+        <p:dialog widgetVar="dlgExcluir" closable="false" 
+                  draggable="false"
+                  resizable="false" 
+                  modal="true" 
+                  appendTo="@(body)"
                   header="Excluir Produto">
 
             <h:form id="formExcluir">
-                <h:panelGrid columns="2" id="painelExcluir">
+
+                <h:panelGrid columns="2" 
+                             id="painelExcluir">
+
                     <p:outputLabel value="Codigo: " />
                     <p:outputLabel value="#{MBInsumo.insumo.codigo}" />
                     <p:outputLabel value="Insumo: " />
                     <p:outputLabel value="#{MBInsumo.insumo.insumo}" />
                     <p:outputLabel value="Grupo: " />
                     <p:outputLabel value="#{MBInsumo.insumo.grupo.grupo}" />
-                    
 
                 </h:panelGrid>
+
                 <h:panelGrid columns="3">
+
                     <p:commandButton value="Excluir"
                                      actionListener="#{MBInsumo.excluir}"
                                      oncomplete="verificar(xhr, status, args, 'dlgExcluir', 'tabela');"
                                      update=":formTabela:tabela :msgGlobal" />
-                    <!-- Atualiza tabela -->
+
                     <p:commandButton value="Cancelar"
                                      onclick="PF('dlgExcluir').hide();" />
+
                 </h:panelGrid>
 
             </h:form>
 
         </p:dialog>
-
-
 
     </ui:define>
 

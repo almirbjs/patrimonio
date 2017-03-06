@@ -1,7 +1,6 @@
 package br.com.patrimonio.dao;
 
 import java.util.ArrayList;
-
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -44,7 +43,7 @@ public class CategoriaDao {
     }
 
     public Categoria BuscaPorCodigo(int codigo) {
-        Session sessao = HibernateUtil.getSessionFactory().openSession();
+        sessao = HibernateUtil.getSessionFactory().openSession();
 
         Categoria c = null;
         try {
@@ -133,7 +132,7 @@ public class CategoriaDao {
     @SuppressWarnings("unchecked")
     public ArrayList<Categoria> listar() {
 
-        Session sessao = HibernateUtil.getSessionFactory().openSession();
+        sessao = HibernateUtil.getSessionFactory().openSession();
 
         // iniciamos a lista nula porque n�o tenhos entidades ainda listada
         ArrayList<Categoria> Categoria = null;

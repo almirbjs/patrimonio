@@ -8,114 +8,157 @@
                 template="/templates/modeloSistema.xhtml">
 
     <ui:define name="menu">
+
         <ui:include src="/includes/menuPrincipal.xhtml"></ui:include>
+
     </ui:define>
-    <!-- conteudo da aplicacação aqui vai as tabelas, dialog e entre outros -->
 
     <ui:define name="conteudo">
-        <h:form id="formTabela">
-            <!-- criando uma tabela -->
 
-            <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
-                         widgetVar="tabelaCategoria" value="#{MBCategoria.itens}" var="item"
-                         paginator="true" rows="10"
-                         filteredValue="#{MBCategoria.itensFiltrados}">
-                <!-- rows="10"  me diz que o meu paginador deve ter 10 linhas-->
+        <h:form id="formTabela">
+
+            <p:dataTable id="tabela" 
+                         emptyMessage="Nenhum registro encontrado."
+                         widgetVar="tabelaListaDeCompra" 
+                         value="#{MBListaDeCompra.itens}" 
+                         var="item"
+                         paginator="true" 
+                         rows="10"
+                         filteredValue="#{MBListaDeCompra.itensFiltrados}">
 
                 <f:facet name="header">
+
                     Lista de Compras Predefinida
+
                 </f:facet>
 
-                <p:column headerText="Codigo" sortBy="#{item.codigo}"
+                <p:column headerText="Codigo" 
+                          sortBy="#{item.codigo}"
                           filterBy="#{item.codigo}">
+
                     <h:outputText value="#{item.codigo}" />
+
                 </p:column>
 
                 <p:column headerText="Descrição">
 
-                </p:column>
-                <p:column headerText="Setor">
+                    <p:outputLabel value="#{item.descricao}"/> 
 
                 </p:column>
 
+                <p:column headerText="Setor"
+                          sortBy="#{item.setor.setor}"
+                          filterBy="#{item.setor.setor}">
 
-                                <!-- <f:setPropertyActionListener value="#{item}"
-                                                        target="#{MBCategoria.categoria}"></f:setPropertyActionListener> funciona como um prepara pesquisa para atualizar -->
+                    <p:outputLabel value="#{item.setor.setor}"/>
+
+                </p:column>
+
                 <p:column headerText="Opções">
-                    <p:commandButton icon="fa fa-print"  >
+
+                    <p:commandButton icon="fa fa-print"  
+                                     title="Imprimir sua lista de compra">
 
                     </p:commandButton>
 
 
                     <p:commandButton icon="ui-icon-pencil"
                                      oncomplete="PF('dlgEditar').show();"
-                                     actionListener="#{MBCategoria.prepararEditar}"
-                                     update=":formEditar:painelEditar :msgGlobal" title="Editar">
+                                     update=":formEditar:painelEditar :msgGlobal" 
+                                     title="Editar">
+
                         <f:setPropertyActionListener value="#{item}"
-                                                     target="#{MBCategoria.categoria}" />
+                                                     target="#{MBListaDeCompra.listaDeCompra}" />
 
                     </p:commandButton>
 
                     <p:commandButton icon="ui-icon-trash"
                                      oncomplete="PF('dlgExcluir').show();"
-                                     update=":formExcluir:painelExcluir :msgGlobal" title="Excluir">
+                                     update=":formExcluir:painelExcluir :msgGlobal" 
+                                     title="Excluir">
+
                         <f:setPropertyActionListener value="#{item}"
-                                                     target="#{MBCategoria.categoria}" />
+                                                     target="#{MBListaDeCompra.listaDeCompra}" />
+
                     </p:commandButton>
 
                 </p:column>
 
                 <!-- linha de baixo da tabela -->
                 <f:facet name="footer">
-                    <p:commandButton value="Novo" oncomplete="PF('dlgNovo').show()"
-                                     actionListener="#{MBCategoria.prepararSalvar}"
+
+                    <p:commandButton value="Novo" 
+                                     oncomplete="PF('dlgNovo').show()"
+                                     actionListener="#{MBListaDeCompra.prepararSalvar}"
                                      update=":formDlgNovo:painelDlgNovo" />
                 </f:facet>
 
             </p:dataTable>
+
         </h:form>
 
-        <p:dialog widgetVar="dlgNovo" closable="false" draggable="false" width="600"
-                  resizable="false" appendTo="@(body)" header=" INCLUIR ITENS Á SUA LISTA DE COMPRAS"
+        <p:dialog widgetVar="dlgNovo" 
+                  closable="false" 
+                  draggable="false" 
+                  width="600"
+                  resizable="false" 
+                  appendTo="@(body)" 
+                  header=" INCLUIR ITENS Á SUA LISTA DE COMPRAS"
                   modal="true">
-            <!-- header="" nomea o dialogo
-            
-            modal="true" appendTo="@(body)" : desabilita todo campo atras do dialogo-->
+
             <h:form id="formDlgNovo">
 
-                <h:panelGrid columns="2" id="painelDlgNovo">
+                <h:panelGrid columns="2" 
+                             id="painelDlgNovo">
 
                     <p:outputLabel value="Descrição:"/>
+
                     <p:inputText  onblur="value = value.toUpperCase()"/>
+
                     <p:outputLabel value="Setor"/>
 
-                    <p:selectOneMenu id="oneMenuSetor" filter="true"
-                                     value="#{MBRequisicao.requisicao.setor.codigo}" required="true"
-                                     requiredMessage="Selecione o setor solicitante.">
+                    <p:selectOneMenu id="oneMenuSetor" 
+                                     filter="true"
+                                     value="#{MBListaDeCompra.listaDeCompra.setor.codigo}" 
+                                     required="true"
+                                     requiredMessage="Selecione o setor!">
+
                         <f:selectItem itemValue="" itemLabel="Selecione o Setor"
                                       noSelectionOption="true" />
-                        <f:selectItems value="#{MBRequisicao.listaSetores}" var="item"
+
+                        <f:selectItems value="#{MBListaDeCompra.listaSetores}" var="item"
                                        itemValue="#{item.codigo}" itemLabel="#{item.setor}" />
 
                     </p:selectOneMenu>
 
-                    <p:outputLabel value="Fornecedores"/>
+                    <p:outputLabel value="Fornecedor:"/>
 
-                    <p:commandButton icon="fa fa-plus-square"  onclick="PF('dlgItemFornecedor').show();"
-                                     process="@this" update=":formTabela:tabela">
+                    <p:commandButton icon="fa fa-plus-square"  
+                                     oncomplete="PF('dlgFornecedor').show();"
+                                     actionListener="#{MBListaDeCompra.prepararSalvar}"
+                                     process="@this" 
+                                     update=":formFornecedor:tabelaFornecedor">
 
                     </p:commandButton>
 
                     <p:outputLabel value="Observação:"/>
-                    <p:inputText/>
+
+                    <p:inputText value="#{MBListaDeCompra.listaDeCompra.obs}"/>
 
                     <p:commandButton value="Adicionar"/>
+
                     <p:spacer width="2"/>
+
                 </h:panelGrid>
 
-                <p:dataTable id="tabelaItemInsumo" emptyMessage="Nenhum registro encontrado."  
-                             widgetVar="tabelaItemInsumo" value="#{MBRequisicao.itensInsumo}"  
-                             var="item"    scrollable="true" scrollHeight="150" rows="10"
+                <p:dataTable id="tabelaItemInsumo" 
+                             emptyMessage="Nenhum registro encontrado."  
+                             widgetVar="tabelaItemInsumo" 
+                             value="#{MBRequisicao.itensInsumo}"  
+                             var="item"    
+                             scrollable="true" 
+                             scrollHeight="150" 
+                             rows="10"
                              >
 
 
@@ -151,8 +194,10 @@
                                      actionListener="#{MBRequisicao.salvar}"
                                      oncomplete="verificar(xhr, status, args, 'dlgNovo', 'tabelaRequisicao');"
                                      update=":formTabela:tabela :msgGlobal" />
+
                     <p:commandButton value="Cancelar" onclick="PF('dlgNovo').hide();"
                                      process="@this">
+
                         <p:resetInput target="painelDlgNovo" />
                     </p:commandButton>
                     <!-- process=@this : submete um formulario -->
@@ -222,95 +267,127 @@
             </h:form>
         </p:dialog>
 
-    </ui:define>
+        <p:dialog widgetVar="dlgFornecedor"
+                  closable="false"
+                  draggable="false"
+                  modal="true"
+                  appendTo="@(body)"
+                  header="Fornecedor"
+                  resizable="false"
+                  width="700">
+
+            <h:form id="formFornecedor">
+
+                <p:panelGrid columns="2" 
+                             id="painelFornecedor">
 
 
+                    <p:dataTable id="tabelaFornecedor"
+                                 widgetVar="tabelaFornecedor"
+                                 emptyMessage="Nenhum registro encontrado."
+                                 value="#{MBListaDeCompra.listaFornecedores}"
+                                 var="fornecedor"
+                                 scrollable="true"
+                                 scrollHeight="150"
+                                 rows="10">
 
-    <p:dialog widgetVar="dlgItemFornecedor" closable="false" draggable="false" width="600"
-              resizable="false" appendTo="@(body)" header=" INCLUIR PARCEIROS Á SUA LISTA DE COMPRAS"
-              modal="true">
+                        <p:column headerText="Codigo" 
+                                  style="width: 30px; text-align: center"  
+                                  filterStyle="max-width: 40px; min-width: 40px;"
+                                  width="50"
+                                  filterBy="#{fornecedor.codigo}">
 
-        <h:form id="formFornecedor">
+                            <p:outputLabel value="#{fornecedor.codigo}"/> 
 
-            <h:panelGrid columns="2" id="painelFornecedor">
-
-                <p:panel header="Fornecedores">
-
-                    <p:dataTable id="tabelaFornecedor" emptyMessage="Nenhum registro encontrado." paginator="true" 
-                                 widgetVar="tabelaFornecedor" value="#{MBMarca.itens}" var="item"
-                                 rows="5"
-                                 filteredValue="#{MBMarca.itensFiltrados}">
-                        <!-- rows="10"  me diz que o meu paginador deve ter 10 linhas-->
-
-
-                        <p:column headerText="Codigo" sortBy="#{item.codigo}" style="width: 70px; text-align: center"  filterStyle="max-width: 60px; min-width: 60px;"
-                                  filterBy="#{item.codigo}">
-                            <h:outputText value="#{item.codigo}" />
                         </p:column>
-                        <p:column headerText="Marca" sortBy="#{item.marca}" style="width: 300px;"
-                                  filterBy="#{item.marca}">
-                            <h:outputText value="#{item.marca}" />
+
+                        <p:column headerText="Fornecedor"
+                                  filterBy="#{fornecedor.razaoSocialNome}">
+
+                            <p:outputLabel value="#{fornecedor.razaoSocialNome}"/> 
+
                         </p:column>
 
-                        <p:column headerText="Ações">
+                        <p:column headerText="CNPJ/CPF"
+                                  width="180">
 
-                            <p:commandButton icon="ui-icon-plus" actionListener="#{MBItemMarca.adicionarItemMarca}"
+                            <p:outputLabel value="#{fornecedor.cnpjCpf}"/>
 
-                                             update=":formItemFornecedor:tabelaItemFornecedor :msgGlobal">
+                        </p:column>
 
-                                <f:attribute name="fornecedorSelecionado" value="#{item}"/>
+                        <p:column headerText="Opções" width="50" >
 
-
+                            <p:commandButton icon="ui-icon-plus"
+                                             
+                                 actionListener="#{MBListaDeCompra.adicionaItemFornecedor}"
+                                 update=" :msgGlobal">
+                                
                             </p:commandButton>
 
+                            
+                          
+                        </p:column>
+
+                    </p:dataTable>
+
+                </p:panelGrid>
+
+                <p:panelGrid id="painelItemFornecedor"
+                             columns="2"
+                             >
+                    
+                    <h:form id="formItemFornecedor">
+                        
+                    <p:dataTable id="tabelaItem"
+                                 emptyMessage="Nenhum registro encontrado."
+                                 value="#{MBListaDeCompra.itensFornecedores}"
+                                 var="itemFornecedor"
+                                 rows="10"
+                                 widgetVar="tabelaItemFornecedor"
+                                 >
+
+                        <p:column headerText="Id">
+
+
+                        </p:column>
+
+                        <p:column headerText="Fornecedor">
+                            <p:outputLabel value="#{itemFornecedor.fornecedor.razaoSocialNome}"/>
+
+                        </p:column>
+
+                        <p:column headerText="CNPJ/CPF">
+
+
+                        </p:column>
+
+                        <p:column headerText="Opções">
+
+                            <p:commandButton icon="ui-icon- minus">
+
+                            </p:commandButton>
 
                         </p:column>
 
                     </p:dataTable>
-                </p:panel>
-            </h:panelGrid>
-        </h:form>
-        <h:form id="formItemFornecedor">
-            <p:panel header="Fornecedores vinculados ao insumo"  >
+                    </h:form>
+                </p:panelGrid>
 
-                <p:dataTable id="tabelaItemFornecedor" emptyMessage="Nenhum registro encontrado."     scrollable="true" scrollHeight="150"
-                             widgetVar="tabelaItemFornecedor" value="#{MBItemMarca.itens}" var="item"
+                <p:panelGrid columns="2">
 
-                             filteredValue="#{MBItemMarca.itensFiltrados}">
-                    <!-- rows="10"  me diz que o meu paginador deve ter 10 linhas-->
+                    <p:commandButton  value="Cancelar"  onclick="PF('dlgFornecedor').hide();"
+                                      process="@this">
+                        <p:resetInput target="painelFornecedor" /> 
+                    </p:commandButton>
 
+                </p:panelGrid>
 
-                    <p:column headerText="Codigo" sortBy="#{item.codigo}" style="width: 70px; text-align: center"
-                              filterStyle="max-width: 60px; min-width: 60px;" >
-                        <h:outputText value="#{item.codigo}" />
-                    </p:column>
-                    <p:column headerText="Marca" sortBy="#{item.marca.marca}" style="width: 300px;">
+            </h:form>
 
-                        <h:outputText value="#{item.marca.marca}" />
-                    </p:column>
-
-                    <p:column headerText="Ações">
+        </p:dialog>
 
 
-                        <p:commandButton icon="ui-icon-minus" actionListener="#{MBItemMarca.removeItemMarca}" update="formItemFornecedor:tabelaItemFornecedor"
 
-                                         >
-                            <f:attribute name="ItemFornecedorSelecionado" value="#{item}"/>
-
-                        </p:commandButton>
-
-                    </p:column>
-
-                </p:dataTable>
-
-                <h:panelGrid columns="4">
-                    <p:commandButton value="Sair"
-                                     onclick="PF('dlgItemFornecedor').hide();" />
-
-                </h:panelGrid>
-            </p:panel>
-        </h:form>
-    </p:dialog>
-
+    </ui:define>
 
 </ui:composition>
