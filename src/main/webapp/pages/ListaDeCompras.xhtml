@@ -28,7 +28,7 @@
 
                 <f:facet name="header">
 
-                    Lista de Compras Predefinida
+                    Lista de Compras
 
                 </f:facet>
 
@@ -145,7 +145,14 @@
 
                     <p:inputText value="#{MBListaDeCompra.listaDeCompra.obs}"/>
 
-                    <p:commandButton value="Adicionar"/>
+                    <p:commandButton value="Adicionar"
+                                     oncomplete="PF('dlgAdicionar').show();"
+                                     actionListener="#{MBListaDeCompra.prepararSalvar}"
+                                     process="@this">
+
+                    </p:commandButton>
+
+
 
                     <p:spacer width="2"/>
 
@@ -154,30 +161,31 @@
                 <p:dataTable id="tabelaItemInsumo" 
                              emptyMessage="Nenhum registro encontrado."  
                              widgetVar="tabelaItemInsumo" 
-                             value="#{MBRequisicao.itensInsumo}"  
+                             value="#{MBListaDeCompra.itensInsumos}"  
                              var="item"    
                              scrollable="true" 
                              scrollHeight="150" 
-                             rows="10"
+                             
                              >
 
+                    <p:column headerText="Codigo"
+                              width="3"  >
 
-                    <p:column headerText="Codigo" width="3"  >
-                        <p:outputLabel value="#{item.requisicao.insumo.codigo}"/>
+                        <p:outputLabel value="#{item.insumo.codigo}"/>
+
                     </p:column>
-                    <p:column headerText="Quant." width="5"  >
-                        <p:outputLabel value="#{item.requisicao.quantidade}"/>
+                  
+                    <p:column headerText="Descrição." width="60">
+                        <p:outputLabel value="#{item.insumo.insumo}"/>
                     </p:column>
-                    <p:column headerText="Uni." width="5">
-                        <p:outputLabel value="#{item.requisicao.insumo.unidade.sigla}"/>
-                    </p:column>
-                    <p:column headerText="Descrição dos itens" width="60">
-                        <p:outputLabel value="#{item.requisicao.insumo.insumo}"/>
+
+                    <p:column headerText="Unidade" width="10">
+                        <p:outputLabel value="#{item.insumo.unidade.sigla}"/>
                     </p:column>
 
                     <p:column headerText="Ações" width="5">
 
-                        <p:commandButton icon="ui-icon-minus" actionListener="#{MBRequisicao.removeItemInsumo}" update=":formDlgNovo:tabelaItemInsumo" >
+                        <p:commandButton icon="ui-icon-minus" update=":formDlgNovo:tabelaItemInsumo" >
                             <f:attribute name="ItemInsumoSelecionado" value="#{item}"/>
 
                         </p:commandButton>
@@ -191,8 +199,8 @@
                 <h:panelGrid columns="2">
 
                     <p:commandButton value="Gravar"
-                                     actionListener="#{MBRequisicao.salvar}"
-                                     oncomplete="verificar(xhr, status, args, 'dlgNovo', 'tabelaRequisicao');"
+                                     actionListener="#{MBListaDeCompra.salvar}"
+                                     oncomplete="verificar(xhr, status, args, 'dlgNovo', 'tabela');"
                                      update=":formTabela:tabela :msgGlobal" />
 
                     <p:commandButton value="Cancelar" onclick="PF('dlgNovo').hide();"
@@ -289,7 +297,7 @@
                                  var="fornecedor"
                                  scrollable="true"
                                  scrollHeight="150"
-                                 rows="10">
+                                 >
 
                         <p:column headerText="Codigo" 
                                   style="width: 30px; text-align: center"  
@@ -318,75 +326,369 @@
                         <p:column headerText="Opções" width="50" >
 
                             <p:commandButton icon="ui-icon-plus"
-                                             
-                                 actionListener="#{MBListaDeCompra.adicionaItemFornecedor}"
-                                 update=" :msgGlobal">
-                                
+                                             actionListener="#{MBListaDeCompra.adicionaItemFornecedor}"
+                                             update=":formFornecedor:tabelaItemFornecedor :msgGlobal">
+
+                                <f:attribute name="fornecedorSelecionado" value="#{fornecedor}"/>
+
                             </p:commandButton>
 
-                            
-                          
+
+
                         </p:column>
 
                     </p:dataTable>
 
                 </p:panelGrid>
 
+
+
                 <p:panelGrid id="painelItemFornecedor"
-                             columns="2"
-                             >
-                    
-                    <h:form id="formItemFornecedor">
-                        
-                    <p:dataTable id="tabelaItem"
+                             columns="2">
+
+                    <p:dataTable id="tabelaItemFornecedor"
+                                 scrollable="true" 
+                                 scrollHeight="150"
+                                 widgetVar="tabelaItemFornecedor"
                                  emptyMessage="Nenhum registro encontrado."
                                  value="#{MBListaDeCompra.itensFornecedores}"
                                  var="itemFornecedor"
-                                 rows="10"
-                                 widgetVar="tabelaItemFornecedor"
+
                                  >
 
-                        <p:column headerText="Id">
+                        <p:column headerText="Id" width="50">
 
+                            <p:outputLabel value="#{itemFornecedor.fornecedor.codigo}"/>
 
                         </p:column>
 
                         <p:column headerText="Fornecedor">
+
                             <p:outputLabel value="#{itemFornecedor.fornecedor.razaoSocialNome}"/>
 
                         </p:column>
 
                         <p:column headerText="CNPJ/CPF">
 
+                            <p:outputLabel value="#{itemFornecedor.fornecedor.cnpjCpf}"/>
+
 
                         </p:column>
 
-                        <p:column headerText="Opções">
+                        <p:column headerText="Opções" width="50">
 
-                            <p:commandButton icon="ui-icon- minus">
+                            <p:commandButton icon="ui-icon-minus" 
+                                             actionListener="#{MBListaDeCompra.removeItemFornecedor}"
+                                             update=":formFornecedor:tabelaItemFornecedor :msgGlobal" >
+
+                                <f:attribute name="fornecedorSelecionadoRemove" 
+                                             value="#{itemFornecedor}"/>
 
                             </p:commandButton>
 
                         </p:column>
 
                     </p:dataTable>
-                    </h:form>
+
                 </p:panelGrid>
 
-                <p:panelGrid columns="2">
 
-                    <p:commandButton  value="Cancelar"  onclick="PF('dlgFornecedor').hide();"
+
+                <h:panelGrid columns="2">
+
+                    <p:commandButton  value="Ok"  
+                                      onclick="PF('dlgFornecedor').hide();"
                                       process="@this">
-                        <p:resetInput target="painelFornecedor" /> 
+
                     </p:commandButton>
 
-                </p:panelGrid>
+                    <p:commandButton  value="Cancelar"  
+                                      onclick="PF('dlgFornecedor').hide();"
+                                      process="@this">
+
+                        <p:resetInput target="painelFornecedor" /> 
+
+                    </p:commandButton>
+
+
+
+
+                </h:panelGrid>
 
             </h:form>
 
         </p:dialog>
 
+        <p:dialog widgetVar="dlgAdicionar"
+                  appendTo="@(body)"
+                  modal="true" 
+                  >
 
+            <h:form id="formAdicionar">
+
+                <h:panelGrid columns="3">
+
+                    <p:outputLabel value="Insumo:"/>
+
+                    <p:inputText id="insumo" value="#{MBListaDeCompra.itemInsumo.insumo.insumo}"
+                                 readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"
+                                 required="true" 
+                                 requiredMessage="Selecione o Insumo!" />                           
+
+                    <p:commandButton icon="ui-icon-search" 
+                                     title="Pesquisar" 
+                                     onclick="PF('dlgInsumo').show();"
+                                     process="@this" update=":formInsumo:tabelaInsumo">
+
+                        <p:ajax event="dialogReturn" 
+                                listener="#{MBListaDeCompra.insumoSelecionado}"
+                                process="@this" 
+                                update="insumo" />
+
+                        <p:resetInput target="insumo" />
+
+                    </p:commandButton>
+
+                </h:panelGrid>
+
+                <h:panelGrid columns="2">
+
+                    <p:outputLabel value="Marcas:" />
+
+                    <p:commandButton icon="ui-icon-plus" 
+                                     oncomplete="PF('dlgMarca').show();"
+                                     process="@this">
+                        <p:ajax update="formAdicionar"/>
+
+                    </p:commandButton>
+
+                </h:panelGrid>
+
+                <p:tabView>
+
+                    <p:tab title="Baixa temporada">
+
+                        <h:panelGrid columns="2">
+
+                            <p:outputLabel value="Qtd. minima:"/>
+
+                            <p:inputText value="#{MBListaDeCompra.itemInsumo.quantMinBaixaTemp}" />
+
+                            <p:outputLabel value="Qtd. maxima:"/>
+
+                            <p:inputText value="#{MBListaDeCompra.itemInsumo.quantMaxBaixaTemp}"/>
+
+                        </h:panelGrid>
+
+                    </p:tab>
+
+                    <p:tab title="Alta temporada">
+
+                        <h:panelGrid columns="2">
+
+                            <p:outputLabel value="Qtd. minima:"/>
+
+                            <p:inputText value="#{MBListaDeCompra.itemInsumo.quantMinAltaTemp}"/>
+
+                            <p:outputLabel value="Qtd. maxima:"/>
+
+                            <p:inputText value="#{MBListaDeCompra.itemInsumo.quantMaxAltaTemp}" />
+
+                        </h:panelGrid>
+
+                    </p:tab>
+
+                </p:tabView>
+
+                <h:panelGrid columns="2">
+
+                    <p:commandButton value="Ok"
+
+                                     actionListener="#{MBListaDeCompra.adicionaItemInsumo}"
+                                     update=":formDlgNovo:tabelaItemInsumo :msgGlobal"
+                                     >
+                      <f:attribute name="itemSelecionado" value="#{item}"/>
+
+                    </p:commandButton>
+
+                    <p:commandButton value="Cancelar" 
+                                     onclick="PF('dlgAdicionar').hide();"
+                                     process="@this">
+
+                        <p:resetInput target="formAdicionar"/>
+
+                    </p:commandButton>
+
+                </h:panelGrid>
+
+            </h:form>
+
+        </p:dialog>
+
+        <p:dialog widgetVar="dlgInsumo" 
+                  closable="false" 
+                  draggable="false" 
+                  width="700" 
+                  resizable="false" 
+                  modal="true" 
+                  appendTo="@(body)"
+                  header="Selecione o Insumo">
+
+            <h:form id="formInsumo">
+
+                <h:panelGrid columns="2" id="painelInsumo">
+
+                    <p:dataTable id="tabelaInsumo" 
+                                 emptyMessage="Nenhum registro encontrado."  
+                                 rowKey="#{item.codigo}" 
+                                 selectionMode="single"
+                                 selection="#{item}"
+                                 widgetVar="tabelaInsumo" 
+                                 value="#{MBInsumo.itens}" 
+                                 filteredValue="#{MBInsumo.itensFiltrados}"
+                                 var="item" 
+                                 scrollable="true"
+                                 scrollHeight="150"
+                                 >
+
+                        <p:ajax event="rowSelect" 
+                                listener="#{MBListaDeCompra.insumoSelecionado}" 
+                                update=":formAdicionar:insumo"  
+                                onsuccess="PF('dlgInsumo').hide()"
+                                />
+
+                        <p:column headerText="Codigo" 
+                                  style="width: 30px; text-align: center"  
+                                  filterStyle="max-width: 40px; min-width: 40px;"
+                                  filterBy="#{item.codigo}">
+
+                            <h:outputText value="#{item.codigo}"   />
+
+                        </p:column>
+
+                        <p:column headerText="Insumo" 
+                                  width="150"
+                                  filterBy="#{item.insumo}">
+
+                            <h:outputText value="#{item.insumo}" />
+
+                        </p:column>
+
+                    </p:dataTable>
+
+                </h:panelGrid>
+
+                <h:panelGrid columns="3">
+
+                    <p:commandButton value="Sair"
+                                     onclick="PF('dlgInsumo').hide();"/>
+
+                </h:panelGrid>
+
+            </h:form>
+
+        </p:dialog>
+
+        <p:dialog widgetVar="dlgMarca" 
+                  modal="true" 
+                  appendTo="@(body)">
+
+            <h:panelGrid columns="2"
+                         id="painelMarca"
+                         width="400"
+                         >
+
+
+                <h:form id="formMarca">
+
+                    <p:dataTable id="tabelaMarca"
+                                 emptyMessage="Nenhum registro encontrado."
+                                 widgetVar="tabelaMarca"
+                                 value="#{MBMarca.itens}"
+                                 var="marca"
+                                 scrollHeight="150"
+                                 scrollable="true">
+
+                        <p:column headerText="ID" 
+                                  width="50"
+                                  filterBy="#{marca.codigo}">
+
+                            <p:outputLabel value="#{marca.codigo}"/>
+
+                        </p:column>
+
+                        <p:column headerText="Marca"
+                                  filterBy="#{marca.marca}">
+
+                            <p:outputLabel value="#{marca.marca}"/>
+
+                        </p:column>
+
+                        <p:column headerText="Opções" width="50">
+
+                            <p:commandButton icon="ui-icon-plus"
+                                             actionListener="#{MBListaDeCompra.adicionaItemMarca}"
+                                             update=":formMarca:tabelaItemMarca :msgGlobal">
+
+                                <f:attribute name="marcaSelecionada" value="#{marca}"/>
+
+                            </p:commandButton>
+
+                        </p:column>
+
+                    </p:dataTable>
+                    <p:spacer/>
+                    <p:dataTable widgetVar="tabelaItemMarca"
+                                 value="#{MBListaDeCompra.itensMarcas}"
+                                 emptyMessage="Nenhum registro encontrado."
+                                 id="tabelaItemMarca"
+                                 var="itemMarca"
+                                 scrollHeight="150"
+                                 scrollable="true">
+
+                        <p:column headerText="ID">
+
+                            <p:outputLabel  value="#{itemMarca.marca.codigo}"/>
+
+                        </p:column>
+
+                        <p:column headerText="Marca">
+
+                            <p:outputLabel  value="#{itemMarca.marca.marca}"/>
+
+                        </p:column>
+
+                        <p:column headerText="Opções" width="50">
+
+                            <p:commandButton icon="ui-icon-minus" 
+                                             actionListener="#{MBListaDeCompra.removeItemMarca}"
+                                             update=":formMarca:tabelaItemMarca :msgGlobal" >
+
+                                <f:attribute name="marcaSelecionadaRemove" 
+                                             value="#{itemMarca}"/>
+
+                            </p:commandButton>
+
+                        </p:column>
+
+                    </p:dataTable>
+
+                    <h:panelGrid columns="2">
+
+                        <p:commandButton value="Ok"
+                                         onclick="PF('dlgMarca').hide();"/>
+
+                        <p:commandButton value="Cancelar"
+                                         onclick="PF('dlgMarca').hide();"/>
+
+                    </h:panelGrid>
+
+
+                </h:form>
+
+            </h:panelGrid>
+
+        </p:dialog>
 
     </ui:define>
 

@@ -129,8 +129,12 @@
 
                 </h:panelGrid>
 
-                <p:commandButton value="Adicionar" onclick="PF('dlgInsumo').show();"   actionListener="#{MBRequisicao.prepararAdicionar}" update=":formItensInsumo:painelItensInsumo" >
+                <p:commandButton value="Adicionar" 
+                                 onclick="PF('dlgInsumo').show();"   
+                                 actionListener="#{MBRequisicao.prepararAdicionar}"
+                                 update=":formItensInsumo:painelItensInsumo" >
                     <p:resetInput target="FormInsumo" />
+                    
                 </p:commandButton>
                 <p:spacer/>
 

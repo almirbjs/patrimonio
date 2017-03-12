@@ -28,10 +28,7 @@ public class ListaDeCompra implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Integer codigo;
 
-    int quantMinAltaTemp;
-    int quantMaxAltaTemp;
-    int quantMinBaixaTemp;
-    int quantMaxBaixaTemp;
+    
 
     String descricao;
     String obs;
@@ -57,38 +54,7 @@ public class ListaDeCompra implements Serializable {
         this.codigo = codigo;
     }
 
-    public int getQuantMinAltaTemp() {
-        return quantMinAltaTemp;
-    }
-
-    public void setQuantMinAltaTemp(int quantMinAltaTemp) {
-        this.quantMinAltaTemp = quantMinAltaTemp;
-    }
-
-    public int getQuantMaxAltaTemp() {
-        return quantMaxAltaTemp;
-    }
-
-    public void setQuantMaxAltaTemp(int quantMaxAltaTemp) {
-        this.quantMaxAltaTemp = quantMaxAltaTemp;
-    }
-
-    public int getQuantMinBaixaTemp() {
-        return quantMinBaixaTemp;
-    }
-
-    public void setQuantMinBaixaTemp(int quantMinBaixaTemp) {
-        this.quantMinBaixaTemp = quantMinBaixaTemp;
-    }
-
-    public int getQuantMaxBaixaTemp() {
-        return quantMaxBaixaTemp;
-    }
-
-    public void setQuantMaxBaixaTemp(int quantMaxBaixaTemp) {
-        this.quantMaxBaixaTemp = quantMaxBaixaTemp;
-    }
-
+    
     public String getDescricao() {
         return descricao;
     }
@@ -128,5 +94,7 @@ public class ListaDeCompra implements Serializable {
     public void setSetor(Setor setor) {
         this.setor = setor;
     }
+
+    
 
 }

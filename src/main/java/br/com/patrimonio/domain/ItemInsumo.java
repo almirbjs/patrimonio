@@ -22,6 +22,11 @@ import javax.persistence.Table;
 @SuppressWarnings("serial")
 public class ItemInsumo implements Serializable {
 
+    int quantMinAltaTemp;
+    int quantMaxAltaTemp;
+    int quantMinBaixaTemp;
+    int quantMaxBaixaTemp;
+
     @Id
     @Column(name = "iditeminsumo", length = 11)
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,17 +35,10 @@ public class ItemInsumo implements Serializable {
     @JoinColumn(nullable = false)
     @ManyToOne(fetch = FetchType.EAGER)
     Insumo insumo = new Insumo();
-    
-    @JoinColumn(nullable = false)
-    @ManyToOne(fetch = FetchType.EAGER)
-    ItemMarca itemMarca=new ItemMarca();
-    
 
-    /*Eliminar Requisicao */
     @JoinColumn(nullable = false)
     @ManyToOne(fetch = FetchType.EAGER)
-    Requisicao requisicao = new Requisicao();
-    
+    ItemMarca itemMarca = new ItemMarca();
 
     public Integer getCodigo() {
         return codigo;
@@ -58,12 +56,44 @@ public class ItemInsumo implements Serializable {
         this.insumo = insumo;
     }
 
-    public Requisicao getRequisicao() {
-        return requisicao;
-   }
+    public ItemMarca getItemMarca() {
+        return itemMarca;
+    }
 
-    public void setRequisicao(Requisicao requisicao) {
-        this.requisicao = requisicao;
+    public void setItemMarca(ItemMarca itemMarca) {
+        this.itemMarca = itemMarca;
+    }
+
+    public int getQuantMinAltaTemp() {
+        return quantMinAltaTemp;
+    }
+
+    public void setQuantMinAltaTemp(int quantMinAltaTemp) {
+        this.quantMinAltaTemp = quantMinAltaTemp;
+    }
+
+    public int getQuantMaxAltaTemp() {
+        return quantMaxAltaTemp;
+    }
+
+    public void setQuantMaxAltaTemp(int quantMaxAltaTemp) {
+        this.quantMaxAltaTemp = quantMaxAltaTemp;
+    }
+
+    public int getQuantMinBaixaTemp() {
+        return quantMinBaixaTemp;
+    }
+
+    public void setQuantMinBaixaTemp(int quantMinBaixaTemp) {
+        this.quantMinBaixaTemp = quantMinBaixaTemp;
+    }
+
+    public int getQuantMaxBaixaTemp() {
+        return quantMaxBaixaTemp;
+    }
+
+    public void setQuantMaxBaixaTemp(int quantMaxBaixaTemp) {
+        this.quantMaxBaixaTemp = quantMaxBaixaTemp;
     }
 
 }

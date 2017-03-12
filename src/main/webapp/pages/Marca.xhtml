@@ -16,9 +16,13 @@
         <h:form id="formTabela">
             <!-- criando uma tabela -->
 
-            <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
-                         widgetVar="tabelaMarca" value="#{MBMarca.itens}" var="item"
-                         paginator="true" rows="10"
+            <p:dataTable id="tabela" 
+                         emptyMessage="Nenhum registro encontrado."
+                         widgetVar="tabelaMarca" 
+                         value="#{MBMarca.itens}" 
+                         var="item"
+                         paginator="true"
+                         rows="10"
                          filteredValue="#{MBMarca.itensFiltrados}">
                 <!-- rows="10"  me diz que o meu paginador deve ter 10 linhas-->
 
