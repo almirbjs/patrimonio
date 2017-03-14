@@ -114,16 +114,26 @@
                     <p:outputLabel value="Fornecedor" for="fornecedor" />
                     <h:panelGrid columns="2">
 
-                        <p:inputText id="fornecedor" value="#{MBRequisicao.requisicao.fornecedor.razaoSocialNome}"
+                        <p:inputText id="fornecedor" 
+                                     value="#{MBRequisicao.requisicao.fornecedor.razaoSocialNome}"
                                      readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"
-                                     required="true" requiredMessage="Selecione o Fornecedor!" />
+                                     required="true" 
+                                     requiredMessage="Selecione o Fornecedor!" />
+                        
                         <p:commandButton icon="ui-icon-search" title="Pesquisa"
                                          onclick="PF('dlgFornecedor').show();"
-                                         process="@this" update=":formFornecedor:tabelaFornecedor">
-                            <p:ajax event="dialogReturn" listener="#{MBRequisicao.fornecedorSelecionado}"
-                                    process="@this" update="fornecedor" />
+                                         process="@this" 
+                                         update=":formFornecedor:tabelaFornecedor">
+                            
+                            <p:ajax event="dialogReturn"
+                                    listener="#{MBRequisicao.fornecedorSelecionado}"
+                                    process="@this" 
+                                    update="fornecedor" />
+                            
                             <p:resetInput target="fornecedor" />
+                            
                         </p:commandButton>
+                        
                     </h:panelGrid>
 
 
@@ -145,16 +155,16 @@
 
 
                     <p:column headerText="Codigo" width="3"  >
-                        <p:outputLabel value="#{item.requisicao.insumo.codigo}"/>
+                        <p:outputLabel value="#{item.insumo.codigo}"/>
                     </p:column>
                     <p:column headerText="Quant." width="5"  >
-                        <p:outputLabel value="#{item.requisicao.quantidade}"/>
+                        <p:outputLabel value=""/>
                     </p:column>
                     <p:column headerText="Uni." width="5">
-                        <p:outputLabel value="#{item.requisicao.insumo.unidade.sigla}"/>
+                        <p:outputLabel value="#{item.insumo.unidade.sigla}"/>
                     </p:column>
                     <p:column headerText="Descrição dos itens" width="60">
-                        <p:outputLabel value="#{item.requisicao.insumo.insumo}"/>
+                        <p:outputLabel value="#{item.insumo.insumo}"/>
                     </p:column>
 
                     <p:column headerText="Ações" width="5">
@@ -315,15 +325,23 @@
                     <h:panelGrid columns="2">
 
 
-                        <p:inputText id="insumo" value="#{MBRequisicao.requisicao.insumo.insumo}"
+                        <p:inputText id="insumo" value="#{MBRequisicao.itemInsumo.insumo.insumo}"
                                      readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"
-                                     required="true" requiredMessage="Selecione o insumo!" />
-                        <p:commandButton icon="ui-icon-search" title="Pesquisa"
+                                     required="true" 
+                                     requiredMessage="Selecione o insumo!" />
+                        
+                        <p:commandButton icon="ui-icon-search" 
+                                         title="Pesquisa"
                                          onclick="PF('dlgItensInsumo').show();"
                                          process="@this" update=":formItensInsumo:tabelaItemInsumo">
-                            <p:ajax event="dialogReturn" listener="#{MBRequisicao.insumoSelecionado}"
-                                    process="@this" update="insumo" />
+                            
+                            <p:ajax event="dialogReturn" 
+                                    listener="#{MBRequisicao.insumoSelecionado}"
+                                    process="@this" 
+                                    update="insumo" />
+                            
                             <p:resetInput target="insumo" />
+                            
                         </p:commandButton>
                     </h:panelGrid>
 
@@ -341,7 +359,8 @@
                 <h:panelGrid columns="3">
 
 
-                    <p:commandButton icon="ui-icon-plus" actionListener="#{MBRequisicao.adicionarItemInsumo}"
+                    <p:commandButton icon="ui-icon-plus" 
+                                     actionListener="#{MBRequisicao.adicionarItemInsumo}"
 
                                      update=":formDlgNovo:tabelaItemInsumo :msgGlobal" >
 

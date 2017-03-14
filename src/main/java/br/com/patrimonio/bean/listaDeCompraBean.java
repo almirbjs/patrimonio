@@ -68,8 +68,9 @@ public class listaDeCompraBean {
 
         try {
 
-           
-            
+            InsumoDao insumoDao = new InsumoDao();
+            listaInsumo = insumoDao.listar();
+
             listaSetores = setorDao.listar();
 
             listaFornecedores = fornecedorDao.listar();
@@ -255,11 +256,11 @@ public class listaDeCompraBean {
 
     }
 
-    public void insumoSelecionado(SelectEvent event){
+    public void insumoSelecionado(SelectEvent event) {
 
-        Insumo i = (Insumo) event.getObject();
+        insumo = (Insumo) event.getObject();
 
-        itemInsumo.setInsumo(i);
+        itemInsumo.setInsumo(insumo);
 
         InsumoDao insumoDao = new InsumoDao();
 
@@ -282,6 +283,7 @@ public class listaDeCompraBean {
         }
 
         if (achou > -1) {
+
             itensMarcas.remove(achou);
 
             JSFUtil.adicionaMensagemSucesso("Removido da lista com sucesso :)");
@@ -292,7 +294,7 @@ public class listaDeCompraBean {
 
     public void adicionaItemInsumo(ActionEvent evento) {
 
-        insumo = (Insumo) evento.getComponent().getAttributes().get("itemSelecionado");
+        /* insumo = (Insumo) evento.getComponent().getAttributes().get("insumoItemSelecionado");*/
 
         int achou = -1;
 
@@ -307,16 +309,40 @@ public class listaDeCompraBean {
 
         if (achou < 0) {
 
-            itemInsumo = new ItemInsumo();
-            itemInsumo.setItemMarca(itemMarca);
-            itemInsumo.setInsumo(insumo);
+            
             itensInsumos.add(itemInsumo);
+            itemInsumo = new ItemInsumo();
+           
 
             JSFUtil.adicionaMensagemSucesso("Adicionado com sucesso :)");
 
         } else {
 
             JSFUtil.adicionaMensagemErro("Item já adicionado!");
+
+        }
+
+    }
+
+    public void removeItemInsumo(ActionEvent evento) {
+
+        itemInsumo = (ItemInsumo) evento.getComponent().getAttributes().get("insumoSelecionadoRemove");
+
+        int achou = -1;
+
+        for (int posicao = 0; posicao < itensInsumos.size(); posicao++) {
+
+            if (itensInsumos.get(posicao).getInsumo().getInsumo().equals(itemInsumo.getInsumo().getInsumo())) {
+
+                achou = posicao;
+            }
+        }
+
+        if (achou > -1) {
+            
+            itensInsumos.remove(achou);
+
+            JSFUtil.adicionaMensagemSucesso(" Removido da lista com sucesso :)");
 
         }
 

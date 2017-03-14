@@ -58,6 +58,7 @@ public class RequisicaoBean {
             requisicao = new Requisicao();
             SetorDao setorDao = new SetorDao();
             ListaSetores = setorDao.listar();
+            
             if (itensInsumo == null) {
                 itensInsumo = new ArrayList<>();
             }
@@ -142,9 +143,13 @@ public class RequisicaoBean {
     }
 
     public void fornecedorSelecionado(SelectEvent event) {
+        
         Fornecedor fornecedor = (Fornecedor) event.getObject();
+        
         requisicao.setFornecedor(fornecedor);
+        
         FornecedorDao fornecedorDao = new FornecedorDao();
+        
         ListaFornecedores = fornecedorDao.listar();
 
     }
@@ -159,7 +164,7 @@ public class RequisicaoBean {
 
     public void insumoSelecionado(SelectEvent event) {
         Insumo insumo = (Insumo) event.getObject();
-        requisicao.setInsumo(insumo);
+       itemInsumo.setInsumo(insumo);
         InsumoDao insumoDao = new InsumoDao();
         ListaInsumos = insumoDao.listar();
 
@@ -169,8 +174,8 @@ public class RequisicaoBean {
         Insumo insumo = (Insumo) evento.getComponent().getAttributes().get("insumoItemSelecionado");
         int achou = -1;
 
-        for (int posicao = 0; posicao < itens.size(); posicao++) {
-            if (itens.get(posicao).getInsumo().equals(insumo)) {
+        for (int posicao = 0; posicao < itensInsumo.size(); posicao++) {
+            if (itensInsumo.get(posicao).getInsumo().equals(insumo)) {
                 achou = posicao;
             }
         }

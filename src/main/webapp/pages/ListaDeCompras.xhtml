@@ -97,6 +97,8 @@
 
         </h:form>
 
+
+
         <p:dialog widgetVar="dlgNovo" 
                   closable="false" 
                   draggable="false" 
@@ -147,7 +149,6 @@
 
                     <p:commandButton value="Adicionar"
                                      oncomplete="PF('dlgAdicionar').show();"
-                                     actionListener="#{MBListaDeCompra.prepararSalvar}"
                                      process="@this">
 
                     </p:commandButton>
@@ -158,35 +159,42 @@
 
                 </h:panelGrid>
 
+
                 <p:dataTable id="tabelaItemInsumo" 
                              emptyMessage="Nenhum registro encontrado."  
                              widgetVar="tabelaItemInsumo" 
                              value="#{MBListaDeCompra.itensInsumos}"  
-                             var="item"    
+                             var="itemInsumo"    
                              scrollable="true" 
                              scrollHeight="150" 
-                             
+
                              >
 
                     <p:column headerText="Codigo"
                               width="3"  >
 
-                        <p:outputLabel value="#{item.insumo.codigo}"/>
+                        <p:outputLabel value="#{itemInsumo.insumo.codigo}"/>
 
                     </p:column>
-                  
+
                     <p:column headerText="Descrição." width="60">
-                        <p:outputLabel value="#{item.insumo.insumo}"/>
+                        <p:outputLabel value="#{itemInsumo.insumo.insumo}"/>
                     </p:column>
 
                     <p:column headerText="Unidade" width="10">
-                        <p:outputLabel value="#{item.insumo.unidade.sigla}"/>
+                        <p:outputLabel value="#{itemInsumo.insumo.unidade.sigla}"/>
                     </p:column>
 
                     <p:column headerText="Ações" width="5">
 
-                        <p:commandButton icon="ui-icon-minus" update=":formDlgNovo:tabelaItemInsumo" >
-                            <f:attribute name="ItemInsumoSelecionado" value="#{item}"/>
+                        <p:commandButton icon="ui-icon-minus"
+                                         actionListener="#{MBListaDeCompra.removeItemInsumo}"
+                                         update=":formDlgNovo:tabelaItemInsumo" 
+                                         
+                                         >
+
+                                <f:attribute name="insumoSelecionadoRemove" 
+                                             value="#{itemInsumo}"/>
 
                         </p:commandButton>
 
@@ -372,7 +380,6 @@
 
                             <p:outputLabel value="#{itemFornecedor.fornecedor.cnpjCpf}"/>
 
-
                         </p:column>
 
                         <p:column headerText="Opções" width="50">
@@ -391,7 +398,6 @@
                     </p:dataTable>
 
                 </p:panelGrid>
-
 
 
                 <h:panelGrid columns="2">
@@ -430,22 +436,20 @@
 
                     <p:outputLabel value="Insumo:"/>
 
-                    <p:inputText id="insumo" value="#{MBListaDeCompra.itemInsumo.insumo.insumo}"
+                    <p:inputText id="insumo" value="#{MBListaDeCompra.insumo.insumo}"
                                  readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"
                                  required="true" 
-                                 requiredMessage="Selecione o Insumo!" />                           
+                                 requiredMessage="Selecione o Insumo!"
+                                 />                           
+
 
                     <p:commandButton icon="ui-icon-search" 
                                      title="Pesquisar" 
+                                     process="@this" 
                                      onclick="PF('dlgInsumo').show();"
-                                     process="@this" update=":formInsumo:tabelaInsumo">
+                                     update=":formInsumo:tabelaInsumo">
 
-                        <p:ajax event="dialogReturn" 
-                                listener="#{MBListaDeCompra.insumoSelecionado}"
-                                process="@this" 
-                                update="insumo" />
 
-                        <p:resetInput target="insumo" />
 
                     </p:commandButton>
 
@@ -503,11 +507,15 @@
                 <h:panelGrid columns="2">
 
                     <p:commandButton value="Ok"
-
                                      actionListener="#{MBListaDeCompra.adicionaItemInsumo}"
                                      update=":formDlgNovo:tabelaItemInsumo :msgGlobal"
+                                     
                                      >
-                      <f:attribute name="itemSelecionado" value="#{item}"/>
+                        
+                      
+                       
+
+
 
                     </p:commandButton>
 
@@ -545,7 +553,7 @@
                                  selection="#{item}"
                                  widgetVar="tabelaInsumo" 
                                  value="#{MBInsumo.itens}" 
-                                 filteredValue="#{MBInsumo.itensFiltrados}"
+                                 filteredValue="#{item}"
                                  var="item" 
                                  scrollable="true"
                                  scrollHeight="150"
