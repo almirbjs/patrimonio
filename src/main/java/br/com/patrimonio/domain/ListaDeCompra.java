@@ -14,7 +14,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @NamedQueries({
-    @NamedQuery(name = "ListaDeCompra.listar",query = "SELECT p FROM ListaDeCompra p")})
+    @NamedQuery(name = "ListaDeCompra.listar", query = "SELECT p FROM ListaDeCompra p")})
 
 @Entity
 @Table(name = "listaDeCompra")
@@ -22,13 +22,10 @@ public class ListaDeCompra implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    
     @Id
     @Column(name = "idListaDeCompra", length = 11)
     @GeneratedValue(strategy = GenerationType.AUTO)
     Integer codigo;
-
-    
 
     String descricao;
     String obs;
@@ -45,7 +42,6 @@ public class ListaDeCompra implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     Setor setor = new Setor();
 
-    
     public Integer getCodigo() {
         return codigo;
     }
@@ -54,7 +50,6 @@ public class ListaDeCompra implements Serializable {
         this.codigo = codigo;
     }
 
-    
     public String getDescricao() {
         return descricao;
     }
@@ -94,7 +89,5 @@ public class ListaDeCompra implements Serializable {
     public void setSetor(Setor setor) {
         this.setor = setor;
     }
-
-    
 
 }

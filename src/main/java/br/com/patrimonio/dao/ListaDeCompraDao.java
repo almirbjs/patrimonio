@@ -1,11 +1,15 @@
 package br.com.patrimonio.dao;
 
+import br.com.patrimonio.domain.Insumo;
+import br.com.patrimonio.domain.ItemMarca;
 import java.util.ArrayList;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import br.com.patrimonio.domain.ListaDeCompra;
+import br.com.patrimonio.domain.Marca;
 import br.com.patrimonio.util.HibernateUtil;
+import java.util.List;
 
 public class ListaDeCompraDao {
 
@@ -130,6 +134,37 @@ public class ListaDeCompraDao {
         }
         // retorna entidades
         return ListaDeCompra;
+
+    }
+
+    public void salvarItemMarca(List<ItemMarca> itensMarca) {
+        
+        
+        try {
+            transacao = sessao.beginTransaction();
+
+            for (int posicao = 0; posicao < itensMarca.size(); posicao++) {
+                ItemMarca itemMarca = itensMarca.get(posicao);
+                
+
+                sessao.save(itemMarca);
+            }
+
+            transacao.commit();
+
+        } catch (RuntimeException erro) {
+
+            if (transacao != null) {
+
+                transacao.rollback();
+            }
+
+            throw erro;
+
+        } finally {
+
+            sessao.close();
+        }
 
     }
 

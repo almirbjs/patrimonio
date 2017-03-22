@@ -151,6 +151,7 @@
                                      oncomplete="PF('dlgAdicionar').show();"
                                      process="@this">
 
+
                     </p:commandButton>
 
 
@@ -166,40 +167,73 @@
                              value="#{MBListaDeCompra.itensInsumos}"  
                              var="itemInsumo"    
                              scrollable="true" 
-                             scrollHeight="150" 
+                             scrollHeight="160" 
 
                              >
 
+                    <p:column width="1">
+
+                        <p:rowToggler  />
+
+                    </p:column>
+
                     <p:column headerText="Codigo"
-                              width="3"  >
+                              width="5"  >
 
                         <p:outputLabel value="#{itemInsumo.insumo.codigo}"/>
 
                     </p:column>
 
-                    <p:column headerText="Descrição." width="60">
+
+                    <p:column headerText="Descrição" width="110">
                         <p:outputLabel value="#{itemInsumo.insumo.insumo}"/>
                     </p:column>
 
-                    <p:column headerText="Unidade" width="10">
+                    <p:column headerText="Unidade" width="25">
                         <p:outputLabel value="#{itemInsumo.insumo.unidade.sigla}"/>
                     </p:column>
+                    
+                     <p:column headerText="Unidade" width="25">
+                         <p:outputLabel value="#{itemInsumo.itemMarca.insumo.insumo}"/>
+                    </p:column>
 
-                    <p:column headerText="Ações" width="5">
+
+
+
+                    <p:column headerText="Ações" width="15">
 
                         <p:commandButton icon="ui-icon-minus"
                                          actionListener="#{MBListaDeCompra.removeItemInsumo}"
-                                         update=":formDlgNovo:tabelaItemInsumo" 
-                                         
+                                         update=":formDlgNovo:tabelaItemInsumo :msgGlobal" 
+                                         process="@this"
                                          >
 
-                                <f:attribute name="insumoSelecionadoRemove" 
-                                             value="#{itemInsumo}"/>
+                            <f:attribute name="insumoSelecionadoRemove" 
+                                         value="#{itemInsumo}"/>
 
                         </p:commandButton>
 
                     </p:column>
 
+                    <p:rowExpansion>
+
+                        <p:panelGrid  columns="2" >
+
+                            <p:outputLabel value="Quantidade min. baixa temporada:" />
+                            <h:outputText value="#{itemInsumo.quantMinBaixaTemp}" />
+
+                            <h:outputText value="Quantidade max. baixa temporada:" />
+                            <h:outputText value="#{itemInsumo.quantMaxBaixaTemp}" />
+
+                            <h:outputText value="Quantidade min. alta temporada:" />
+                            <h:outputText value="#{itemInsumo.quantMinAltaTemp}" />
+
+                            <h:outputText value="Quantidade max. alta temporada:" />
+                            <h:outputText value="#{itemInsumo.quantMaxAltaTemp}" />
+
+                        </p:panelGrid>
+
+                    </p:rowExpansion>
 
 
                 </p:dataTable>
@@ -425,12 +459,12 @@
 
         </p:dialog>
 
-        <p:dialog widgetVar="dlgAdicionar"
+        <p:dialog widgetVar="dlgAdicionar"  id="dlgAdicionar"
                   appendTo="@(body)"
                   modal="true" 
                   >
 
-            <h:form id="formAdicionar">
+            <h:form id="formAdicionar" >
 
                 <h:panelGrid columns="3">
 
@@ -440,29 +474,34 @@
                                  readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"
                                  required="true" 
                                  requiredMessage="Selecione o Insumo!"
-                                 />                           
+                                 onclick="PF('dlgInsumo').show();" 
+                                 >     
+                        
+                    
+                    </p:inputText>
 
 
-                    <p:commandButton icon="ui-icon-search" 
-                                     title="Pesquisar" 
-                                     process="@this" 
-                                     onclick="PF('dlgInsumo').show();"
-                                     update=":formInsumo:tabelaInsumo">
+                        <p:commandButton icon="ui-icon-search" 
+                                         title="Pesquisar" 
+                                         process="@this" 
+                                         onclick="PF('dlgInsumo').show();"
+                                         update=":formInsumo:tabelaInsumo">
 
 
-
-                    </p:commandButton>
+                        </p:commandButton>
 
                 </h:panelGrid>
 
                 <h:panelGrid columns="2">
 
-                    <p:outputLabel value="Marcas:" />
+                    <p:outputLabel value="Marcas:" 
+                                   rendered="#{MBListaDeCompra.insumo.insumo!=null}" />
 
                     <p:commandButton icon="ui-icon-plus" 
+                                     rendered="#{MBListaDeCompra.insumo.insumo!=null}"
                                      oncomplete="PF('dlgMarca').show();"
                                      process="@this">
-                        <p:ajax update="formAdicionar"/>
+
 
                     </p:commandButton>
 
@@ -508,13 +547,12 @@
 
                     <p:commandButton value="Ok"
                                      actionListener="#{MBListaDeCompra.adicionaItemInsumo}"
-                                     update=":formDlgNovo:tabelaItemInsumo :msgGlobal"
-                                     
-                                     >
-                        
-                      
-                       
+                                     update=":formDlgNovo:tabelaItemInsumo :formMarca:tabelaItemMarca :msgGlobal"
 
+                                     >
+
+                        <f:ajax render="@form" resetValues="true"/>
+                        <p:resetInput target="insumo" /> 
 
 
                     </p:commandButton>
@@ -561,7 +599,7 @@
 
                         <p:ajax event="rowSelect" 
                                 listener="#{MBListaDeCompra.insumoSelecionado}" 
-                                update=":formAdicionar:insumo"  
+                                update="formAdicionar"  
                                 onsuccess="PF('dlgInsumo').hide()"
                                 />
 
@@ -684,7 +722,10 @@
                     <h:panelGrid columns="2">
 
                         <p:commandButton value="Ok"
-                                         onclick="PF('dlgMarca').hide();"/>
+                                         actionListener="#{MBListaDeCompra.salvarItemMarca()}"
+                                         onclick="PF('dlgMarca').hide();"
+                                         update=":msgGlobal"
+                                         />
 
                         <p:commandButton value="Cancelar"
                                          onclick="PF('dlgMarca').hide();"/>

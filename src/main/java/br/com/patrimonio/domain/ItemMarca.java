@@ -14,9 +14,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @NamedQueries({
-    @NamedQuery(name = "ItemMarca.listar", query = "SELECT p FROM ItemMarca p")
-    ,
-    @NamedQuery(name = "ItemMarca.buscarPorCodigoInsumo", query = "  SELECT i FROM ItemMarca i WHERE i.insumo= :codigo")})
+    @NamedQuery(name = "ItemMarca.listar", query = "SELECT p FROM ItemMarca p")})
 @Entity
 @Table(name = "itemmarca")
 @SuppressWarnings("serial")
@@ -31,9 +29,10 @@ public class ItemMarca implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     Marca marca = new Marca();
 
-    @JoinColumn(nullable = false)
+     @JoinColumn(nullable = false)
     @ManyToOne(fetch = FetchType.EAGER)
-    Insumo insumo = new Insumo();
+    Insumo insumo=new Insumo();
+   
 
     public Integer getCodigo() {
         return codigo;
@@ -58,5 +57,9 @@ public class ItemMarca implements Serializable {
     public void setInsumo(Insumo insumo) {
         this.insumo = insumo;
     }
+    
+    
+
+ 
 
 }

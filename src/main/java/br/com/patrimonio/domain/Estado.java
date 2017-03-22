@@ -1,5 +1,6 @@
 package br.com.patrimonio.domain;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,7 +17,9 @@ import javax.persistence.Table;
 		@NamedQuery(name = "Estado.buscarPorCodigoPais", query = "SELECT e FROM Estado e WHERE e.pais = :codigo")})
 @Entity
 @Table(name = "estado")
-public class Estado {
+public class Estado implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "idestado", length = 11)
