@@ -76,6 +76,10 @@ public class listaDeCompraBean {
 
             listaFornecedores = fornecedorDao.listar();
 
+            if (listaDeCompra == null) {
+                listaDeCompra = new ListaDeCompra();
+            }
+
             if (itensFornecedores == null) {
                 itensFornecedores = new ArrayList<>();
 
@@ -105,8 +109,9 @@ public class listaDeCompraBean {
 
         try {
 
+            
             listaDeCompraDao = new ListaDeCompraDao();
-            listaDeCompraDao.salvar(listaDeCompra);
+            listaDeCompraDao.salvar(listaDeCompra, itensFornecedores, itensInsumos);
             itens = listaDeCompraDao.listar();
 
             JSFUtil.adicionaMensagemSucesso("Salvo com sucesso!");
@@ -124,6 +129,8 @@ public class listaDeCompraBean {
 
         try {
 
+            
+            listaDeCompra.setItemInsumo(itemInsumo);
             listaDeCompraDao = new ListaDeCompraDao();
             listaDeCompraDao.salvarItemMarca(itensMarcas);
 
@@ -339,7 +346,7 @@ public class listaDeCompraBean {
 
             }
 
-            itemInsumo.setItemMarca(itemMarca);
+            
             itensInsumos.add(itemInsumo);
             itemInsumo = new ItemInsumo();
 

@@ -36,10 +36,7 @@ public class ItemInsumo implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     Insumo insumo = new Insumo();
 
-    @JoinColumn(nullable = false)
-    @ManyToOne(fetch = FetchType.EAGER)
-    ItemMarca itemMarca = new ItemMarca();
-
+   
     public Integer getCodigo() {
         return codigo;
     }
@@ -54,14 +51,6 @@ public class ItemInsumo implements Serializable {
 
     public void setInsumo(Insumo insumo) {
         this.insumo = insumo;
-    }
-
-    public ItemMarca getItemMarca() {
-        return itemMarca;
-    }
-
-    public void setItemMarca(ItemMarca itemMarca) {
-        this.itemMarca = itemMarca;
     }
 
     public int getQuantMinAltaTemp() {

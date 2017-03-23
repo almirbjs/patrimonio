@@ -36,10 +36,6 @@ public class ListaDeCompra implements Serializable {
 
     @JoinColumn(nullable = false)
     @ManyToOne(fetch = FetchType.EAGER)
-    ItemFornecedor itemFornecedor = new ItemFornecedor();
-
-    @JoinColumn(nullable = false)
-    @ManyToOne(fetch = FetchType.EAGER)
     Setor setor = new Setor();
 
     public Integer getCodigo() {
@@ -72,14 +68,6 @@ public class ListaDeCompra implements Serializable {
 
     public void setItemInsumo(ItemInsumo itemInsumo) {
         this.itemInsumo = itemInsumo;
-    }
-
-    public ItemFornecedor getItemFornecedor() {
-        return itemFornecedor;
-    }
-
-    public void setItemFornecedor(ItemFornecedor itemFornecedor) {
-        this.itemFornecedor = itemFornecedor;
     }
 
     public Setor getSetor() {

@@ -31,6 +31,11 @@ public class ItemFornecedor implements Serializable {
     @JoinColumn(nullable = false)
     @ManyToOne(fetch = FetchType.EAGER)
     Fornecedor fornecedor = new Fornecedor();
+    
+    @JoinColumn(nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    ListaDeCompra listaDeCompra = new  ListaDeCompra();
+    
 
     public Integer getCodigo() {
         return codigo;
@@ -48,4 +53,14 @@ public class ItemFornecedor implements Serializable {
         this.fornecedor = fornecedor;
     }
 
+    public ListaDeCompra getListaDeCompra() {
+        return listaDeCompra;
+    }
+
+    public void setListaDeCompra(ListaDeCompra listaDeCompra) {
+        this.listaDeCompra = listaDeCompra;
+    }
+
+    
+    
 }

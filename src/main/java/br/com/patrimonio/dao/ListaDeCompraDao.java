@@ -1,13 +1,14 @@
 package br.com.patrimonio.dao;
 
 import br.com.patrimonio.domain.Insumo;
+import br.com.patrimonio.domain.ItemFornecedor;
+import br.com.patrimonio.domain.ItemInsumo;
 import br.com.patrimonio.domain.ItemMarca;
 import java.util.ArrayList;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import br.com.patrimonio.domain.ListaDeCompra;
-import br.com.patrimonio.domain.Marca;
 import br.com.patrimonio.util.HibernateUtil;
 import java.util.List;
 
@@ -16,13 +17,29 @@ public class ListaDeCompraDao {
     Session sessao = HibernateUtil.getSessionFactory().openSession();
     Transaction transacao = null;
 
-    public void salvar(ListaDeCompra c) throws Exception {
+    public void salvar(ListaDeCompra listaDeCompras, List<ItemFornecedor>itensFornecedores,List<ItemInsumo>itensInsumo){
 
         try {
 
             transacao = sessao.beginTransaction();
-
-            sessao.save(c);
+                       
+             for (int posicao = 0; posicao < itensInsumo.size(); posicao++) {
+                 ItemInsumo itemInsumo = itensInsumo.get(posicao);
+                 listaDeCompras.setItemInsumo(itemInsumo);
+                 sessao.save(itemInsumo);
+                 
+            }
+             sessao.save(listaDeCompras);
+             
+               for (int posicao = 0; posicao < itensFornecedores.size(); posicao++) {
+                ItemFornecedor itemFornecedor = itensFornecedores.get(posicao);
+                 itemFornecedor.setListaDeCompra(listaDeCompras);
+                sessao.save(itemFornecedor);
+               
+            }
+             
+                                                 
+            
 
             transacao.commit();
 

@@ -123,7 +123,8 @@
                                      filter="true"
                                      value="#{MBListaDeCompra.listaDeCompra.setor.codigo}" 
                                      required="true"
-                                     requiredMessage="Selecione o setor!">
+                                     requiredMessage="Selecione o setor!"
+                                     >
 
                         <f:selectItem itemValue="" itemLabel="Selecione o Setor"
                                       noSelectionOption="true" />
@@ -193,13 +194,7 @@
                         <p:outputLabel value="#{itemInsumo.insumo.unidade.sigla}"/>
                     </p:column>
                     
-                     <p:column headerText="Unidade" width="25">
-                         <p:outputLabel value="#{itemInsumo.itemMarca.insumo.insumo}"/>
-                    </p:column>
-
-
-
-
+                     
                     <p:column headerText="Ações" width="15">
 
                         <p:commandButton icon="ui-icon-minus"
