@@ -28,7 +28,7 @@
     <property name="hibernate.show_sql">true</property>
     <!-- Cria as tabelas,quando eu efetuar uma alteraÃ§Ã£o no codigo java vai 
         atualizar automaticamente no BD -->
-    <property name="hibernate.hbm2ddl.auto">update</property>
+    <property name="hibernate.hbm2ddl.auto">create</property>
     <property name="hibernate.format_sql">true</property>
     <!-- Adicionar as classes por ordem de pk e primary pk. Exemplo: 1Âº o privilegio 
         e depois o usuario ,pq o usuario depende do privilegio para existir senÃ£o 
@@ -55,7 +55,7 @@
     <mapping class="br.com.patrimonio.domain.Insumo"/>
     <mapping class="br.com.patrimonio.domain.Requisicao"/>
     <mapping class="br.com.patrimonio.domain.ItemInsumo"/>
-    <mapping class="br.com.patrimonio.domain.ItemMarca"/>
+   
     <mapping class="br.com.patrimonio.domain.ItemFornecedor"/>
     <mapping class="br.com.patrimonio.domain.ListaDeCompra"/>
   </session-factory>

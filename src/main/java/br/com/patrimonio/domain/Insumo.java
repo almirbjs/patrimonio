@@ -23,7 +23,6 @@ import javax.persistence.Table;
 @SuppressWarnings("serial")
 public class Insumo implements Serializable {
 
-
     @Id
     @Column(name = "idinsumo")
     @GeneratedValue(strategy = GenerationType.AUTO)

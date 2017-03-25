@@ -392,7 +392,6 @@ public class listaDeCompraBean {
         return itens;
     }
 
-    @SuppressWarnings("AssignmentToCollectionOrArrayFieldFromParameter")
     public void setItens(ArrayList<ListaDeCompra> itens) {
         this.itens = itens;
     }
@@ -401,32 +400,14 @@ public class listaDeCompraBean {
         return itensFiltrados;
     }
 
-    @SuppressWarnings("AssignmentToCollectionOrArrayFieldFromParameter")
     public void setItensFiltrados(ArrayList<ListaDeCompra> itensFiltrados) {
         this.itensFiltrados = itensFiltrados;
-    }
-
-    public ListaDeCompraDao getListaDeCompraDao() {
-        return listaDeCompraDao;
-    }
-
-    public void setListaDeCompraDao(ListaDeCompraDao listaDeCompraDao) {
-        this.listaDeCompraDao = listaDeCompraDao;
-    }
-
-    public ListaDeCompra getListaDeCompra() {
-        return listaDeCompra;
-    }
-
-    public void setListaDeCompra(ListaDeCompra listaDeCompra) {
-        this.listaDeCompra = listaDeCompra;
     }
 
     public ArrayList<Setor> getListaSetores() {
         return listaSetores;
     }
 
-    @SuppressWarnings("AssignmentToCollectionOrArrayFieldFromParameter")
     public void setListaSetores(ArrayList<Setor> listaSetores) {
         this.listaSetores = listaSetores;
     }
@@ -435,9 +416,51 @@ public class listaDeCompraBean {
         return listaFornecedores;
     }
 
-    @SuppressWarnings("AssignmentToCollectionOrArrayFieldFromParameter")
     public void setListaFornecedores(ArrayList<Fornecedor> listaFornecedores) {
         this.listaFornecedores = listaFornecedores;
+    }
+
+    public ArrayList<Insumo> getListaInsumo() {
+        return listaInsumo;
+    }
+
+    public void setListaInsumo(ArrayList<Insumo> listaInsumo) {
+        this.listaInsumo = listaInsumo;
+    }
+
+    public List<ItemFornecedor> getItensFornecedores() {
+        return itensFornecedores;
+    }
+
+    @SuppressWarnings("AssignmentToCollectionOrArrayFieldFromParameter")
+    public void setItensFornecedores(List<ItemFornecedor> itensFornecedores) {
+        this.itensFornecedores = itensFornecedores;
+    }
+
+    public List<ItemMarca> getItensMarcas() {
+        return itensMarcas;
+    }
+
+    @SuppressWarnings("AssignmentToCollectionOrArrayFieldFromParameter")
+    public void setItensMarcas(List<ItemMarca> itensMarcas) {
+        this.itensMarcas = itensMarcas;
+    }
+
+    public List<ItemInsumo> getItensInsumos() {
+        return itensInsumos;
+    }
+
+    @SuppressWarnings("AssignmentToCollectionOrArrayFieldFromParameter")
+    public void setItensInsumos(List<ItemInsumo> itensInsumos) {
+        this.itensInsumos = itensInsumos;
+    }
+
+    public ListaDeCompraDao getListaDeCompraDao() {
+        return listaDeCompraDao;
+    }
+
+    public void setListaDeCompraDao(ListaDeCompraDao listaDeCompraDao) {
+        this.listaDeCompraDao = listaDeCompraDao;
     }
 
     public SetorDao getSetorDao() {
@@ -456,13 +479,20 @@ public class listaDeCompraBean {
         this.fornecedorDao = fornecedorDao;
     }
 
-    public List<ItemFornecedor> getItensFornecedores() {
-        return itensFornecedores;
+    public ListaDeCompra getListaDeCompra() {
+        return listaDeCompra;
     }
 
-    @SuppressWarnings("AssignmentToCollectionOrArrayFieldFromParameter")
-    public void setItensFornecedores(List<ItemFornecedor> itensFornecedores) {
-        this.itensFornecedores = itensFornecedores;
+    public void setListaDeCompra(ListaDeCompra listaDeCompra) {
+        this.listaDeCompra = listaDeCompra;
+    }
+
+    public Insumo getInsumo() {
+        return insumo;
+    }
+
+    public void setInsumo(Insumo insumo) {
+        this.insumo = insumo;
     }
 
     public ItemFornecedor getItemFornecedor() {
@@ -473,24 +503,6 @@ public class listaDeCompraBean {
         this.itemFornecedor = itemFornecedor;
     }
 
-    public ArrayList<Insumo> getListaInsumo() {
-        return listaInsumo;
-    }
-
-    @SuppressWarnings("AssignmentToCollectionOrArrayFieldFromParameter")
-    public void setListaInsumo(ArrayList<Insumo> listaInsumo) {
-        this.listaInsumo = listaInsumo;
-    }
-
-    public List<ItemMarca> getItensMarcas() {
-        return itensMarcas;
-    }
-
-    @SuppressWarnings("AssignmentToCollectionOrArrayFieldFromParameter")
-    public void setItensMarcas(List<ItemMarca> itensMarcas) {
-        this.itensMarcas = itensMarcas;
-    }
-
     public ItemMarca getItemMarca() {
         return itemMarca;
     }
@@ -499,29 +511,12 @@ public class listaDeCompraBean {
         this.itemMarca = itemMarca;
     }
 
-    public List<ItemInsumo> getItensInsumos() {
-        return itensInsumos;
-    }
-
-    @SuppressWarnings("AssignmentToCollectionOrArrayFieldFromParameter")
-    public void setItensInsumos(List<ItemInsumo> itensInsumos) {
-        this.itensInsumos = itensInsumos;
-    }
-
     public ItemInsumo getItemInsumo() {
         return itemInsumo;
     }
 
     public void setItemInsumo(ItemInsumo itemInsumo) {
         this.itemInsumo = itemInsumo;
-    }
-
-    public Insumo getInsumo() {
-        return insumo;
-    }
-
-    public void setInsumo(Insumo insumo) {
-        this.insumo = insumo;
     }
 
 }

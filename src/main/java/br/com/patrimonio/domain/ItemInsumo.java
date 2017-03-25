@@ -36,23 +36,6 @@ public class ItemInsumo implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     Insumo insumo = new Insumo();
 
-   
-    public Integer getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(Integer codigo) {
-        this.codigo = codigo;
-    }
-
-    public Insumo getInsumo() {
-        return insumo;
-    }
-
-    public void setInsumo(Insumo insumo) {
-        this.insumo = insumo;
-    }
-
     public int getQuantMinAltaTemp() {
         return quantMinAltaTemp;
     }
@@ -84,5 +67,23 @@ public class ItemInsumo implements Serializable {
     public void setQuantMaxBaixaTemp(int quantMaxBaixaTemp) {
         this.quantMaxBaixaTemp = quantMaxBaixaTemp;
     }
+
+    public Integer getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(Integer codigo) {
+        this.codigo = codigo;
+    }
+
+    public Insumo getInsumo() {
+        return insumo;
+    }
+
+    public void setInsumo(Insumo insumo) {
+        this.insumo = insumo;
+    }
+
+  
 
 }
