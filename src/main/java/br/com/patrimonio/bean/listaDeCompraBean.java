@@ -34,6 +34,7 @@ public class listaDeCompraBean {
 
     List<ItemFornecedor> itensFornecedores;
     List<ItemMarca> itensMarcas;
+    List<ItemMarca> itensMarcasTemp;
     List<ItemInsumo> itensInsumos;
 
     ListaDeCompraDao listaDeCompraDao = new ListaDeCompraDao();
@@ -109,9 +110,10 @@ public class listaDeCompraBean {
 
         try {
 
-            
-            listaDeCompraDao = new ListaDeCompraDao();
+            salvarItemMarca();
             listaDeCompraDao.salvar(listaDeCompra, itensFornecedores, itensInsumos);
+
+            listaDeCompraDao = new ListaDeCompraDao();
             itens = listaDeCompraDao.listar();
 
             JSFUtil.adicionaMensagemSucesso("Salvo com sucesso!");
@@ -129,10 +131,8 @@ public class listaDeCompraBean {
 
         try {
 
-            
-            listaDeCompra.setItemInsumo(itemInsumo);
             listaDeCompraDao = new ListaDeCompraDao();
-            listaDeCompraDao.salvarItemMarca(itensMarcas);
+            listaDeCompraDao.salvarItemMarca(itensMarcasTemp);
 
             JSFUtil.adicionaMensagemSucesso("Salvo com item marca sucesso!");
 
@@ -227,6 +227,7 @@ public class listaDeCompraBean {
 
     }
 
+    @SuppressWarnings("unchecked")
     public void adicionaItemMarca(ActionEvent evento) {
 
         Marca marca = (Marca) evento.getComponent().getAttributes().get("marcaSelecionada");
@@ -248,6 +249,7 @@ public class listaDeCompraBean {
             itemMarca.setInsumo(insumo);
             itemMarca.setMarca(marca);
             itensMarcas.add(itemMarca);
+            itensMarcasTemp = new ArrayList<>(itensMarcas);
 
             JSFUtil.adicionaMensagemSucesso("Adicionado com sucesso :)");
 
@@ -325,7 +327,7 @@ public class listaDeCompraBean {
 
         for (int posicao = 0; posicao < itensInsumos.size(); posicao++) {
             if (itensInsumos.get(posicao).getInsumo().equals(insumo)) {
-
+                
                 achou = posicao;
 
             }
@@ -346,7 +348,7 @@ public class listaDeCompraBean {
 
             }
 
-            
+           
             itensInsumos.add(itemInsumo);
             itemInsumo = new ItemInsumo();
 

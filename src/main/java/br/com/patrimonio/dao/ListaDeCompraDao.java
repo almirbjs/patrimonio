@@ -1,6 +1,5 @@
 package br.com.patrimonio.dao;
 
-import br.com.patrimonio.domain.Insumo;
 import br.com.patrimonio.domain.ItemFornecedor;
 import br.com.patrimonio.domain.ItemInsumo;
 import br.com.patrimonio.domain.ItemMarca;
@@ -17,31 +16,31 @@ public class ListaDeCompraDao {
     Session sessao = HibernateUtil.getSessionFactory().openSession();
     Transaction transacao = null;
 
-    public void salvar(ListaDeCompra listaDeCompras, List<ItemFornecedor>itensFornecedores,List<ItemInsumo>itensInsumo){
+    public void salvar(ListaDeCompra listaDeCompras, List<ItemFornecedor> itensFornecedores, List<ItemInsumo> itensInsumo) throws Exception{
 
         try {
-
+            
             transacao = sessao.beginTransaction();
-                       
-             for (int posicao = 0; posicao < itensInsumo.size(); posicao++) {
-                 ItemInsumo itemInsumo = itensInsumo.get(posicao);
-                 listaDeCompras.setItemInsumo(itemInsumo);
-                 sessao.save(itemInsumo);
-                 
-            }
+
              sessao.save(listaDeCompras);
              
-               for (int posicao = 0; posicao < itensFornecedores.size(); posicao++) {
-                ItemFornecedor itemFornecedor = itensFornecedores.get(posicao);
-                 itemFornecedor.setListaDeCompra(listaDeCompras);
-                sessao.save(itemFornecedor);
-               
-            }
-             
-                                                 
-            
+            for (int posicao = 0; posicao < itensInsumo.size(); posicao++) {
+                ItemInsumo itemInsumo = itensInsumo.get(posicao);
+                itemInsumo.setListaDeCompra(listaDeCompras);
+                sessao.save(itemInsumo);
 
-            transacao.commit();
+            }
+            
+           
+                        
+            for (int posicao = 0; posicao < itensFornecedores.size(); posicao++) {
+                ItemFornecedor itemFornecedor = itensFornecedores.get(posicao);
+                itemFornecedor.setListaDeCompra(listaDeCompras);
+                sessao.save(itemFornecedor);
+
+            }
+
+            transacao.commit(); 
 
         } catch (Exception e) {
 
@@ -55,6 +54,7 @@ public class ListaDeCompraDao {
         } finally {
 
             sessao.close();
+            
         }
 
     }
@@ -154,15 +154,13 @@ public class ListaDeCompraDao {
 
     }
 
-    public void salvarItemMarca(List<ItemMarca> itensMarca) {
-        
-        
+    public void salvarItemMarca(List<ItemMarca> itensMarca) throws RuntimeException{
+
         try {
             transacao = sessao.beginTransaction();
 
             for (int posicao = 0; posicao < itensMarca.size(); posicao++) {
                 ItemMarca itemMarca = itensMarca.get(posicao);
-                
 
                 sessao.save(itemMarca);
             }
@@ -180,7 +178,7 @@ public class ListaDeCompraDao {
 
         } finally {
 
-            sessao.close();
+            /*sessao.close();*/
         }
 
     }

@@ -22,19 +22,23 @@ import javax.persistence.Table;
 @SuppressWarnings("serial")
 public class ItemInsumo implements Serializable {
 
+    @Id
+    @Column(name = "iditeminsumo", length = 11)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    Integer codigo;
+        
     int quantMinAltaTemp;
     int quantMaxAltaTemp;
     int quantMinBaixaTemp;
     int quantMaxBaixaTemp;
 
-    @Id
-    @Column(name = "iditeminsumo", length = 11)
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    Integer codigo;
-
     @JoinColumn(nullable = false)
     @ManyToOne(fetch = FetchType.EAGER)
     Insumo insumo = new Insumo();
+    
+     @JoinColumn(nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    ListaDeCompra listaDeCompra = new  ListaDeCompra();
 
     public int getQuantMinAltaTemp() {
         return quantMinAltaTemp;
@@ -82,6 +86,14 @@ public class ItemInsumo implements Serializable {
 
     public void setInsumo(Insumo insumo) {
         this.insumo = insumo;
+    }
+
+    public ListaDeCompra getListaDeCompra() {
+        return listaDeCompra;
+    }
+
+    public void setListaDeCompra(ListaDeCompra listaDeCompra) {
+        this.listaDeCompra = listaDeCompra;
     }
 
   

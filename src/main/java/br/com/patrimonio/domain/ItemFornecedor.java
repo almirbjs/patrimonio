@@ -24,7 +24,7 @@ public class ItemFornecedor implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "iditeminsumo", length = 11)
+    @Column(name = "iditemfornecedor", length = 11)
     @GeneratedValue(strategy = GenerationType.AUTO)
     Integer codigo;
 

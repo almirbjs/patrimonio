@@ -32,10 +32,6 @@ public class ListaDeCompra implements Serializable {
 
     @JoinColumn(nullable = false)
     @ManyToOne(fetch = FetchType.EAGER)
-    ItemInsumo itemInsumo = new ItemInsumo();
-
-    @JoinColumn(nullable = false)
-    @ManyToOne(fetch = FetchType.EAGER)
     Setor setor = new Setor();
 
     public Integer getCodigo() {
@@ -60,14 +56,6 @@ public class ListaDeCompra implements Serializable {
 
     public void setObs(String obs) {
         this.obs = obs;
-    }
-
-    public ItemInsumo getItemInsumo() {
-        return itemInsumo;
-    }
-
-    public void setItemInsumo(ItemInsumo itemInsumo) {
-        this.itemInsumo = itemInsumo;
     }
 
     public Setor getSetor() {
