@@ -2,6 +2,7 @@ package br.com.patrimonio.bean;
 
 import br.com.patrimonio.dao.FornecedorDao;
 import br.com.patrimonio.dao.InsumoDao;
+import br.com.patrimonio.dao.ItemMarcaDao;
 import java.util.ArrayList;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -34,7 +35,7 @@ public class listaDeCompraBean {
 
     List<ItemFornecedor> itensFornecedores;
     List<ItemMarca> itensMarcas;
-    List<ItemMarca> itensMarcasTemp;
+    List<ItemMarca> itensMarcasTemp = new ArrayList<>();
     List<ItemInsumo> itensInsumos;
 
     ListaDeCompraDao listaDeCompraDao = new ListaDeCompraDao();
@@ -110,31 +111,18 @@ public class listaDeCompraBean {
 
         try {
 
-            salvarItemMarca();
-            listaDeCompraDao.salvar(listaDeCompra, itensFornecedores, itensInsumos);
+            listaDeCompraDao.salvar(listaDeCompra, itensFornecedores, itensInsumos, itensMarcasTemp);
 
             listaDeCompraDao = new ListaDeCompraDao();
             itens = listaDeCompraDao.listar();
+            
+            listaDeCompra=new ListaDeCompra();
+            itensInsumos=null;
+            itensFornecedores=null;
+
+            
 
             JSFUtil.adicionaMensagemSucesso("Salvo com sucesso!");
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-
-            JSFUtil.adicionaMensagemErro(e.getMessage());
-        }
-
-    }
-
-    public void salvarItemMarca() {
-
-        try {
-
-            listaDeCompraDao = new ListaDeCompraDao();
-            listaDeCompraDao.salvarItemMarca(itensMarcasTemp);
-
-            JSFUtil.adicionaMensagemSucesso("Salvo com item marca sucesso!");
 
         } catch (Exception e) {
 
@@ -235,6 +223,7 @@ public class listaDeCompraBean {
         int achou = -1;
 
         for (int posicao = 0; posicao < itensMarcas.size(); posicao++) {
+
             if (itensMarcas.get(posicao).getMarca().equals(marca)) {
 
                 achou = posicao;
@@ -244,12 +233,10 @@ public class listaDeCompraBean {
         }
 
         if (achou < 0) {
-
             itemMarca = new ItemMarca();
             itemMarca.setInsumo(insumo);
             itemMarca.setMarca(marca);
             itensMarcas.add(itemMarca);
-            itensMarcasTemp = new ArrayList<>(itensMarcas);
 
             JSFUtil.adicionaMensagemSucesso("Adicionado com sucesso :)");
 
@@ -258,6 +245,7 @@ public class listaDeCompraBean {
             JSFUtil.adicionaMensagemErro("Marca já adicionada!");
 
         }
+         itensMarcasTemp.addAll(itensMarcas);
 
     }
 
@@ -327,7 +315,7 @@ public class listaDeCompraBean {
 
         for (int posicao = 0; posicao < itensInsumos.size(); posicao++) {
             if (itensInsumos.get(posicao).getInsumo().equals(insumo)) {
-                
+
                 achou = posicao;
 
             }
@@ -348,11 +336,12 @@ public class listaDeCompraBean {
 
             }
 
-           
             itensInsumos.add(itemInsumo);
             itemInsumo = new ItemInsumo();
 
-            itensMarcas.removeAll(itensMarcas);
+           
+
+            itensMarcas.clear();
             insumo = null;//limpar campo insumo
             insumo = new Insumo();
 
@@ -394,6 +383,7 @@ public class listaDeCompraBean {
         return itens;
     }
 
+    @SuppressWarnings("AssignmentToCollectionOrArrayFieldFromParameter")
     public void setItens(ArrayList<ListaDeCompra> itens) {
         this.itens = itens;
     }
@@ -402,6 +392,7 @@ public class listaDeCompraBean {
         return itensFiltrados;
     }
 
+    @SuppressWarnings("AssignmentToCollectionOrArrayFieldFromParameter")
     public void setItensFiltrados(ArrayList<ListaDeCompra> itensFiltrados) {
         this.itensFiltrados = itensFiltrados;
     }
@@ -410,6 +401,7 @@ public class listaDeCompraBean {
         return listaSetores;
     }
 
+    @SuppressWarnings("AssignmentToCollectionOrArrayFieldFromParameter")
     public void setListaSetores(ArrayList<Setor> listaSetores) {
         this.listaSetores = listaSetores;
     }
@@ -418,6 +410,7 @@ public class listaDeCompraBean {
         return listaFornecedores;
     }
 
+    @SuppressWarnings("AssignmentToCollectionOrArrayFieldFromParameter")
     public void setListaFornecedores(ArrayList<Fornecedor> listaFornecedores) {
         this.listaFornecedores = listaFornecedores;
     }
@@ -426,6 +419,7 @@ public class listaDeCompraBean {
         return listaInsumo;
     }
 
+    @SuppressWarnings("AssignmentToCollectionOrArrayFieldFromParameter")
     public void setListaInsumo(ArrayList<Insumo> listaInsumo) {
         this.listaInsumo = listaInsumo;
     }
@@ -519,6 +513,15 @@ public class listaDeCompraBean {
 
     public void setItemInsumo(ItemInsumo itemInsumo) {
         this.itemInsumo = itemInsumo;
+    }
+
+    public List<ItemMarca> getItensMarcasTemp() {
+        return itensMarcasTemp;
+    }
+
+    @SuppressWarnings("AssignmentToCollectionOrArrayFieldFromParameter")
+    public void setItensMarcasTemp(List<ItemMarca> itensMarcasTemp) {
+        this.itensMarcasTemp = itensMarcasTemp;
     }
 
 }

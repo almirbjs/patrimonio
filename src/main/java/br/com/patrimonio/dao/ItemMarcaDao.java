@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
-import br.com.patrimonio.domain.Categoria;
 import br.com.patrimonio.domain.ItemMarca;
 import br.com.patrimonio.util.HibernateUtil;
 

@@ -16,12 +16,20 @@ public class ListaDeCompraDao {
     Session sessao = HibernateUtil.getSessionFactory().openSession();
     Transaction transacao = null;
 
-    public void salvar(ListaDeCompra listaDeCompras, List<ItemFornecedor> itensFornecedores, List<ItemInsumo> itensInsumo) throws Exception{
+    public void salvar(ListaDeCompra listaDeCompras, List<ItemFornecedor> itensFornecedores,
+            List<ItemInsumo> itensInsumo, List<ItemMarca>itensMarca) throws Exception{
 
         try {
             
             transacao = sessao.beginTransaction();
 
+            
+            for (int posicao = 0; posicao < itensMarca.size(); posicao++) {
+                ItemMarca itemMarca = itensMarca.get(posicao);               
+                sessao.save(itemMarca);
+                
+            }
+            
              sessao.save(listaDeCompras);
              
             for (int posicao = 0; posicao < itensInsumo.size(); posicao++) {

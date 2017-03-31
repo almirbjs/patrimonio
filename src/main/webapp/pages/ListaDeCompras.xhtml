@@ -90,7 +90,7 @@
                     <p:commandButton value="Novo" 
                                      oncomplete="PF('dlgNovo').show()"
                                      actionListener="#{MBListaDeCompra.prepararSalvar}"
-                                     update=":formDlgNovo:painelDlgNovo" />
+                                     update=":formDlgNovo:painelDlgNovo :formDlgNovo:tabelaItemInsumo :formFornecedor:tabelaItemFornecedor" />
                 </f:facet>
 
             </p:dataTable>
